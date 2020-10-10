@@ -69,4 +69,11 @@ router.post('/register', (request, response) => {
             console.log(error);
         });
 });
+/* 
+    忘记密码
+    forget
+*/
+router.put('/forget', (request, response) => {
+
+});
 module.exports = router;

@@ -4,14 +4,13 @@ import { message } from "antd";
 import './forget.less';
 
 const { $http } = React;
-const PhoneRegexp = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+const EmailRegexp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
 
 class Forget extends Component {
     state = {
         validateForm: {
-            phone: '',
-            imgCode: '',
+            email: '',
             code: ''
         },
         form: {
@@ -25,11 +24,8 @@ class Forget extends Component {
     handleNext = (event) => {
         event.preventDefault();
         const { validateForm } = this.state;
-        if (!validateForm.phone) {
-            return message.error('请输入手机号码');
-        }
-        if (!validateForm.imgCode) {
-            return message.error('请输入图形验证码');
+        if (!validateForm.email) {
+            return message.error('请输入邮箱');
         }
         if (!validateForm.code) {
             return message.error('请输入验证码');
@@ -59,7 +55,6 @@ class Forget extends Component {
         if (formType === 'validate') {
             validateForm[name] = value;
             this.setState({ validateForm });
-
         } else {
             form[name] = value;
             this.setState({ form });
@@ -67,17 +62,17 @@ class Forget extends Component {
     }
     handleValidate = (event) => {
         const value = event.target.value;
-        if (value && !PhoneRegexp.test(value)) {
-            message.error('手机号码格式不正确');
+        if (value && !EmailRegexp.test(value)) {
+            message.error('邮箱格式不正确');
         }
     }
     handleGetCode = () => {
-        if (!this.state.validateForm.phone || !PhoneRegexp.test(this.state.validateForm.phone)) {
-            return message.error('请输入正确的手机号');
+        if (!this.state.validateForm.email || !EmailRegexp.test(this.state.validateForm.email)) {
+            return message.error('请输入正确的邮箱');
         }
         let second = 59;
         let timer = null;
-        message.success('验证码已发送到手机，请注意查收');
+        message.success('验证码已发送到邮箱，请注意查收');
         this.setState({
             disabled: true,
             codeText: `${second}秒后重新获取`
@@ -91,20 +86,11 @@ class Forget extends Component {
                     clearInterval(timer);
                     this.setState({
                         codeText: '获取验证码',
-                        disabled: true
+                        disabled: false
                     });
                 }
             }, 1000);
         });
-        // 获取验证码
-        // $http.get('send/code', { params: {phone: this.state.validateForm.phone}}).then(res => {
-        //     clearInterval(timer)
-            this.setState({
-                // validateForm: {...this.state.validateForm, code: res.code},
-                codeText: '获取验证码',
-                disabled: false
-            });
-        // });
     }
     handleResetPassword = (event) => {
         event.preventDefault();
@@ -138,37 +124,26 @@ class Forget extends Component {
                         <form id="validate" onSubmit={this.handleNext}>
                             <h1>忘记密码</h1>
                             <input 
-                                name="phone"
-                                className="input_phone"
-                                placeholder="请输入手机号码"
-                                value={validateForm.phone} 
+                                name="email"
+                                className="input_email"
+                                placeholder="请输入邮箱"
+                                value={validateForm.email} 
                                 onBlur={this.handleValidate} 
-                                onChange={(event) => this.handleInputChange(event, 'validate', 'phone')}                                
+                                onChange={(event) => this.handleInputChange(event, 'validate', 'email')}                                
                             ></input>
-                            <div className="validate_code">
-                                <input 
-                                    type="text" 
-                                    name="imgCode"
-                                    value={validateForm.imgCode}
-                                    placeholder="图形验证码"
-                                    onChange={(event) => this.handleInputChange(event, 'validate', 'imgCode')}
-                                ></input>
-                                <img src="https://www.oschina.net/action/user/captcha" alt="code" className="img_code" />
-                            </div>
                             <div className="message_code">
                                 <input 
                                     type="text" 
                                     name="code"
                                     value={validateForm.code}
-                                    placeholder="短信验证码"
-                                    disabled={disabled}
+                                    placeholder="邮箱验证码"
                                     onChange={(event) => this.handleInputChange(event, 'validate', 'code')}
-                                    onClick={this.handleGetCode}
                                 ></input>
                                 <button 
                                     type="button"
+                                    disabled={disabled}
                                     className={`message_code_btn ${disabled ? 'code_disabled' : ''}`}
-                                    className="message_code_btn"
+                                    onClick={this.handleGetCode}
                                 >{codeText}</button>
                             </div>
                             <button 

@@ -207,11 +207,6 @@ const chartOptions = {
                     width: 1
                 }
             },
-            lineStyle: {
-                normal: {
-                    width: 1
-                }
-            },
             areaStyle: {
 				normal: {
 					color: new Echarts.graphic.LinearGradient(0, 0, 0, 1, [

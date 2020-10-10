@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 09/10/2020 19:30:22
+ Date: 10/10/2020 19:22:09
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `file`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file
@@ -50,6 +50,7 @@ INSERT INTO `file` VALUES (17, 'vue.xmind', '4160e89a38cb4be2d249a4142a514418.xm
 INSERT INTO `file` VALUES (18, 'vue.png', 'ce322060cca99fbb04ba769265e0e7d0.png', '2020-10-09 18:07:51');
 INSERT INTO `file` VALUES (19, 'vue.xmind', '91772ae6dfbc2c975205fcefc18a59a1.xmind', '2020-10-09 18:11:18');
 INSERT INTO `file` VALUES (20, 'vue.xmind', 'f04b8a0ce17b75423f9f6a1c099acec2.xmind', '2020-10-09 18:13:16');
+INSERT INTO `file` VALUES (21, 'vue.xmind', '29dac6dc4d3011fa072c55095cc8db40.xmind', '2020-10-10 18:35:25');
 
 -- ----------------------------
 -- Table structure for message
@@ -68,9 +69,7 @@ CREATE TABLE `message`  (
 -- ----------------------------
 INSERT INTO `message` VALUES (9, '水水水水水水水水水水水水水水水水', '2020-10-05 18:32:24', 1);
 INSERT INTO `message` VALUES (10, '666666666666666666', '2020-10-05 18:36:53', 1);
-INSERT INTO `message` VALUES (11, '钱钱钱钱钱钱钱钱钱钱钱钱钱钱钱', '2020-10-05 18:40:12', 1);
 INSERT INTO `message` VALUES (12, '水水水水水水水水水水水水水水水水水水水', '2020-10-05 18:40:18', 1);
-INSERT INTO `message` VALUES (13, '杀杀杀杀杀杀杀杀杀杀杀杀杀杀杀', '2020-10-05 18:40:31', 1);
 INSERT INTO `message` VALUES (14, '顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶', '2020-10-05 18:40:31', 1);
 INSERT INTO `message` VALUES (15, '水水水水水水水水水水水水水水水水水水水', '2020-10-07 15:35:12', 0);
 
@@ -90,7 +89,7 @@ CREATE TABLE `user`  (
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `role` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
@@ -113,7 +112,7 @@ INSERT INTO `user` VALUES (16, '静姝', '123456', 0, '15157122361', 'hcc96923@g
 INSERT INTO `user` VALUES (19, '古天乐', '123456', 0, '15157122365', '123456@163.com', '2020-09-18 18:31:02', '', '', 1);
 INSERT INTO `user` VALUES (20, '刘青云', '123456', 0, '18147275149', '19898@qq.com', '2020-09-18 18:30:59', '', '', 1);
 INSERT INTO `user` VALUES (37, '张家辉', '123456', 0, '15657122369', '19898@qq.com', '2020-09-18 18:30:56', '', '', 1);
-INSERT INTO `user` VALUES (38, '三上悠亚', '123456', 1, '15157122365', '19898@qq.com', '2020-10-09 15:32:56', '', '', 1);
+INSERT INTO `user` VALUES (38, '三上悠亚', '123456', 1, '15157122365', '19898@qq.com', '2020-10-10 19:11:34', '0d3690024140dab64c876cdf7046d892.png', '', 1);
 INSERT INTO `user` VALUES (39, '王祖贤', '147258', 0, '', '', '2020-10-08 15:47:14', '170ae6b552dee8bd5ddd0752dc862415.jpg_b', '', 1);
 INSERT INTO `user` VALUES (40, '桥本有菜', '123456', 1, '18147275149', '123456@163.com', '2020-10-09 15:33:47', '', '', 1);
 

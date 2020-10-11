@@ -91,7 +91,6 @@ class RichText extends Component {
                 </Row>
             </div>
         );
-    }
-}
-
+    };
+};
 export default RichText;

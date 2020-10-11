@@ -246,10 +246,10 @@ const chartOptions = {
             ]
         },
     ]
-}
+};
 function Line() {
     return (
         <Chart chartId={"line"} chartOptions={chartOptions}/>
-    )
-}
+    );
+};
 export default Line;

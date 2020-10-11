@@ -16,28 +16,28 @@ import Logo from '@assets/images/react.svg';
 class TopHeader extends Component {
     state = {
         visible: false
-    }
+    };
     handleSetting = () => {
         this.setState({ visible: true });
-    }
+    };
     onClose = () => {
 		this.setState({ visible: false });
-    }
+    };
     onChangeTheme = checked => {
         this.props.setTheme({ type: checked ? 'dark' : 'light' });
 		this.onClose();
-    }
+    };
     onChangeBreadCrumb = checked => {
         this.props.setBreadcrumb({ show: checked });
         this.onClose();
-    }
+    };
     onChangeTag = checked => {
         this.props.setTag({ show: checked });
         this.onClose();
-    }
+    };
     handleMessage = () => {
         this.props.history.push('/message');
-    }
+    };
     handleMenuClick = (item) => {
         const { key } = item;
         if (key === 'logout') {
@@ -46,7 +46,7 @@ class TopHeader extends Component {
         } else {
             this.props.history.push(`/${item.key}`);
         }
-    }
+    };
     componentDidMount() {
         const params = {};
         params.status = 0;
@@ -61,7 +61,7 @@ class TopHeader extends Component {
                 <Menu.Divider />
                 <Menu.Item key="logout">退出</Menu.Item>
             </Menu>
-        )
+        );
         return (  
             <Layout.Header className="header" theme={theme.type}>
                 {/* logo */}
@@ -113,7 +113,7 @@ class TopHeader extends Component {
                     {...this.props}>
                 </BasicDrawer>
             </Layout.Header>
-        )
-    }
-}
+        );
+    };
+};
 export default withRouter(TopHeader);

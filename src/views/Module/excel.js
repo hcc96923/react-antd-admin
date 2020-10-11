@@ -18,9 +18,9 @@ class Excel extends Component {
         const entozh = {};
         this.state.columns.forEach(item => {
             entozh[item[a]] = item[b]
-        })
+        });
         return entozh;
-    }
+    };
     sheet2blob = (sheet, sheetName) => {
         sheetName = sheetName || 'sheet1';
         let workbook = {
@@ -42,9 +42,9 @@ class Excel extends Component {
             let view = new Uint8Array(buf);
             for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
             return buf;
-        }
+        };
         return blob;
-    }
+    };
     openDownloadDialog = (url, saveName) => {
         if (typeof url == 'object' && url instanceof Blob) {
           url = URL.createObjectURL(url); // 创建blob地址
@@ -59,14 +59,14 @@ class Excel extends Component {
             event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         }
         aLink.dispatchEvent(event);
-    }
+    };
     handleExportAll = (e) => {
         const entozh = {
             "name":"姓名",
             "gender":"性别",
             "age":"年龄",
             "work":"工作"
-        }
+        };
         const nowdata = this.state.data;
         const json = nowdata.map((item) => {
             return Object.keys(item).reduce((newData, key) => {
@@ -77,7 +77,7 @@ class Excel extends Component {
         });
         const sheet = XLSX.utils.json_to_sheet(json);
         this.openDownloadDialog(this.sheet2blob(sheet,undefined), `全部信息.xlsx`);
-    }
+    };
     handleImpotedJson = (array, file) => {
         const header = array[0];
         const entozh = this.formatTitleOrFileld('title', 'dataIndex');
@@ -104,7 +104,7 @@ class Excel extends Component {
         }))
         this.setState({ data: formatData, fileList: [file] });
         return formatData;
-    }
+    };
     render() { 
         const { columns, data, fileList }=this.state;
         const uploadProps={
@@ -147,6 +147,6 @@ class Excel extends Component {
                 <Table columns={columns} dataSource={data} bordered></Table>
             </Card>
         );
-    }
-}
+    };
+};
 export default Excel;

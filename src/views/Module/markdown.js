@@ -11,7 +11,7 @@ class MarkDown extends Component {
         this.setState({
             value
         });
-    }
+    };
     render() { 
         const { value } = this.state;
         return (  
@@ -24,7 +24,6 @@ class MarkDown extends Component {
                 />
             </div>
         );
-    }
-}
-
+    };
+};
 export default MarkDown;

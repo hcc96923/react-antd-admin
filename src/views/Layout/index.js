@@ -86,6 +86,7 @@ class LayoutContainer extends Component {
     }
 }
 
+
 const mapStateToProps = (state) => state;
 const mapDispatchToProps = dispatch => ({
 	setCollapse: data => {

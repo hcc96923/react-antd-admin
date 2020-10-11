@@ -72,7 +72,6 @@ class BasicInfo extends Component {
             message.error('上传失败');
             return this.setState({loading: false});
         }
-        
     };
     handleSubmit =(values) => {
         debounce(() => {

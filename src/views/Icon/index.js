@@ -109,7 +109,7 @@ function Icon() {
     const handleCopyToClipboard = (event) => {
         copy(`<${event} />`);
         message.success(`<${event} />已复制到剪切板！`, 1);
-    }
+    };
     return (
         <div className="icon">
             <Card title="常用图标">
@@ -124,5 +124,5 @@ function Icon() {
             </Card>
         </div>
     );
-}
+};
 export default Icon;

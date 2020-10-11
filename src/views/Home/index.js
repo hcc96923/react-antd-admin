@@ -182,7 +182,6 @@ class Home extends React.Component {
                                   downloadData={chartData.downloadData}>
                                 </HomeChart>
                             </Col>
-
                             <Col span={8}>
                                 {
                                   chartProgress.map((item, index) => {

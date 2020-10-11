@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import { message } from "antd";
 import './forget.less';
 
+
 const { $http } = React;
 const EmailRegexp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-
-
 class Forget extends Component {
     state = {
         validateForm: {
@@ -20,7 +19,7 @@ class Forget extends Component {
         formType: 'validate',
         codeText: '获取验证码', 
         disabled: false
-    }
+    };
     handleNext = (event) => {
         event.preventDefault();
         const { validateForm } = this.state;
@@ -37,7 +36,7 @@ class Forget extends Component {
                 code: ''
             }
         });
-    }
+    };
     handlePrevious = (event) => {
         event.preventDefault();
         this.setState({
@@ -47,7 +46,7 @@ class Forget extends Component {
                 repeatPassword: ''
             }
         });
-    }
+    };
     handleInputChange = (event, formType, name) => {
         const { validateForm, form } = this.state;
         const value = event.target.value;
@@ -59,13 +58,13 @@ class Forget extends Component {
             form[name] = value;
             this.setState({ form });
         }
-    }
+    };
     handleValidate = (event) => {
         const value = event.target.value;
         if (value && !EmailRegexp.test(value)) {
             message.error('邮箱格式不正确');
         }
-    }
+    };
     handleGetCode = () => {
         if (!this.state.validateForm.email || !EmailRegexp.test(this.state.validateForm.email)) {
             return message.error('请输入正确的邮箱');
@@ -91,7 +90,7 @@ class Forget extends Component {
                 }
             }, 1000);
         });
-    }
+    };
     handleResetPassword = (event) => {
         event.preventDefault();
         const { form } = this.state;
@@ -106,15 +105,15 @@ class Forget extends Component {
         }
         // $http.post('/reset/password', {form})
         //      .then(() => {
-                 message.success('密码重置成功，请到重新登录账号');
-                 setTimeout(() => {
-                     this.props.history.push('/login');
-                 }, 1500);
+                message.success('密码重置成功，请到重新登录账号');
+                setTimeout(() => {
+                    this.props.history.push('/login');
+                }, 1500);
             //  })
             //  .catch((error) => {
             //      message.error(error);
             //  });
-    }
+    };
     render() { 
         const { formType, validateForm, form, disabled, codeText } = this.state;
         return (  

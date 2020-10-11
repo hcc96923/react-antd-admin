@@ -3,7 +3,7 @@ import { Layout } from "antd";
 
 
 class BottomFooter extends Component {
-    state = {  }
+    state = {};
     render() { 
         return (  
             <Layout.Footer 
@@ -11,6 +11,6 @@ class BottomFooter extends Component {
                 系统由 React+Node+Ant Desgin驱动
             </Layout.Footer>
         );
-    }
-}
+    };
+};
 export default BottomFooter;

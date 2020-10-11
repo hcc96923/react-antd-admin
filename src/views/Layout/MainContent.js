@@ -5,9 +5,8 @@ import { renderRoutes } from "react-router-config";
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 
-
 class MainContent extends Component {
-    state = {  };
+    state = {};
     render() { 
         return (  
             <TransitionGroup>

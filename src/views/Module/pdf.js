@@ -25,6 +25,6 @@ class Pdf extends Component {
                 }
             </Card>
         );
-    }
-}
+    };
+};
 export default Pdf;

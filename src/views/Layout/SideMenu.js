@@ -123,9 +123,7 @@ class SideMenu extends Component {
                     <Menu.Item key="about" icon={<CopyrightOutlined />}>关于</Menu.Item>
                 </Menu>
             </Layout.Sider>
-        )
+        );
     };
-}
-
-
+};
 export default withRouter(SideMenu);

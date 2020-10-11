@@ -61,5 +61,8 @@ export const setMessage = (params) => {
                 };
                 dispatch(action);
             })
+            .catch(error => {
+                console.log(error);
+            });
     };
 };

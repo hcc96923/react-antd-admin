@@ -150,11 +150,10 @@ const chartOptions = {
 	animationDelayUpdate(idx) {
 		return idx * 20;
 	}
-}
+};
 function KeyBoard() {
     return (
         <Chart chartId={"keyboard"} chartOptions={chartOptions}></Chart>
-    )
-}
-
+    );
+};
 export default KeyBoard;

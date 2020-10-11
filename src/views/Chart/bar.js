@@ -126,11 +126,10 @@ const chartOptions = {
 			}
 		}
     ]
-}
+};
 function Bar() {
     return (
         <Chart chartId={"bar"} chartOptions={chartOptions}></Chart>
-    )
-}
-
+    );
+};
 export default Bar;

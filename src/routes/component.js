@@ -1,6 +1,7 @@
 import Loadable from 'react-loadable';
 import Loading from '@/components/Loading';
 
+
 const Layout = Loadable({
     loader: () => import('@/views/Layout'),
     loading: Loading
@@ -140,7 +141,6 @@ const About = Loadable({
     loader: () => import('@/views/About/index'),
     loading: Loading
 });
-
 export default {
     Layout,
     Login,

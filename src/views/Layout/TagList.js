@@ -39,5 +39,4 @@ class TagList extends Component {
         );
     };
 };
-
 export default withRouter(TagList);

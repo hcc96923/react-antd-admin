@@ -9,8 +9,8 @@ export const addTag = (data) => {
     return {
         type: ADD_TAG,
         data
-    }
-}
+    };
+};
 /* 
     移除标签
     removeTag
@@ -19,5 +19,5 @@ export const removeTag = (data) => {
     return {
         type: REMOVE_TAG,
         data
-    }
-}
+    };
+};

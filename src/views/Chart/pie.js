@@ -39,10 +39,10 @@ const chartOptions = {
 			data: [{ value: 100, name: '电费' }, { value: 50, name: '水费' }, { value: 224, name: '物业费' }, { value: 60, name: '管理费' }, { value: 800, name: '停车费' }]
 		}
 	]
-}
+};
 function Pie() {
     return (
         <Chart chartId={"pie"} chartOptions={chartOptions}/>
-    )
-}
+    );
+};
 export default Pie;

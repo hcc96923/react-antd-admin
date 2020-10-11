@@ -1,6 +1,7 @@
 import React from 'react';
 import { FullscreenOutlined } from '@ant-design/icons';
 
+
 export default class FullScreen extends React.Component {
 	state = {
 		isFullScreen: false
@@ -54,13 +55,12 @@ export default class FullScreen extends React.Component {
 			false
 		);
 	};
-
 	render() {
 		return (
 			<FullscreenOutlined 
 				style={{ fontSize: '20px', cursor: 'pointer' }} 
 				onClick={this.handleFullScrren} 
 			/>
-		)
+		);
 	};
 };

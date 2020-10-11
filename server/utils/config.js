@@ -6,11 +6,29 @@ const serverConfig = {
 
 // 跨域配置
 const corsConfig = {
-    origin: '*',
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: [
+        'Content-Type', 
+        'Content-Language', 
+        'Accept-Language',
+        'Accept', 
+        'Authorization',
+        'Origin', 
+    ],
+    exposedHeaders: [
+        'Cache-Control', 
+        'Content-Language',
+        'Content-Length',
+        'Content-Type',
+        'Expires',
+        'Last-Modified',
+        'Pragma'
+    ],
     credentials: true,
-    allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization']
+    maxAge: 3600,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 };
 
 
@@ -26,7 +44,6 @@ const dbConfig = {
 
 // 密钥
 const secretKey = 'key';
-
 module.exports = {
     serverConfig,
     corsConfig,

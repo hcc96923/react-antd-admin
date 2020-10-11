@@ -12,7 +12,6 @@ function NotFound() {
                 <Button className="page_btn" href="#/home" shape="round">返回首页</Button>
             </div>
         </div>
-    )
-}
-
+    );
+};
 export default NotFound;

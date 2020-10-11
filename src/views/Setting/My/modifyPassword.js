@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Button, Space, Spin, message } from 'antd';
 
+
 const { $http } = React;
 const layout = {
     labelCol: {
@@ -18,7 +19,6 @@ const tailLayout = {
 };
 // 必须包含大小写字母和数字的组合，不能使用特殊字符，长度在6-16之间
 const Regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/;
-
 class ModifyPassword extends Component {
     state = {
         spinning: false,
@@ -28,8 +28,7 @@ class ModifyPassword extends Component {
             password: '',
             repeatPassword: ''
         }
-    }
-    
+    };
     formRef = React.createRef();
     handleVerifyPassword = (event) => {
         this.setState({isFirst: false});
@@ -48,7 +47,7 @@ class ModifyPassword extends Component {
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
     handleSubmit = (values) => {
         $http.put('/user/updatePassword', {newPassword: values.newPassword})
             .then(() => {
@@ -59,7 +58,7 @@ class ModifyPassword extends Component {
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
     render() { 
         const { spinning, isFirst, verifyPassword, form } = this.state;
         return (  
@@ -97,7 +96,7 @@ class ModifyPassword extends Component {
                             ({ getFieldValue }) => ({
                                 validator(rule, value) {
                                     if (!value || getFieldValue('newPassword') === value) {
-                                      return Promise.resolve();
+                                        return Promise.resolve();
                                     }
                                     return Promise.reject('两次输入密码不一致');
                                 }
@@ -114,7 +113,6 @@ class ModifyPassword extends Component {
                 </Card>
             </div>
         );
-    }
-}
-
+    };
+};
 export default ModifyPassword;

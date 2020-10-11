@@ -28,7 +28,7 @@ class Login extends Component {
             },
             userInfo: store.getState().userInfo
         }
-    }
+    };
     toggleOverlay(step) {
         this.setState({
             overlay: {
@@ -36,7 +36,7 @@ class Login extends Component {
                 step
             }
         });
-    }
+    };
     handleInputChange = (event, formType, labelName) => {
         const { registerForm, loginForm } = this.state;
         if (formType === 'register') {
@@ -54,7 +54,7 @@ class Login extends Component {
                 } 
             });
         }
-    }
+    };
     handleLogin = (event, isRegister) => {
         event.preventDefault();
         const { loginForm } = this.state
@@ -86,7 +86,7 @@ class Login extends Component {
                 console.log(error);
                 this.setState({loading: false});
             });
-    }
+    };
     handleRegister = (event) => {
         event.preventDefault();
         const { registerForm } = this.state;
@@ -111,10 +111,10 @@ class Login extends Component {
                 console.log(error);
                 this.setState({loading: false});
             });
-    }
+    };
     handleStoreChange = () => {
         this.setState({userInfo: store.getState().userInfo});
-    }
+    };
     render() {
         const { loading, overlay, loginForm, registerForm } = this.state;
         return (

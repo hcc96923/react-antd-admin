@@ -5,6 +5,8 @@ import {
     DeleteOutlined,
     ExclamationCircleOutlined 
 } from '@ant-design/icons';
+
+
 const { $http } = React;
 const Options = [
     { label: '不限', value: 0 },
@@ -26,8 +28,6 @@ const tailLayout = {
         span: 16,
     },
 };
-
-
 class RoleList extends Component {
     state = {  
         Loading: false,
@@ -97,10 +97,9 @@ class RoleList extends Component {
             username: '',
             role: 1
         }
-    }
+    };
     searchRef = React.createRef();
     modalRef = React.createRef();
-
     getRoleList = () => {
         const { query, pagination } = this.state;
         const params = {};
@@ -128,16 +127,16 @@ class RoleList extends Component {
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
     handleSearch = (values) => {
         this.setState({ query: values }, () => {
             this.getRoleList();
         });
-    } 
+    };
     resetSearch = () => {
         this.searchRef.current.resetFields();
         this.getRoleList();
-    }
+    };
     handlePageChange = (pagination) => {
         const { current, pageSize } = pagination;
         this.setState({
@@ -145,7 +144,7 @@ class RoleList extends Component {
         }, () => {
             this.getRoleList();
         })
-    }
+    };
     onEdit = (record) => {
         this.setState({
             modalVisible: true,
@@ -160,7 +159,7 @@ class RoleList extends Component {
                 });
             });
         });
-    }
+    };
     onSaveEditForm = (values) => {
         this.setState({Loading: true});
         $http.put('/user/editRole', values)
@@ -173,11 +172,11 @@ class RoleList extends Component {
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
     onCancelEditForm = () => {
         this.modalRef.current.resetFields();
         this.setState({modalVisible: false});
-    }
+    };
     onDelete = (record) => {
         Modal.confirm({
             title: '删除用户',
@@ -195,11 +194,11 @@ class RoleList extends Component {
                     });
             }
         });
-    }
+    };
     componentDidMount() {
         this.setState({loading: true});
         this.getRoleList();
-    }
+    };
     render() { 
         const { Loading, userTableData, pagination, columns, modalVisible, modalForm } = this.state;
         return (  
@@ -286,7 +285,6 @@ class RoleList extends Component {
                         </Modal>
             </Card>
         );
-    }
-}
-
+    };
+};
 export default RoleList;

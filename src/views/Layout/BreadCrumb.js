@@ -29,8 +29,6 @@ class BreadCrumb extends Component {
                 }
             </Breadcrumb>
         );
-    }
-}
-
-
+    };
+};
 export default withRouter(BreadCrumb);

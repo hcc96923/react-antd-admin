@@ -186,10 +186,10 @@ const chartOptions = {
 			data: [1036, 3693, 2962, 3810, 2519, 1915, 1748, 4675, 6209, 4323, 2865, 4298]
 		}
     ]
-}
+};
 function Mix() {
     return (
         <Chart chartId={"mix"} chartOptions={chartOptions}/>
-    )
-}
+    );
+};
 export default Mix;

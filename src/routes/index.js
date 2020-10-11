@@ -3,10 +3,9 @@ import { Redirect } from 'react-router-dom';
 import RouteComponent from "./component";
 import { resolveTitle } from '@utils/formatTool'
 
+
 const token = localStorage.getItem('token');
 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
-
 const routes = [
     {
         path: "/login",

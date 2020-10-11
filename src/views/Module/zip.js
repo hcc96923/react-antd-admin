@@ -61,6 +61,6 @@ class Zip extends Component {
                 </Table>
             </Card>
         );
-    }
-}
+    };
+};
 export default Zip;

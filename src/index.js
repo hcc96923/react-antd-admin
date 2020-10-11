@@ -40,6 +40,6 @@ function RAA() {
         </HashRouter>
       </ConfigProvider>
     </Provider>
-  )
-}
+  );
+};
 ReactDOM.render(<RAA />, document.getElementById('root'));

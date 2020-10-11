@@ -34,6 +34,4 @@ const menu = [
 
     { key: 'about', name: '关于' }
 ];
-
-
 export default menu;

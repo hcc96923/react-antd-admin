@@ -26,7 +26,6 @@ const tailLayout = {
 };
 const EmailRegexp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 const PhoneRegexp = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
-
 class UserList extends Component {
     state = {
         selectedRowKeys: [],
@@ -117,10 +116,9 @@ class UserList extends Component {
             email: ''
         },
         modalType: 'add'
-    }
+    };
     searchRef = React.createRef();
     modalRef = React.createRef();
-    
     getUserList = () => {
         const { query, pagination } = this.state;
         const params = {};
@@ -148,16 +146,16 @@ class UserList extends Component {
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
     handleSearch = (values) => {
         this.setState({ query: values }, () => {
             this.getUserList();
         });
-    } 
+    }; 
     resetSearch = () => {
         this.searchRef.current.resetFields();
         this.getUserList();
-    }
+    };
     handlePageChange = (pagination) => {
         const { current, pageSize } = pagination;
         this.setState({
@@ -165,7 +163,7 @@ class UserList extends Component {
         }, () => {
             this.getUserList();
         })
-    }
+    };
     openAddEditModal = (modalType, record) => {
         if (record) {
             this.setState({
@@ -195,7 +193,7 @@ class UserList extends Component {
                 });
             });
         }
-    }
+    };
     handleAddModalCancel = () => {
         this.modalRef.current.resetFields();
         this.setState({
@@ -227,7 +225,7 @@ class UserList extends Component {
                     console.log(error);
                 });
         }
-    }
+    };
     onEdit = (record) => {
         this.setState({
             modalVisible: true,
@@ -245,7 +243,7 @@ class UserList extends Component {
                 });
             });
         });
-    }
+    };
     onDelete = (record) => {
         Modal.confirm({
             title: '删除用户',
@@ -263,10 +261,10 @@ class UserList extends Component {
                     });
             }
         });
-    }
+    };
     onSelectChange = (selectedRowKeys) => {
         this.setState({ selectedRowKeys });
-    }
+    };
     onMultipleDelete = () => {
         const { selectedRowKeys } = this.state;
         console.log(selectedRowKeys);
@@ -289,11 +287,11 @@ class UserList extends Component {
                     });
             }
         });
-    }
+    };
     componentDidMount() {
         this.setState({Loading: true});
         this.getUserList();
-    }
+    };
     render() { 
         const { Loading, selectedRowKeys, userTableData, columns, pagination, modalVisible, modalType, modalForm  } = this.state;
         const rowSelection = { selectedRowKeys, onChange: this.onSelectChange };
@@ -395,6 +393,6 @@ class UserList extends Component {
                 </div>
             </Card>
         );
-    }
-}
+    };
+};
 export default UserList;

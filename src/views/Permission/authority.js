@@ -34,7 +34,6 @@ class Authority extends Component {
             roleName 
         });
     };
-    
     render() { 
         const { role, roleName } = this.state;
         return (  

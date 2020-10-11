@@ -323,9 +323,9 @@ router.get('/getRole', (request, response) => {
                 const n = (pageNum - 1) * pageSize;
                 sqlString += ` LIMIT ${n}, ${pageSize}`; 
             }
-            console.log(sqlString);
             execDB(sqlString)
                 .then(result => {
+                    // response.header('Cache-Control', 'max-age=31536000');
                     response.send({
                         code: 200,
                         message: '获取成功',

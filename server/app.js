@@ -28,7 +28,7 @@ app.use(cors(corsConfig))
        secret: secretKey, 
        algorithms: ['HS256']
    }).unless({
-       path: ['/login/login', '/login/register', '/upload/uploadAvatar', '/upload/uploadFiles']
+       path: ['/login/login', '/login/register', '/login/findEmail', '/login/getAuthCode', '/login/resetPassword', '/upload/uploadAvatar', '/upload/uploadFiles']
    }))
    .use((error, request, response, next) => {
        if (error.name === 'UnauthorizedError') {

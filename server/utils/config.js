@@ -67,7 +67,8 @@ const emailConfig = {
             user: 'hcc96923@163.com',
             pass: 'SWOPRPIKGKMRWRKU'
         }
-    }
+    },
+    secretKey: 'emailSecretKey'
 };
 module.exports = {
     serverConfig,

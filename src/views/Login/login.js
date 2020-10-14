@@ -19,11 +19,11 @@ class Login extends Component {
                 step: 100
             },
             registerForm: {
-                username: '',
+                email: '',
                 password: ''
             },
             loginForm: {
-                username: '',
+                email: '',
                 password: ''
             },
             userInfo: store.getState().userInfo
@@ -47,10 +47,8 @@ class Login extends Component {
             this.setState({ 
                 loginForm,
                 registerForm: {
-                    username: '',
-                    password: '',
-                    phone: '',
-                    email: ''
+                    email: '',
+                    password: ''
                 } 
             });
         }
@@ -58,8 +56,8 @@ class Login extends Component {
     handleLogin = (event, isRegister) => {
         event.preventDefault();
         const { loginForm } = this.state
-        if (!loginForm.username) {
-            return message.error('用户名不能为空');
+        if (!loginForm.email) {
+            return message.error('邮箱不能为空');
         }
         if (!loginForm.password) {
             return message.error('密码不能为空');
@@ -90,8 +88,8 @@ class Login extends Component {
     handleRegister = (event) => {
         event.preventDefault();
         const { registerForm } = this.state;
-        if (!registerForm.username) {
-            message.error('用户名不能为空');
+        if (!registerForm.email) {
+            message.error('邮箱不能为空');
         }
         if (!registerForm.password) {
             message.error('密码不能为空');
@@ -125,10 +123,10 @@ class Login extends Component {
                             <h1 style={{color: '#000', fontWeight: '700'}}>登录</h1>
                             <input 
                                 type="text" 
-                                name="username" 
-                                value={loginForm.username} 
-                                onChange={(event) => this.handleInputChange(event, 'login', 'username')}
-                                placeholder="用户名"
+                                name="email" 
+                                value={loginForm.email} 
+                                onChange={(event) => this.handleInputChange(event, 'login', 'email')}
+                                placeholder="邮箱"
                             ></input>
                             <input 
                                 type="password" 
@@ -150,10 +148,10 @@ class Login extends Component {
                             <h1 style={{color: '#000', fontWeight: '700'}}>注册</h1>
                             <input 
                                 type="text" 
-                                name="username" 
-                                value={registerForm.username} 
-                                onChange={(event) => this.handleInputChange(event, 'register', 'username')}
-                                placeholder="用户名"
+                                name="email" 
+                                value={registerForm.email} 
+                                onChange={(event) => this.handleInputChange(event, 'register', 'email')}
+                                placeholder="邮箱"
                             ></input>
                             <input 
                                 type="password" 

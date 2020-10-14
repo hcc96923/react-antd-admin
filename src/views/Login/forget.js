@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { message } from "antd";
+import CryptoJS from "crypto-js";
+import { EMAIL_KEY } from '@utils/config';
 import './forget.less';
 
 
@@ -44,6 +46,7 @@ class Forget extends Component {
             .then(response => {
                 const { result } = response;
                 if (result.length === 0) {
+                    this.setState({disabled: true});
                     return message.error('邮箱还未注册，请先注册');
                 }
             })
@@ -57,11 +60,12 @@ class Forget extends Component {
         }
         const params = {};
         params.email = this.state.validateForm.email;
-        $http.get('/login/getAuthCode', {params})
+        $http.get('/login/sendEmail', {params})
             .then(response => {
-                this.setState({
-                    authCode: response.authCode
-                });
+                // 如果不对验证码进行加密解密则用户可以在network中查看明文的验证码伪造身份
+                const authCode = CryptoJS.AES.decrypt(response.userAuthCode, EMAIL_KEY).toString(CryptoJS.enc.Utf8); 
+                this.setState({ authCode });
+
                 let second = 59;
                 let timer = null;
                 message.success('验证码已发送到邮箱，请注意查收');
@@ -138,6 +142,7 @@ class Forget extends Component {
         $http.put('/login/resetPassword', params)
             .then(() => {
                 message.success('密码重置成功，请到重新登录账号');
+                localStorage.removeItem('validateEmail');
                 this.props.history.push('/login');
             })
             .catch((error) => {

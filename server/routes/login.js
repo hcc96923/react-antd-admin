@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const execDB = require('../utils/connectionDB');
 const { secretKey, emailConfig } = require('../utils/config');
 const nodemailer = require('nodemailer');
+const CryptoJS  = require('crypto-js');
 
 
 /* 
@@ -11,8 +12,8 @@ const nodemailer = require('nodemailer');
     login
 */
 router.post('/login', (request, response) => {
-    const { username, password } = request.body;
-    const sqlString = `SELECT id, username, role, avatar FROM user WHERE username = '${username}' AND password = '${password}'`;
+    const { email, password } = request.body;
+    const sqlString = `SELECT id, username, role, avatar FROM user WHERE email = '${email}' AND password = '${password}'`;
     execDB(sqlString)
         .then(result => {
             if (result.length > 0) {
@@ -28,7 +29,7 @@ router.post('/login', (request, response) => {
                 });
             } else {
                 response.send({
-                    message: '登陆失败'
+                    message: '邮箱或密码错误'
                 });
             }
         })
@@ -41,8 +42,8 @@ router.post('/login', (request, response) => {
     register
 */
 router.post('/register', (request, response) => {
-    const { username, password } = request.body;
-    const sqlString = `SELECT id FROM user WHERE username='${username}' AND password='${password}'`;
+    const { email, password } = request.body;
+    const sqlString = `SELECT id FROM user WHERE email='${email}' AND password='${password}'`;
     execDB(sqlString)
         .then(result => {
             if (result.length > 0) {
@@ -51,7 +52,7 @@ router.post('/register', (request, response) => {
                     message: '你已注册，请登录'
                 });     
             } else {
-                const sqlString = `INSERT INTO user (username, password, gender) VALUES('${username}', '${password}', ${0})`;
+                const sqlString = `INSERT INTO user (email, password, gender) VALUES('${email}', '${password}', ${0})`;
                 execDB(sqlString)
                     .then(result => {
                         if (result.affectedRows > 0) {
@@ -93,7 +94,7 @@ router.get('/findEmail', (request, response) => {
     发送邮箱
     sendEmail
 */
-router.get('/getAuthCode', (request, response) => {
+router.get('/sendEmail', (request, response) => {
     const emailString = request.query.email;
     const emailType = emailString.split('@')[1].split('.')[0];
     if (!emailType) {
@@ -114,6 +115,9 @@ router.get('/getAuthCode', (request, response) => {
 
     
     let authCode = Math.floor(Math.random() * 900000) + 100000;
+    // 如果同时有多个用户来请求验证码，第一个用户来说服务端内存里的验证码已经改变
+    let userAuthCode = CryptoJS.AES.encrypt(authCode.toString(), emailConfig.secretKey).toString();
+
     //创建一个SMTP客户端配置对象
     const transporter = nodemailer.createTransport(config);
     // 创建一个收件人对象
@@ -165,7 +169,6 @@ router.get('/getAuthCode', (request, response) => {
             </div>
         </body>
     </html>`;
-    console.log(authCode);
     const addressee = {
         from: `"韩畅畅"<${config.auth.user}>`,
         to: `<${emailString}>`,
@@ -187,7 +190,8 @@ router.get('/getAuthCode', (request, response) => {
         transporter.close();
         response.send({
             code: 200,
-            authCode
+            userAuthCode,
+            message: '发送成功'
         });
     });
 });

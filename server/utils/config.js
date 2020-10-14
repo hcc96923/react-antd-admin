@@ -15,6 +15,10 @@ const corsConfig = {
         'Accept', 
         'Authorization',
         'Origin', 
+        'Access-Control-Allow-Headers',
+        'Access-Control-Request-Method',
+        'Access-Control-Request-Headers',
+        'X-Requested-With'
     ],
     exposedHeaders: [
         'Cache-Control', 

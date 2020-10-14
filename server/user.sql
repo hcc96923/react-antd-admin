@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 10/10/2020 19:22:09
+ Date: 14/10/2020 15:48:27
 */
 
 SET NAMES utf8mb4;
@@ -89,31 +89,42 @@ CREATE TABLE `user`  (
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `role` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '韩畅畅', '123456', 0, '15657122362', 'hcc96923@gmail.com', '2020-10-09 15:32:27', '22a9af0c1a56e19295e08924a535ed38.jpg', '韩畅畅上传头像', 3);
-INSERT INTO `user` VALUES (2, '曹青青', '123456', 1, '15157122361', 'hcc96923@gmail.com', '2020-09-30 19:36:13', 'd24714ac28f401865d48424d66032e66.jpg', '', 1);
-INSERT INTO `user` VALUES (3, '韩文龙', '123456', 0, '15157122365', '734499162@qq.com', '2020-09-18 18:29:40', '', '', 1);
-INSERT INTO `user` VALUES (4, '曹操', '123456', 0, '15657122369', 'hcc@163.com', '2020-09-18 18:29:48', '', '', 1);
-INSERT INTO `user` VALUES (5, '刘备', '123456', 0, '18147275149', '734499162@qq.com', '2020-09-18 18:30:00', '', '', 1);
-INSERT INTO `user` VALUES (6, '孙权', '123456', 0, '18147275149', 'hcc96923@gmail.com', '2020-09-18 18:30:04', '', '', 1);
-INSERT INTO `user` VALUES (7, '诸葛亮', '123456', 0, '15157122361', 'hcc@163.com', '2020-09-18 18:30:20', '', '', 1);
-INSERT INTO `user` VALUES (8, '貂蝉', '123456', 1, '15657122362', '734499162@qq.com', '2020-09-18 18:30:26', '', '', 1);
-INSERT INTO `user` VALUES (9, '大乔', '123456', 1, '15657122362', 'hcc96923@gmail.com', '2020-09-18 18:30:23', '', '', 1);
-INSERT INTO `user` VALUES (10, '小乔', '123456', 1, '15657122369', 'hcc@163.com', '2020-09-18 18:30:30', '', '', 1);
-INSERT INTO `user` VALUES (11, '张飞', '123456', 1, '15657122362', 'hcc96923@gmail.com', '2020-09-18 18:30:35', '', '', 1);
-INSERT INTO `user` VALUES (12, '赵云', '123456', 1, '18147275149', 'hcc96923@gmail.com', '2020-09-18 18:30:38', '', '', 1);
-INSERT INTO `user` VALUES (13, '关羽', '123456', 1, '15157122365', 'hcc96923@gmail.com', '2020-09-18 18:30:53', '', '', 1);
-INSERT INTO `user` VALUES (14, '蔡夫人', '123456', 0, '15657122362', 'hcc96923@gmail.com', '2020-09-18 18:30:45', '', '', 1);
-INSERT INTO `user` VALUES (16, '静姝', '123456', 0, '15157122361', 'hcc96923@gmail.com', '2020-09-18 18:30:41', '', '', 1);
-INSERT INTO `user` VALUES (19, '古天乐', '123456', 0, '15157122365', '123456@163.com', '2020-09-18 18:31:02', '', '', 1);
-INSERT INTO `user` VALUES (20, '刘青云', '123456', 0, '18147275149', '19898@qq.com', '2020-09-18 18:30:59', '', '', 1);
-INSERT INTO `user` VALUES (37, '张家辉', '123456', 0, '15657122369', '19898@qq.com', '2020-09-18 18:30:56', '', '', 1);
-INSERT INTO `user` VALUES (38, '三上悠亚', '123456', 1, '15157122365', '19898@qq.com', '2020-10-10 19:11:34', '0d3690024140dab64c876cdf7046d892.png', '', 1);
-INSERT INTO `user` VALUES (39, '王祖贤', '147258', 0, '', '', '2020-10-08 15:47:14', '170ae6b552dee8bd5ddd0752dc862415.jpg_b', '', 1);
-INSERT INTO `user` VALUES (40, '桥本有菜', '123456', 1, '18147275149', '123456@163.com', '2020-10-09 15:33:47', '', '', 1);
+INSERT INTO `user` VALUES (1, '韩畅畅', 'e10adc3949ba59abbe56e057f20f883e', 0, '15657122362', 'hcc96923@gmail.com', '2020-10-14 15:38:26', '48c04958b9c1b8d40265bc2b7aa13ae7.jpg', '韩畅畅上传头像', 3);
+INSERT INTO `user` VALUES (2, '曹青青', 'e10adc3949ba59abbe56e057f20f883e', 1, '15157122361', 'hcc96923@gmail.com', '2020-10-14 15:24:03', 'd24714ac28f401865d48424d66032e66.jpg', '', 1);
+INSERT INTO `user` VALUES (3, '韩文龙', 'e10adc3949ba59abbe56e057f20f883e', 0, '15157122365', '734499162@qq.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (4, '曹操', 'e10adc3949ba59abbe56e057f20f883e', 0, '15657122369', 'hcc@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (5, '刘备', 'e10adc3949ba59abbe56e057f20f883e', 0, '18147275149', '734499162@qq.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (6, '孙权', 'e10adc3949ba59abbe56e057f20f883e', 0, '18147275149', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (7, '诸葛亮', 'e10adc3949ba59abbe56e057f20f883e', 0, '15157122361', 'hcc@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (8, '貂蝉', 'e10adc3949ba59abbe56e057f20f883e', 1, '15657122362', '734499162@qq.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (9, '大乔', 'e10adc3949ba59abbe56e057f20f883e', 1, '15657122362', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (10, '小乔', 'e10adc3949ba59abbe56e057f20f883e', 1, '15657122369', 'hcc@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (11, '张飞', 'e10adc3949ba59abbe56e057f20f883e', 1, '15657122362', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (12, '赵云', 'e10adc3949ba59abbe56e057f20f883e', 1, '18147275149', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (13, '关羽', 'e10adc3949ba59abbe56e057f20f883e', 1, '15157122365', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (14, '蔡夫人', 'e10adc3949ba59abbe56e057f20f883e', 0, '15657122362', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (16, '静姝', 'e10adc3949ba59abbe56e057f20f883e', 0, '15157122361', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (19, '古天乐', 'e10adc3949ba59abbe56e057f20f883e', 0, '15157122365', '123456@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (20, '刘青云', 'e10adc3949ba59abbe56e057f20f883e', 0, '18147275149', '19898@qq.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (37, '张家辉', 'e10adc3949ba59abbe56e057f20f883e', 0, '15657122369', '19898@qq.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (38, '三上悠亚', 'e10adc3949ba59abbe56e057f20f883e', 1, '15157122365', '19898@qq.com', '2020-10-14 15:24:03', '0d3690024140dab64c876cdf7046d892.png', '', 1);
+INSERT INTO `user` VALUES (39, '王祖贤', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '', '2020-10-14 15:24:03', '170ae6b552dee8bd5ddd0752dc862415.jpg_b', '', 1);
+INSERT INTO `user` VALUES (40, '桥本有菜', 'e10adc3949ba59abbe56e057f20f883e', 1, '18147275149', '123456@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (41, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', 'hcc96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (42, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '9856@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (43, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '985677@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (44, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (45, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '456@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (46, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '9856a@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (47, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '9856895256@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (48, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', 'qqq23@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (49, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', 'qqq96923@gmail.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (50, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '9856qq@163.com', '2020-10-14 15:24:03', '', '', 1);
+INSERT INTO `user` VALUES (51, '', 'e10adc3949ba59abbe56e057f20f883e', 0, '', '99162@qq.com', '2020-10-14 15:24:03', '', '', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

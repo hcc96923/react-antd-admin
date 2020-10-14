@@ -4,6 +4,7 @@ import { message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { setUserInfo } from "@store/actions/userInfo";
 import store from '@store/store';
+import CryptoJS from "crypto-js";
 import './index.less';
 
 
@@ -53,7 +54,7 @@ class Login extends Component {
             });
         }
     };
-    handleLogin = (event, isRegister) => {
+    handleLogin = (event, registeredParams) => {
         event.preventDefault();
         const { loginForm } = this.state
         if (!loginForm.email) {
@@ -62,10 +63,18 @@ class Login extends Component {
         if (!loginForm.password) {
             return message.error('密码不能为空');
         }
-        this.setState({loading: true});
+        // base64 && md5
+        let params = null;
+        params = JSON.parse(JSON.stringify(loginForm));
+        params.password = CryptoJS.MD5(params.password).toString();
+        if (registeredParams) {
+            params = registeredParams;
+        }
+
         // 请求登录
-        $http.post('/login/login', loginForm)
-            .then(async response => {
+        this.setState({loading: true});
+        $http.post('/login/login', params)
+            .then(response => {
                 const { userInfo, token } = response;
                 // 使用Redux实现响应式用户基础信息
                 const action = setUserInfo(userInfo);
@@ -74,11 +83,11 @@ class Login extends Component {
                 localStorage.setItem('userInfo', JSON.stringify(userInfo));
                 localStorage.setItem('token', token);
                 
-                if (isRegister) {
+                if (registeredParams) {
                     message.destroy('loading');
                 }
                 message.success('登陆成功');
-                await this.setState({loading: false});
+                this.setState({loading: false});
                 this.props.history.push('/home');
             }).catch(error => {
                 console.log(error);
@@ -94,16 +103,19 @@ class Login extends Component {
         if (!registerForm.password) {
             message.error('密码不能为空');
         }
+        // MD5
+        let params = JSON.parse(JSON.stringify(registerForm));
+        params.password = CryptoJS.MD5(params.password).toString();
+        // 请求注册
         this.setState({loading: true});
-        $http.post('/login/register', registerForm)
+        $http.post('/login/register', params)
             .then(() => {
                 message.loading({content: '注册成功，正在为你登录...', key: 'loading'});
-
                 this.setState({
-                    loginForm: JSON.parse(JSON.stringify(this.state.registerForm))
+                    loginForm: registerForm
+                }, () => {
+                    this.handleLogin(event, params);
                 });
-
-                this.handleLogin(event, true);
             })
             .catch(error => {
                 console.log(error);
@@ -112,6 +124,11 @@ class Login extends Component {
     };
     handleStoreChange = () => {
         this.setState({userInfo: store.getState().userInfo});
+    };
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+            return;
+        }
     };
     render() {
         const { loading, overlay, loginForm, registerForm } = this.state;

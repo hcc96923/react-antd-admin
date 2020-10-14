@@ -135,9 +135,11 @@ class Forget extends Component {
         if (form.password !== form.repeatPassword) {
             return message.error('两次输入的密码不一致');
         }
+        // MD5
+        const cryptoPassword = CryptoJS.MD5(form.password).toString();
         const params = {
             email: localStorage.getItem('validateEmail'),
-            password: form.password
+            password: cryptoPassword
         };
         $http.put('/login/resetPassword', params)
             .then(() => {

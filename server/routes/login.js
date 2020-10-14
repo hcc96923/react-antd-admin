@@ -117,7 +117,8 @@ router.get('/sendEmail', (request, response) => {
     let authCode = Math.floor(Math.random() * 900000) + 100000;
     // 如果同时有多个用户来请求验证码，第一个用户来说服务端内存里的验证码已经改变
     let userAuthCode = CryptoJS.AES.encrypt(authCode.toString(), emailConfig.secretKey).toString();
-
+    
+    console.log(typeof userAuthCode);
     //创建一个SMTP客户端配置对象
     const transporter = nodemailer.createTransport(config);
     // 创建一个收件人对象

@@ -17,7 +17,7 @@ function About() {
                         这是一个后台管理的系统实现了一些常用的功能和组件。
                         面包屑、标签、主题切换、全屏、表格、icon、图表、
                         Excel、Zip、Pdf、富文本、MarkDown、
-                        路由守卫、权限切换、系统设置、头像上传、错误页面。
+                        邮箱验证、MD5加密、路由守卫、权限切换、系统设置、头像上传、错误页面。
                         <hr style={{border: '1px solid #eee'}} />
                         <span className="tip">由于本人工作中主要技术栈不是react，系统开发时不免存在问题，欢迎各位大佬issue。</span>
                     </section>
@@ -29,6 +29,8 @@ function About() {
                         <Tag color="#1D2671">redux</Tag>
                         <Tag color="#333333">axios</Tag>
                         <Tag color="#2C7744">echarts</Tag>
+                        <Tag color="#c471ed">xlsx</Tag>
+                        <Tag color="#2B5263">crypto-js</Tag>
                     </section>
                     <span className="back">后端</span>
                     <section>
@@ -37,6 +39,8 @@ function About() {
                         <Tag color="#603813">mysql</Tag>
                         <Tag color="#753a88">cors</Tag>
                         <Tag color="#00416A">jsonwebtoken</Tag>
+                        <Tag color="#3B5998">nodemailer</Tag>
+                        <Tag color="#13272E">crypto-js</Tag>
                     </section>
                 </div>
                 <Divider />

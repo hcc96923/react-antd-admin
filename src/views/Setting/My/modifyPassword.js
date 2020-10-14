@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Button, Space, Spin, message } from 'antd';
+import CryptoJS from 'crypto-js'; 
 
 
 const { $http } = React;
@@ -36,7 +37,8 @@ class ModifyPassword extends Component {
         if (value === '') {
             return message.error('当前密码不能为空');
         }
-        const params = { password: event.target.value };
+        // MD5
+        const params = { password: CryptoJS.MD5(value).toString() };
         $http.get('/user/verifyPassword', {params})
             .then((result) => {
                 const { code } = result;

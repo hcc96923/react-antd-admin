@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const execDB = require('../utils/connectionDB');
-const { secretKey, emailConfig } = require('../utils/config');
-const nodemailer = require('nodemailer');
 const CryptoJS  = require('crypto-js');
+const execDB = require('../utils/connectionDB');
+const { secretKey } = require('../utils/config');
+const { emailAuthCode, imageAuthCode } = require('../utils/authCode');
+const { imageConfig } = require('../utils/config');
+const session = require('express-session');
 
 
 /* 
@@ -96,104 +98,11 @@ router.get('/findEmail', (request, response) => {
 */
 router.get('/sendEmail', (request, response) => {
     const emailString = request.query.email;
-    const emailType = emailString.split('@')[1].split('.')[0];
-    if (!emailType) {
-        return false;
-    }
-
-    let config = null;
-    switch (emailType) {
-        case 'qq':
-            config = emailConfig.qqConfig;
-            break;
-        case '163':
-            config = emailConfig.neteaseConfig;
-            break;
-        default:
-            break;
-    }
-
-    
-    let authCode = Math.floor(Math.random() * 900000) + 100000;
-    // 如果同时有多个用户来请求验证码，第一个用户来说服务端内存里的验证码已经改变
-    let userAuthCode = CryptoJS.AES.encrypt(authCode.toString(), emailConfig.secretKey).toString();
-    
-    console.log(typeof userAuthCode);
-    //创建一个SMTP客户端配置对象
-    const transporter = nodemailer.createTransport(config);
-    // 创建一个收件人对象
-    let htmlString = 
-    `<html>
-        <head>
-            <title>LoveDance</title>
-            <meta charset="UTF-8">
-        </head>
-        <style type="text/css">
-            #container {
-                position: relative;
-                width: 100%;
-                height: 100%;
-            }
-            .content {
-                position: relative;
-                height: 300px;
-                font-weight: bolder;
-            }
-            .heart {
-                position: relative;
-                width: 300px;
-                height: 300px;
-                left: 50%;
-                transform: rotate(45deg) translateX(-50%);
-                background-color: #d5083b;
-            }
-            .heart:before,
-            .heart:after {
-                position: absolute;
-                content: '';
-                width: 300px;
-                height: 300px;
-                border-radius: 50%;
-                background-color: #d5083b;
-            }
-            .heart:before {
-                left: -50%;
-            }
-            .heart:after {
-                top: -50%;
-            }
-        </style>
-        <body>
-            <div id="container">
-                <section class="content">您的验证码为：${authCode}, 请妥善保管。</section>
-                <div class="heart"></div>
-            </div>
-        </body>
-    </html>`;
-    const addressee = {
-        from: `"韩畅畅"<${config.auth.user}>`,
-        to: `<${emailString}>`,
-        subject: '验证码',
-        text: "😊😊😊",
-        html: htmlString,
-        attachments: [
-            {
-                filename: '跟随人茫茫.mp3',
-                path: '../server/static/music.mp3'
-            }
-        ]
-    };
-
-    transporter.sendMail(addressee, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        transporter.close();
-        response.send({
-            code: 200,
-            userAuthCode,
-            message: '发送成功'
-        });
+    const userAuthCode = emailAuthCode(emailString);
+    response.send({
+        code: 200,
+        userAuthCode,
+        message: '发送成功'
     });
 });
 /* 
@@ -220,5 +129,37 @@ router.put('/resetPassword', (request, response) => {
         .catch(error => {
             console.log(error);
         });
+});
+/* 
+    获取图形验证码
+    getImageAuthCode
+*/
+router.get('/getImageAuthCode', (request, response) => {
+    const DataText = imageAuthCode();
+    const { authText } = request.query;
+    session({
+        secret: imageConfig.secretKey,
+        name: 'captcha',
+        resave: false,
+        saveUninitialized: true,
+        rolling: true,
+        cookie: { secure: true }
+    });
+    request.session.captcha = DataText.text;
+    if (authText) {
+        if (authText !== DataText.text) {
+            response.send({
+                message: '验证码错误'
+            });
+        } else {
+            response.send({
+                code: 200,
+                message: '验证码正确'
+            });
+        }
+    } else {
+        
+    }
+    response.send(DataText.data);
 });
 module.exports = router;

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { message } from "antd";
+import { Button, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { setUserInfo } from "@store/actions/userInfo";
 import store from '@store/store';
 import CryptoJS from "crypto-js";
+import { debounce } from '@utils/optimize';
 import './index.less';
 
 
 const { $http } = React;
+const EmailRegexp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -21,13 +23,16 @@ class Login extends Component {
             },
             registerForm: {
                 email: '',
-                password: ''
+                password: '',
+                authcode: ''
             },
             loginForm: {
                 email: '',
                 password: ''
             },
-            userInfo: store.getState().userInfo
+            verify: false,
+            userInfo: store.getState().userInfo,
+            imageAuthCode: 'http://localhost:5000/login/getImageAuthCode'
         }
     };
     toggleOverlay(step) {
@@ -37,6 +42,24 @@ class Login extends Component {
                 step
             }
         });
+    };
+    verifyIsRegistered = (event) => {
+        const value = event.target.value;
+        if (value && !EmailRegexp.test(value)) {
+            message.error('邮箱格式不正确');
+        }
+        const params = {};
+        params.email = value;
+        $http.get('/login/findEmail', {params})
+            .then(response => {
+                const { result } = response;
+                if (result.length !== 0) {
+                    return message.error('该邮箱已注册，请登录');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
     handleInputChange = (event, formType, labelName) => {
         const { registerForm, loginForm } = this.state;
@@ -49,10 +72,83 @@ class Login extends Component {
                 loginForm,
                 registerForm: {
                     email: '',
-                    password: ''
+                    password: '',
+                    authcode: ''
                 } 
             });
         }
+    };
+    refreshAuthcode = () => {
+        $http.get('/login/getImageAuthCode')
+            .then(() => {
+                this.setState({imageAuthCode: ''});
+                this.setState({imageAuthCode: 'http://localhost:5000/login/getImageAuthCode'});
+                message.success('刷新验证码成功');
+            })
+            .catch(error => {
+                console.log(error);
+                message.error('刷新验证码失败');
+            });
+    };
+    handleAuthcode = (event) => {
+        event.preventDefault();
+        const { registerForm } = this.state;
+        if (!registerForm.email) {
+            return message.error('邮箱不能为空');
+        }
+        if (!registerForm.password) {
+            return message.error('密码不能为空');
+        }
+        debounce(this.refreshAuthcode.bind(this), 1000)();
+    };
+    handleInputAuthCode = (event) => {
+        const params = {};
+        params.authText = event.target.value;
+        $http.get('/login/getImageAuthCode', {params})
+            .then(response => {
+                const code = response.code;
+                if (!code) {
+                    return message.error('验证码错误');
+                }
+                this.setState({verify: true});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    handleRegister = (event) => {
+        event.preventDefault();
+        const { registerForm } = this.state;
+        if (!registerForm.email) {
+            return message.error('邮箱不能为空');
+        }
+        if (!registerForm.password) {
+            return message.error('密码不能为空');
+        }
+        if (!registerForm.authcode) {
+            return message.error('验证码不能为空');
+        }
+        if (!this.state.verify) {
+            return message.error('验证码错误');
+        }
+        // MD5
+        let params = JSON.parse(JSON.stringify(registerForm));
+        params.password = CryptoJS.MD5(params.password).toString();
+        // 请求注册
+        this.setState({loading: true});
+        $http.post('/login/register', params)
+            .then(() => {
+                message.loading({content: '注册成功，正在为你登录...', key: 'loading'});
+                this.setState({
+                    loginForm: registerForm
+                }, () => {
+                    this.handleLogin(event, params);
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({loading: false});
+            });
     };
     handleLogin = (event, registeredParams) => {
         event.preventDefault();
@@ -94,34 +190,6 @@ class Login extends Component {
                 this.setState({loading: false});
             });
     };
-    handleRegister = (event) => {
-        event.preventDefault();
-        const { registerForm } = this.state;
-        if (!registerForm.email) {
-            message.error('邮箱不能为空');
-        }
-        if (!registerForm.password) {
-            message.error('密码不能为空');
-        }
-        // MD5
-        let params = JSON.parse(JSON.stringify(registerForm));
-        params.password = CryptoJS.MD5(params.password).toString();
-        // 请求注册
-        this.setState({loading: true});
-        $http.post('/login/register', params)
-            .then(() => {
-                message.loading({content: '注册成功，正在为你登录...', key: 'loading'});
-                this.setState({
-                    loginForm: registerForm
-                }, () => {
-                    this.handleLogin(event, params);
-                });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({loading: false});
-            });
-    };
     handleStoreChange = () => {
         this.setState({userInfo: store.getState().userInfo});
     };
@@ -131,7 +199,7 @@ class Login extends Component {
         }
     };
     render() {
-        const { loading, overlay, loginForm, registerForm } = this.state;
+        const { loading, overlay, loginForm, registerForm, imageAuthCode } = this.state;
         return (
             <div className="login_register">
                 <div className="container">
@@ -167,6 +235,7 @@ class Login extends Component {
                                 type="text" 
                                 name="email" 
                                 value={registerForm.email} 
+                                onBlur={this.verifyIsRegistered}
                                 onChange={(event) => this.handleInputChange(event, 'register', 'email')}
                                 placeholder="邮箱"
                             ></input>
@@ -177,7 +246,21 @@ class Login extends Component {
                                 onChange={(event) => this.handleInputChange(event, 'register', 'password')}
                                 placeholder="密码"
                             ></input>
-                            <button type="submit" className="register_btn">注册</button>
+                            <div className="auth_code">
+                                <input 
+                                    type="text" 
+                                    name="authcode" 
+                                    value={registerForm.authcode} 
+                                    onBlur={this.handleInputAuthCode}
+                                    onChange={(event) => this.handleInputChange(event, 'register', 'authcode')}
+                                    placeholder="请输入验证码"
+                                ></input>
+                                <section className="iframe">
+                                    <iframe src={imageAuthCode} title='验证码' style={{ width: '100%', height: '100%', border: 'none', marginLeft: '-16px'}}></iframe>
+                                    <Button type="primary" onClick={this.handleAuthcode} style={{height: '42px', float: 'right', top: '-62px', padding: '0', fontSize: '14px'}}>刷新验证码</Button>
+                                </section>
+                            </div>
+                            <button type="submit" size="small" className="register_btn">注册</button>
                         </form>
                     </div>
                     <div className="overlay" style={{transform: 'translateX('+ overlay.step +'%)', transition: 'ease all 0.5s'}}>

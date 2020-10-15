@@ -34,8 +34,8 @@ http.interceptors.request.use(
 // response 拦截
 http.interceptors.response.use(
     response => {
-        const data = response.data;
-        if (data.code === 200) {
+        const { status, data } = response;
+        if (status === 200) {
             return data;
         } else {
             message.error(data.message || 'Error');

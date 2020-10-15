@@ -24,7 +24,7 @@ class Authority extends Component {
         }, () => {
             delete this.state.roleName;
             localStorage.setItem('userInfo', JSON.stringify(this.state));
-            window.location.reload(true);
+            window.location.reload();
         });
     };
     componentDidMount() {

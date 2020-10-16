@@ -267,7 +267,6 @@ class UserList extends Component {
     };
     onMultipleDelete = () => {
         const { selectedRowKeys } = this.state;
-        console.log(selectedRowKeys);
         if (!selectedRowKeys.length) {
             return message.error('请先选择删除的用户！');
         }

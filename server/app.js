@@ -14,7 +14,8 @@ const {
     userRouter,
     messageRouter,
     uploadRouter,
-    downloadRouter 
+    downloadRouter,
+    cronRouter 
 } = require('./routes/router');
 
 
@@ -38,7 +39,8 @@ app.use(cors(corsConfig))
             '/login/getImageAuthCode', 
             '/login/resetPassword', 
             '/upload/uploadAvatar', 
-            '/upload/uploadFiles'
+            '/upload/uploadFiles',
+            '/cron/regularMessage',
         ]
     }))
     .use(cookieParser())
@@ -55,6 +57,7 @@ app.use('/home', homeRouter)
     .use('/message', messageRouter)
     .use('/upload', uploadRouter)
     .use('/download', downloadRouter)
+    .use('/cron', cronRouter)
 
 
 

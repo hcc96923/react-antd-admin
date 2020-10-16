@@ -1,3 +1,9 @@
+const redis = require('redis');
+const client = redis.createClient(6379, "127.0.0.1");
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+
+
 // 服务配置
 const serverConfig = {
     port: 5000 
@@ -33,6 +39,21 @@ const corsConfig = {
     maxAge: 3600,
     preflightContinue: false,
     optionsSuccessStatus: 204
+};
+
+
+// session配置
+const sessionConfig = {
+    secret :  'sessionKey', // 用来对session id相关的cookie进行签名
+    store: new RedisStore({client: client}), // 本地存储session（文本文件，也可以选择其他store，比如redis的）
+    saveUninitialized: false, // 是否保存未初始化的会话
+    resave : false, // 是否每次都重新保存会话，建议false
+    cookie : {
+        path: '/',
+        httpOnly: true,
+        secure: false,
+        maxAge : 1000 * 60 * 3, // 设置 session 的有效时间，单位毫秒
+    },
 };
 
 
@@ -92,6 +113,7 @@ const imageConfig = {
 module.exports = {
     serverConfig,
     corsConfig,
+    sessionConfig,
     dbConfig,
     secretKey,
     emailConfig,

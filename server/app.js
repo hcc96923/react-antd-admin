@@ -3,9 +3,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan  = require('morgan');
 const expressJWT = require('express-jwt');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 
-const { serverConfig, corsConfig, secretKey } = require('./utils/config');
+const { serverConfig, corsConfig, sessionConfig, secretKey } = require('./utils/config');
 const { 
     loginRouter, 
     homeRouter,
@@ -39,9 +41,11 @@ app.use(cors(corsConfig))
             '/upload/uploadFiles'
         ]
     }))
+    .use(cookieParser())
+    .use(session(sessionConfig))
     .use((error, request, response, next) => {
         if (error.name === 'UnauthorizedError') {
-        response.status(401).send('你的登录已过期,请重新登录');
+            response.status(401).send('你的登录已过期,请重新登录');
         }
     });
 // 加载路由

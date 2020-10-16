@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const CryptoJS  = require('crypto-js');
+const redis = require('redis');
+const client = redis.createClient(6379, "localhost");
 const execDB = require('../utils/connectionDB');
 const { secretKey } = require('../utils/config');
 const { emailAuthCode, imageAuthCode } = require('../utils/authCode');
-const { imageConfig } = require('../utils/config');
-const session = require('express-session');
 
 
 /* 
@@ -136,30 +135,21 @@ router.put('/resetPassword', (request, response) => {
 */
 router.get('/getImageAuthCode', (request, response) => {
     const DataText = imageAuthCode();
-    const { authText } = request.query;
-    session({
-        secret: imageConfig.secretKey,
-        name: 'captcha',
-        resave: false,
-        saveUninitialized: true,
-        rolling: true,
-        cookie: { secure: true }
-    });
-    request.session.captcha = DataText.text;
-    if (authText) {
-        if (authText !== DataText.text) {
-            response.send({
-                message: '验证码错误'
-            });
-        } else {
-            response.send({
-                code: 200,
-                message: '验证码正确'
-            });
-        }
+    const cookieSessionId = request.cookies.sessionId;
+    const inputAuthText = request.query.authText
+
+    if (inputAuthText) {
+        client.get(cookieSessionId, (error, value) => {
+            if (error) {
+                console.log(error.message)
+                return false;
+            }
+            inputAuthText !==  value ? response.send({message: '验证码错误'}) : response.send({code: 200, message: '验证码正确'});
+        });
     } else {
-        
+        client.set(request.sessionID, DataText.text);
+        response.cookie('sessionId', request.sessionID);
+        response.send(DataText.data);
     }
-    response.send(DataText.data);
 });
 module.exports = router;

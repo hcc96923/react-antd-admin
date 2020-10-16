@@ -90,8 +90,7 @@ class Login extends Component {
                 message.error('刷新验证码失败');
             });
     };
-    handleAuthcode = (event) => {
-        event.preventDefault();
+    handleAuthcode = () => {
         const { registerForm } = this.state;
         if (!registerForm.email) {
             return message.error('邮箱不能为空');
@@ -110,6 +109,7 @@ class Login extends Component {
                 if (!code) {
                     return message.error('验证码错误');
                 }
+                message.success('验证码正确');
                 this.setState({verify: true});
             })
             .catch(error => {
@@ -151,7 +151,9 @@ class Login extends Component {
             });
     };
     handleLogin = (event, registeredParams) => {
-        event.preventDefault();
+        if (!registeredParams) {
+            event.preventDefault();
+        }
         const { loginForm } = this.state
         if (!loginForm.email) {
             return message.error('邮箱不能为空');

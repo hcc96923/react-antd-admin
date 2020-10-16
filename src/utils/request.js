@@ -9,7 +9,8 @@ const WHITE_API = ['/login', '/register'];
 // 创建axios实例
 const http = Axios.create({
     baseURL: HTTP_API,
-    timeout: 1000 * 5
+    timeout: 1000 * 5,
+    withCredentials: true
 });
 
 // request 拦截

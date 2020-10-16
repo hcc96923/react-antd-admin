@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
-const client = redis.createClient(6379, "localhost");
+const client = redis.createClient(6379, "localhost", { password: '123456' });
 const execDB = require('../utils/connectionDB');
 const { secretKey } = require('../utils/config');
 const { emailAuthCode, imageAuthCode } = require('../utils/authCode');
@@ -139,15 +139,24 @@ router.get('/getImageAuthCode', (request, response) => {
     const inputAuthText = request.query.authText
 
     if (inputAuthText) {
+        client.on("error", (error) => {
+            console.log(error);
+        });
         client.get(cookieSessionId, (error, value) => {
             if (error) {
                 console.log(error.message)
                 return false;
             }
-            inputAuthText !==  value ? response.send({message: '验证码错误'}) : response.send({code: 200, message: '验证码正确'});
+            if (inputAuthText !==  value) {
+                response.send({message: '验证码错误'})
+            } else {
+                // 验证正确立即删除这个redis数据
+                client.del(cookieSessionId);
+                response.send({code: 200, message: '验证码正确'});
+            }
         });
     } else {
-        client.set(request.sessionID, DataText.text);
+        client.set(request.sessionID, DataText.text, 'EX', 3600); // 有效时长3600s
         response.cookie('sessionId', request.sessionID);
         response.send(DataText.data);
     }

@@ -34,7 +34,7 @@ router.post('/login', (request, response) => {
                 });
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.log(error);
         });
 });
@@ -100,8 +100,8 @@ router.get('/sendEmail', (request, response) => {
     const userAuthCode = emailAuthCode(emailString);
     response.send({
         code: 200,
-        userAuthCode,
-        message: '发送成功'
+        message: '发送成功',
+        userAuthCode
     });
 });
 /* 

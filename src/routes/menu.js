@@ -1,37 +1,233 @@
-const menu = [
-    { key: 'home', name: '首页' },
-
-    { key: 'user-list', name: '用户列表', parentKey: 'user-menu', parentName: '用户管理' },
-    { key: 'role-list', name: '角色列表', parentKey: 'user-menu', parentName: '用户管理' },
-
-    { key: 'basic-info', name: '基本资料', parentKey: 'setting-menu', parentName: '设置管理' },
-    { key: 'modify-password', name: '修改密码', parentKey: 'setting-menu', parentName: '设置管理' },
-    { key: 'system', name: '系统设置', parentKey: 'setting-menu', parentName: '设置管理' },
-
-    { key: 'icon-list', name: '图标' },
-
-    { key: 'line', name: '折线图', parentKey: 'chart', parentName: '图表' },
-    { key: 'bar', name: '柱状图', parentKey: 'chart', parentName: '图表' },
-    { key: 'pie', name: '饼状图', parentKey: 'chart', parentName: '图表' },
-    { key: 'key-board', name: '键盘图', parentKey: 'chart', parentName: '图表' },
-    { key: 'mix', name: '混合图表', parentKey: 'chart', parentName: '图表' },
-
-    { key: 'excel', name: 'Excel', parentKey: 'module', parentName: '组件' },
-    { key: 'zip', name: 'Zip', parentKey: 'module', parentName: '组件' },
-    { key: 'pdf', name: 'Pdf', parentKey: 'module', parentName: '组件' },
-    { key: 'udfile', name: '上传下载文件', parentKey: 'module', parentName: '组件' },
-    { key: 'rich-text', name: '富文本', parentKey: 'module', parentName: '组件' },
-    { key: 'mark-down', name: 'MarkDown', parentKey: 'module', parentName: '组件' },
-
-    { key: 'authority', name: '权限切换', parentKey: 'permission', parentName: '权限测试' },
-    { key: 'page', name: '权限页面', parentKey: 'permission', parentName: '权限测试' },
-
-    { key: 'message', name: '消息' },
-
-    { key: '401', name: '401', parentKey: 'error-page', parentName: '错误页面' },
-    { key: '404', name: '404', parentKey: 'error-page', parentName: '错误页面' },
-    { key: '500', name: '500', parentKey: 'error-page', parentName: '错误页面' },
-
-    { key: 'about', name: '关于' }
+import React from 'react';
+import {
+    HomeOutlined,
+    TeamOutlined,
+    UserOutlined, 
+    BookOutlined,
+    KeyOutlined,
+    CopyOutlined,
+    SettingOutlined,
+    ControlOutlined,
+    StopOutlined,
+    AreaChartOutlined,
+    LineChartOutlined,
+    BarChartOutlined,
+    PieChartOutlined,
+    DotChartOutlined,
+    HeatMapOutlined,
+    FileExclamationOutlined,
+    FileOutlined,
+    FileExcelOutlined,
+    AppstoreOutlined,
+    FileZipOutlined,
+    FilePdfOutlined,
+    FileDoneOutlined,
+    FileTextOutlined,
+    FileMarkdownOutlined,
+    MessageOutlined,
+    CopyrightOutlined,
+    EyeInvisibleOutlined,
+    WarningOutlined,
+    IssuesCloseOutlined
+} from '@ant-design/icons';
+const menuList = [
+    {
+        path: 'home', 
+        name: '首页', 
+        icon: <HomeOutlined />,
+        roles: ["user", "admin", "root"]
+    },
+    { 
+        path: 'user-menu',
+        name: '用户管理', 
+        icon: <UserOutlined />,
+        roles: ["admin", "root"],
+        children: [
+            { 
+                path: 'user-list',
+                name: '用户列表', 
+                icon: <TeamOutlined />,
+                roles: ["admin", "root"]
+            },
+            { 
+                path: 'role-list',
+                name: '角色列表',
+                icon: <UserOutlined />,
+                roles: ["root"]
+            }
+        ]
+    },
+    { 
+        path: 'setting-menu',
+        name: '设置管理',
+        icon: <SettingOutlined />,
+        roles: ["user", "admin", "root"],
+        children: [
+            { 
+                path: 'basic-info',
+                name: '基本资料',
+                icon: <BookOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'modify-password',
+                name: '修改密码',
+                icon: <KeyOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            {
+                path: 'system',
+                name: '系统设置',
+                icon: <ControlOutlined />,
+                roles: ["user", "admin", "root"]
+            }
+        ]
+    },
+    { 
+        path: 'icon-list', 
+        name: '图标',
+        icon: <CopyOutlined />,
+        roles: ["user", "admin", "root"]
+    },
+    { 
+        path: 'chart',
+        name: '图表',
+        icon: <AreaChartOutlined />,
+        roles: ["user", "admin", "root"],
+        children: [
+            { 
+                path: 'line',
+                name: '折线图', 
+                icon: <LineChartOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'bar',
+                name: '柱状图',
+                icon: <BarChartOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'pie',
+                name: '饼状图',
+                icon: <PieChartOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'key-board',
+                name: '键盘图',
+                icon: <DotChartOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'mix',
+                name: '混合图表',
+                icon: <HeatMapOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+        ]
+    },
+    { 
+        path: 'module',
+        name: '组件', 
+        icon: <AppstoreOutlined />,
+        roles: ["user", "admin", "root"],
+        children: [
+            { 
+                path: 'excel',
+                name: 'Excel', 
+                icon: <FileExcelOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'zip',
+                name: 'Zip',
+                icon: <FileZipOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'pdf',
+                name: 'Pdf',
+                icon: <FilePdfOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'udfile',
+                name: '上传下载文件',
+                icon: <FileDoneOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'rich-text',
+                name: '富文本',
+                icon: <FileTextOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'mark-down',
+                name: 'MarkDown',
+                icon: <FileMarkdownOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+        ]
+    },
+    { 
+        path: 'permission',
+        name: '权限测试', 
+        icon: <EyeInvisibleOutlined />,
+        roles: ["user", "admin", "root"],
+        children: [
+            { 
+                path: 'authority',
+                name: '权限切换', 
+                icon: <WarningOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'page',
+                name: '权限页面',
+                icon: <IssuesCloseOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+        ]
+    },
+    { 
+        path: 'message', 
+        name: '消息' ,
+        icon: <MessageOutlined />,
+        roles: ["user", "admin", "root"]
+    },
+    { 
+        path: 'error-page',
+        name: '错误页面', 
+        icon: <StopOutlined />,
+        roles: ["user", "admin", "root"],
+        children: [
+            { 
+                path: '401',
+                name: '401', 
+                icon: <FileExclamationOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: '404',
+                name: '404',
+                icon: <FileOutlined />,
+                roles: ["user", "admin", "root"]
+            },
+            { 
+                path: '500',
+                name: '500',
+                icon: <FileExcelOutlined />,
+                roles: ["user", "admin", "root"]
+            }
+        ]
+    },
+    { 
+        path: 'about', 
+        name: '关于' ,
+        icon: <CopyrightOutlined />,
+        roles: ["user", "admin", "root"]
+    }
 ];
-export default menu;
+export default menuList;

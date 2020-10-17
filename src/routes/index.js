@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import RouteComponent from "./component";
-import { resolveTitle } from '@utils/formatTool'
+import { resolveTitle } from '@utils/formatTool';
 
 
 const token = localStorage.getItem('token');
@@ -37,7 +37,6 @@ const routes = [
             if (!token) {
                 return <Redirect to="/login" />;
             }
-            
             const { location, route } = props;
             resolveTitle(location, route);
             
@@ -57,12 +56,12 @@ const routes = [
             },
             {
                 path: '/user-list',
-                meta: { title: "用户列表", roles: ["user", "admin", "root"]},
+                meta: { title: "用户列表", roles: ["admin", "root"]},
                 render: () =>  userInfo.role > 1 ? <RouteComponent.UserList /> : <Redirect to="/401" />
             },
             {
                 path: '/role-list',
-                meta: { title: "角色列表", roles: ["user", "admin", "root"]},
+                meta: { title: "角色列表", roles: ["root"]},
                 render: () =>  userInfo.role > 2 ? <RouteComponent.RoleList /> : <Redirect to="/401" />
             },
             {
@@ -182,6 +181,7 @@ const routes = [
             },
             {
                 path: '*',
+                meta: { title: "页面丢失", roles: ["user", "admin", "root"]},
                 render: () => <Redirect to="/404" />
             }
         ]

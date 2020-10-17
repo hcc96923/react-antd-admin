@@ -29,3 +29,36 @@ export const resolveTitle = (location, route) => {
 export const formatTime = (time) => {
     return time.slice(0, 10) + ' ' + time.slice(11, 19);
 };
+/* 
+    formatRole
+    格式化权限
+*/
+export const formatRole = (role) => {
+    switch (role) {
+        case 1:
+            return "user";
+        case 2:
+            return "admin";
+        case 3:
+            return "root";
+        default:
+            break;
+    }
+};
+/* 
+    resolveMenuList
+    处理路由表
+*/
+export const resolveMenuList = (menuList, role) => {
+    return menuList.filter(menu => {
+        if (menu.children) {
+            return menu.children.filter((child, index, array) => {
+                if (!child.roles.includes(role)) {
+                    array.splice(index, 1);
+                }
+            }); 
+        }
+        const roles = menu.roles;
+        return roles.includes(role);
+    });
+};

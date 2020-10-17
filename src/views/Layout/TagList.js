@@ -7,7 +7,7 @@ class TagList extends Component {
     state = {};
     onClickTag = (e, tag) => {
         e.preventDefault();
-        this.props.history.push(`/${tag.key}`);
+        this.props.history.push(`/${tag.path}`);
     };
     onCloseTag = (e, tag) => {
         e.preventDefault();

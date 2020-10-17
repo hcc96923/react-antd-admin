@@ -51,13 +51,15 @@ export const formatRole = (role) => {
 */
 export const resolveMenuList = (menuList, role) => {
     return menuList.filter(menu => {
-        if (menu.children) {
-            return menu.children.filter((child, index, array) => {
-                if (!child.roles.includes(role)) {
-                    array.splice(index, 1);
-                }
-            }); 
-        }
+        // if (menu.children) {
+        //     return menu.children.filter((child, index, array) => {
+        //         if (!child.roles.includes(role)) {
+        //             console.log(child.roles);
+        //             console.log(array);
+        //             array.splice(index, 1);
+        //         }
+        //     }); 
+        // }
         const roles = menu.roles;
         return roles.includes(role);
     });

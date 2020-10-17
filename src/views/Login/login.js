@@ -184,9 +184,10 @@ class Login extends Component {
                 if (registeredParams) {
                     message.destroy('loading');
                 }
-                message.success('登陆成功');
+                
+                this.props.history.push('/');
                 this.setState({loading: false});
-                this.props.history.push('/home');
+                message.success('登陆成功');
             }).catch(error => {
                 console.log(error);
                 this.setState({loading: false});

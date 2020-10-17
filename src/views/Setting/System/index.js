@@ -65,7 +65,7 @@ class System extends Component {
 };
 
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
 	setCollapse: data => {
 		dispatch(setCollapse(data));

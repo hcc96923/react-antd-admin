@@ -50,16 +50,18 @@ export const formatRole = (role) => {
     处理路由表
 */
 export const resolveMenuList = (menuList, role) => {
-    return menuList.filter(menu => {
-        // if (menu.children) {
-        //     return menu.children.filter((child, index, array) => {
-        //         if (!child.roles.includes(role)) {
-        //             console.log(child.roles);
-        //             console.log(array);
-        //             array.splice(index, 1);
-        //         }
-        //     }); 
-        // }
+    return menuList.filter((menu, i) => {
+        if (menu.children) {
+            if (!menu.roles.includes(role)) {
+                menuList.splice(i, 1);
+            } else {
+                menu.children.forEach((child, j) => {
+                    if (!child.roles.includes(role)) {
+                        menu.children.splice(j, 1);
+                    }
+                });
+            }
+        }
         const roles = menu.roles;
         return roles.includes(role);
     });

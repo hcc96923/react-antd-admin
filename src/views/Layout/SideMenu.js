@@ -37,20 +37,18 @@ class SideMenu extends Component {
         const role = formatRole(userInfo.role);
         const menuList = resolveMenuList(mapMenu, role);
         const menuTreeNode = menuList.map(item => {
-            if (item) {
-                if (item.children) {
-                    return (
-                        <Menu.SubMenu key={item.path} icon={item.icon} title={item.name}>
-                            {
-                                item.children.map(child => {
-                                    return <Menu.Item key={child.path} icon={item.icon}>{child.name}</Menu.Item>;
-                                })
-                            }
-                        </Menu.SubMenu>
-                    );
-                };
-                return <Menu.Item key={item.path} icon={item.icon}>{item.name}</Menu.Item>;
+            if (item.children) {
+                return (
+                    <Menu.SubMenu key={item.path} icon={item.icon} title={item.name}>
+                        {
+                            item.children.map(child => {
+                                return <Menu.Item key={child.path} icon={item.icon}>{child.name}</Menu.Item>;
+                            })
+                        }
+                    </Menu.SubMenu>
+                );
             };
+            return <Menu.Item key={item.path} icon={item.icon}>{item.name}</Menu.Item>;
         });
         this.setState({menuTreeNode});
     };

@@ -1,4 +1,7 @@
 const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const compression = require('compression');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan  = require('morgan');
@@ -21,7 +24,9 @@ const {
 
 const app = express();
 // 加载中间件
-app.use(cors(corsConfig))
+app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')))
+    .use(compression())
+    .use(cors(corsConfig))
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
     .use(express.static(__dirname + "/static"))

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const favicon = require('serve-favicon');
 const compression = require('compression');
 const cors = require('cors');
@@ -30,7 +31,7 @@ app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')))
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
     .use(express.static(__dirname + "/static"))
-    //.use(morgan('combined', {stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })}))
+    // .use(morgan('combined', {stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })}))
     .use(morgan(':method :url :status :res[content-length] - :response-time ms'))
     .use(expressJWT({
         secret: secretKey, 

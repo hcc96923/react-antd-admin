@@ -50,7 +50,8 @@ const sessionConfig = {
     resave : false, // 是否每次都重新保存会话，建议false
     cookie : {
         path: '/',
-        httpOnly: true,
+        httpOnly: true, // 设置httpOnly属性可以防止客户端脚本通过document.cookie等方式访问Cookie有助于避免XSS攻击
+        sameSite: true, // 可以让Cookie在跨站请求时不会被发送，从而可以组织跨站请求伪造攻击（CSRF）
         secure: false,
         maxAge : 1000 * 60 * 3, // 设置 session 的有效时间，单位毫秒
     },

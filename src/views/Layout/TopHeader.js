@@ -68,8 +68,8 @@ class TopHeader extends Component {
                 <div className="logo">
                     <Image
                         alt="logo"
-                        width={50}
-                        height={50}
+                        width={48}
+                        height={48}
                         src={Logo}
                         className="logo_image"
                     />

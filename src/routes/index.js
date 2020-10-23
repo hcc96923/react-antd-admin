@@ -75,7 +75,7 @@ const routes = [
                 component: RouteComponent.ModifyPassword
             },
             {
-                path: '/system',
+                path: '/system-setting',
                 meta: { title: "界面设置", roles: ["user", "admin", "root"]},
                 component: RouteComponent.System
             },

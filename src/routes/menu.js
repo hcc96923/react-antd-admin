@@ -7,6 +7,7 @@ import {
     KeyOutlined,
     CopyOutlined,
     SettingOutlined,
+    UserSwitchOutlined,
     ControlOutlined,
     StopOutlined,
     AreaChartOutlined,
@@ -63,20 +64,28 @@ const menuList = [
         icon: <SettingOutlined />,
         roles: ["user", "admin", "root"],
         children: [
-            { 
-                path: 'basic-info',
-                name: '基本资料',
-                icon: <BookOutlined />,
-                roles: ["user", "admin", "root"]
-            },
-            { 
-                path: 'modify-password',
-                name: '修改密码',
-                icon: <KeyOutlined />,
-                roles: ["user", "admin", "root"]
+            {
+                path: 'user-setting',
+                name: '用户设置',
+                icon: <UserSwitchOutlined />,
+                roles: ["user", "admin", "root"],
+                children: [
+                    { 
+                        path: 'basic-info',
+                        name: '基本资料',
+                        icon: <BookOutlined />,
+                        roles: ["user", "admin", "root"]
+                    },
+                    { 
+                        path: 'modify-password',
+                        name: '修改密码',
+                        icon: <KeyOutlined />,
+                        roles: ["user", "admin", "root"]
+                    }
+                ]
             },
             {
-                path: 'system',
+                path: 'system-setting',
                 name: '系统设置',
                 icon: <ControlOutlined />,
                 roles: ["user", "admin", "root"]

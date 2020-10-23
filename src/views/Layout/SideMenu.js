@@ -15,40 +15,55 @@ class SideMenu extends Component {
         this.props.setCollapse({ show: !this.props.collapse.show});
         localStorage.setItem('collapse', JSON.stringify({ show: !this.props.collapse.show}));
     };
+    handleRecursionRouter = (item, children) => {
+        return children.find(child => {
+            if (!child.children) {
+                return child.path === item.key;
+            }
+            return this.handleRecursionRouter(item, child.children);
+        });
+    };
     handleRouter = (item) => {
         let breadcrumbData = [];
         let outChild = null;
         mapMenu.find(subMenu => {
-            if (subMenu.children) {
-                const child = subMenu.children.find(child => child.path === item.key);
-                outChild = child;
-                return outChild;
-            } else {
+            if (!subMenu.children) {
                 return outChild = subMenu.path === item.key ? subMenu : null;
-            }
+            } 
+            outChild = this.handleRecursionRouter(item, subMenu.children);
+            return outChild;
         });
+        
         // 加入面包屑
         breadcrumbData.push(outChild.name);
         // 加入标签列表
         this.props.addTag(outChild);
         this.props.history.push(`/${item.key}`);
     };
+    handleRecursionChildren = (item, children) => {
+        return (
+            <Menu.SubMenu key={item.path} icon={item.icon} title={item.name}>
+                {
+                    children.map(child => {
+                        if (!child.children) {
+                            return <Menu.Item key={child.path} icon={child.icon}>{child.name}</Menu.Item>;
+                        }
+                        return this.handleRecursionChildren(child, child.children);
+                    })
+                }
+            </Menu.SubMenu>
+        );
+    };
     handleMenuTree = () => {
         const role = formatRole(userInfo.role);
         const menuList = resolveMenuList(mapMenu, role);
+
+        console.log(menuList);
         const menuTreeNode = menuList.map(item => {
-            if (item.children) {
-                return (
-                    <Menu.SubMenu key={item.path} icon={item.icon} title={item.name}>
-                        {
-                            item.children.map(child => {
-                                return <Menu.Item key={child.path} icon={item.icon}>{child.name}</Menu.Item>;
-                            })
-                        }
-                    </Menu.SubMenu>
-                );
+            if (!item.children) {
+                return <Menu.Item key={item.path} icon={item.icon}>{item.name}</Menu.Item>;
             };
-            return <Menu.Item key={item.path} icon={item.icon}>{item.name}</Menu.Item>;
+            return this.handleRecursionChildren(item, item.children);
         });
         this.setState({menuTreeNode});
     };

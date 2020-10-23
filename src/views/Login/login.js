@@ -45,8 +45,11 @@ class Login extends Component {
     };
     verifyIsRegistered = (event) => {
         const value = event.target.value;
-        if (value && !EmailRegexp.test(value)) {
-            message.error('邮箱格式不正确');
+        if (value === '') {
+            return message.error('邮箱不能为空');
+        }
+        if (!EmailRegexp.test(value)) {
+            return message.error('邮箱格式不正确');
         }
         const params = {};
         params.email = value;
@@ -100,17 +103,18 @@ class Login extends Component {
         }
         debounce(this.refreshAuthcode.bind(this), 1000)();
     };
-    handleInputAuthCode = (event) => {
+    handleInputAuthCode = async () => {
         const params = {};
-        params.authText = event.target.value;
+        params.authText = this.state.registerForm.authcode;
         $http.get('/login/getImageAuthCode', {params})
             .then(response => {
                 const code = response.code;
                 if (!code) {
-                    return message.error('验证码错误');
+                    return false;
                 }
-                message.success('验证码正确');
-                this.setState({verify: true});
+                console.log('通过了s');
+                await this.setState({verify: true});
+                console.log('通过了sss');
             })
             .catch(error => {
                 console.log(error);
@@ -128,9 +132,14 @@ class Login extends Component {
         if (!registerForm.authcode) {
             return message.error('验证码不能为空');
         }
+        // 请求验证 验证码
+        this.handleInputAuthCode();
+        console.log(this.state.verify);
         if (!this.state.verify) {
-            return message.error('验证码错误');
+            console.log('没通过');
+            return false;
         }
+        console.log('通过了');
         // MD5
         let params = JSON.parse(JSON.stringify(registerForm));
         params.password = CryptoJS.MD5(params.password).toString();
@@ -254,7 +263,6 @@ class Login extends Component {
                                     type="text" 
                                     name="authcode" 
                                     value={registerForm.authcode} 
-                                    onBlur={this.handleInputAuthCode}
                                     onChange={(event) => this.handleInputChange(event, 'register', 'authcode')}
                                     placeholder="请输入验证码"
                                 ></input>

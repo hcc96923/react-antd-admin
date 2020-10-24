@@ -6,7 +6,7 @@ import { setUserInfo } from "@store/actions/userInfo";
 import { connect } from 'react-redux';
 import CryptoJS from "crypto-js";
 import { debounce } from '@utils/optimize';
-import './index.less';
+import './login.less';
 
 
 const { $http } = React;
@@ -268,7 +268,7 @@ class Login extends Component {
                                     <Input.Password />
                                 </Form.Item>
                                 <Form.Item
-                                    label="验证"
+                                    label="验证码"
                                     name="authcode"
                                     className="form_item"
                                     style={{marginBottom: 0}}
@@ -284,8 +284,8 @@ class Login extends Component {
                                 </Form.Item>
                                 <div className="auth_code">
                                     <section className="iframe">
-                                        <iframe src={imageAuthCode} title='验证码' style={{ width: '90%', height: '100%', border: 'none', marginLeft: '-52px'}}></iframe>
-                                        <Button type="primary" onClick={this.handleOptimizetAuthCode} style={{height: '30px', float: 'right', top: '7px', right: '-10px', padding: '0 3px', fontSize: '12px'}}>
+                                        <iframe src={imageAuthCode} title='验证码' style={{ width: '100%', height: '100%', border: 'none', marginLeft: '-56px'}}></iframe>
+                                        <Button type="primary" onClick={this.handleOptimizetAuthCode} style={{height: '32px', float: 'right', top: '8px', right: '-18px', padding: '0 5px', fontSize: '12px'}}>
                                         {<ReloadOutlined />}刷新
                                         </Button>
                                     </section>

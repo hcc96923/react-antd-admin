@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, message } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Form, Input, Button, message } from 'antd';
+import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import { setUserInfo } from "@store/actions/userInfo";
-import store from '@store/store';
+import { connect } from 'react-redux';
 import CryptoJS from "crypto-js";
 import { debounce } from '@utils/optimize';
 import './index.less';
@@ -11,29 +11,38 @@ import './index.less';
 
 const { $http } = React;
 const EmailRegexp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+const layout = {
+    labelCol: {
+        span: 5,
+    },
+    wrapperCol: {
+        span: 16,
+    },
+};
+const tailLayout = {
+    wrapperCol: {
+        offset: 0,
+        span: 16,
+    },
+};
 class Login extends Component {
-    constructor(props) {
-        super(props);
-        store.subscribe(this.handleStoreChange)
-        this.state = {
-            loading: false,
-            overlay: {
-                isLogin: true,
-                step: 100
-            },
-            registerForm: {
-                email: '',
-                password: '',
-                authcode: ''
-            },
-            loginForm: {
-                email: '',
-                password: ''
-            },
-            verify: false,
-            userInfo: store.getState().userInfo,
-            imageAuthCode: 'http://localhost:5000/login/getImageAuthCode'
-        }
+    state = {
+        loading: false,
+        overlay: {
+            isLogin: true,
+            step: 100
+        },
+        loginForm: {
+            email: '',
+            password: ''
+        },
+        registerForm: {
+            email: '',
+            password: '',
+            authcode: ''
+        },
+        verifyCode: false,
+        imageAuthCode: 'http://localhost:5000/login/getImageAuthCode'
     };
     toggleOverlay(step) {
         this.setState({
@@ -43,16 +52,47 @@ class Login extends Component {
             }
         });
     };
-    verifyIsRegistered = (event) => {
-        const value = event.target.value;
-        if (value === '') {
-            return message.error('邮箱不能为空');
+    handleInputChange = (event, formType, labelName) => {
+        const { registerForm, loginForm } = this.state;
+        if (formType === 'login') {
+            loginForm[labelName] = event.target.value;
+            this.setState({ loginForm });
+        } else {
+            registerForm[labelName] = event.target.value;
+            this.setState({ registerForm });
         }
-        if (!EmailRegexp.test(value)) {
-            return message.error('邮箱格式不正确');
-        }
+    };
+    handleLogin = (values, isRegistered) => {
+        this.setState({loginForm: values});
+        const params = JSON.parse(JSON.stringify(this.state.loginForm));
+        params.password = CryptoJS.MD5(params.password).toString();
+        
+        // 请求登录
+        this.setState({loading: true});
+        $http.post('/login/login', params)
+            .then(response => {
+                const { userInfo, token } = response;
+                // 缓存信息
+                this.props.setUserInfo(userInfo);
+                // 本地存储
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                localStorage.setItem('token', token);
+                
+                if (isRegistered) {
+                    message.destroy('loading');
+                }
+                
+                this.props.history.push('/');
+                message.success('登陆成功');
+                this.setState({loading: false});
+            }).catch(error => {
+                console.log(error);
+                this.setState({loading: false});
+            });
+    };
+    handleAuthRegistered = (event) => {
         const params = {};
-        params.email = value;
+        params.email = event.target.value;
         $http.get('/login/findEmail', {params})
             .then(response => {
                 const { result } = response;
@@ -64,64 +104,32 @@ class Login extends Component {
                 console.log(error);
             });
     };
-    handleInputChange = (event, formType, labelName) => {
-        const { registerForm, loginForm } = this.state;
-        if (formType === 'register') {
-            registerForm[labelName] = event.target.value;
-            this.setState({ registerForm });
-        } else {
-            loginForm[labelName] = event.target.value;
-            this.setState({ 
-                loginForm,
-                registerForm: {
-                    email: '',
-                    password: '',
-                    authcode: ''
-                } 
-            });
-        }
-    };
-    refreshAuthcode = () => {
-        $http.get('/login/getImageAuthCode')
-            .then(() => {
-                this.setState({imageAuthCode: ''});
-                this.setState({imageAuthCode: 'http://localhost:5000/login/getImageAuthCode'});
-                message.success('刷新验证码成功');
-            })
-            .catch(error => {
-                console.log(error);
-                message.error('刷新验证码失败');
-            });
-    };
-    handleAuthcode = () => {
-        const { registerForm } = this.state;
-        if (!registerForm.email) {
-            return message.error('邮箱不能为空');
-        }
-        if (!registerForm.password) {
-            return message.error('密码不能为空');
-        }
-        debounce(this.refreshAuthcode.bind(this), 1000)();
-    };
-    handleInputAuthCode = async () => {
+    handleAuthCode = (event) => {
         const params = {};
-        params.authText = this.state.registerForm.authcode;
+        params.authText = event.target.value;
         $http.get('/login/getImageAuthCode', {params})
             .then(response => {
                 const code = response.code;
                 if (!code) {
                     return false;
                 }
-                console.log('通过了s');
-                await this.setState({verify: true});
-                console.log('通过了sss');
+                this.setState({ verifyCode: true });
             })
             .catch(error => {
                 console.log(error);
             });
-    }
-    handleRegister = (event) => {
-        event.preventDefault();
+    };
+    handleRefreshCode = () => { 
+        $http.get('/login/getImageAuthCode')
+            .then(() => {
+                this.setState({ imageAuthCode: '' });
+                this.setState({ imageAuthCode: 'http://localhost:5000/login/getImageAuthCode' });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+    handleOptimizetAuthCode = () => {
         const { registerForm } = this.state;
         if (!registerForm.email) {
             return message.error('邮箱不能为空');
@@ -129,21 +137,15 @@ class Login extends Component {
         if (!registerForm.password) {
             return message.error('密码不能为空');
         }
-        if (!registerForm.authcode) {
-            return message.error('验证码不能为空');
-        }
-        // 请求验证 验证码
-        this.handleInputAuthCode();
-        console.log(this.state.verify);
-        if (!this.state.verify) {
-            console.log('没通过');
+        debounce(this.handleRefreshCode.bind(this), 1000)();
+    };
+    handleRegister = () => {
+        const { registerForm } = this.state;
+        if (!this.state.verifyCode) {
             return false;
         }
-        console.log('通过了');
-        // MD5
-        let params = JSON.parse(JSON.stringify(registerForm));
+        const params = JSON.parse(JSON.stringify(registerForm));
         params.password = CryptoJS.MD5(params.password).toString();
-        // 请求注册
         this.setState({loading: true});
         $http.post('/login/register', params)
             .then(() => {
@@ -151,7 +153,9 @@ class Login extends Component {
                 this.setState({
                     loginForm: registerForm
                 }, () => {
-                    this.handleLogin(event, params);
+                    delete registerForm.authcode;
+                    this.handleLogin(registerForm, true);
+                    this.setState({loading: false});
                 });
             })
             .catch(error => {
@@ -159,120 +163,139 @@ class Login extends Component {
                 this.setState({loading: false});
             });
     };
-    handleLogin = (event, registeredParams) => {
-        if (!registeredParams) {
-            event.preventDefault();
-        }
-        const { loginForm } = this.state
-        if (!loginForm.email) {
-            return message.error('邮箱不能为空');
-        }
-        if (!loginForm.password) {
-            return message.error('密码不能为空');
-        }
-        // base64 && md5
-        let params = null;
-        params = JSON.parse(JSON.stringify(loginForm));
-        params.password = CryptoJS.MD5(params.password).toString();
-        if (registeredParams) {
-            params = registeredParams;
-        }
-
-        // 请求登录
-        this.setState({loading: true});
-        $http.post('/login/login', params)
-            .then(response => {
-                const { userInfo, token } = response;
-                // 使用Redux实现响应式用户基础信息
-                const action = setUserInfo(userInfo);
-                store.dispatch(action);
-                // 缓存信息
-                localStorage.setItem('userInfo', JSON.stringify(userInfo));
-                localStorage.setItem('token', token);
-                
-                if (registeredParams) {
-                    message.destroy('loading');
-                }
-                
-                this.props.history.push('/');
-                this.setState({loading: false});
-                message.success('登陆成功');
-            }).catch(error => {
-                console.log(error);
-                this.setState({loading: false});
-            });
-    };
-    handleStoreChange = () => {
-        this.setState({userInfo: store.getState().userInfo});
-    };
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return;
         }
     };
-    render() {
+    render() { 
         const { loading, overlay, loginForm, registerForm, imageAuthCode } = this.state;
         return (
             <div className="login_register">
                 <div className="container">
                     <div className="login">
-                        <form id="login" onSubmit={this.handleLogin}>
-                            <h1 style={{color: '#000', fontWeight: '700'}}>登录</h1>
-                            <input 
-                                type="text" 
-                                name="email" 
-                                value={loginForm.email} 
-                                onChange={(event) => this.handleInputChange(event, 'login', 'email')}
-                                placeholder="邮箱"
-                            ></input>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                value={loginForm.password} 
-                                onChange={(event) => this.handleInputChange(event, 'login', 'password')}
-                                placeholder="密码"
-                            ></input>
-                            <Link to="/forget" style={{margin: '5px 0', color: '#333'}}>忘记密码</Link>
-                            <button 
-                                type="submit" 
-                                className="login_btn"
-                                disabled={loading ? true : false}
-                            >{loading ? <LoadingOutlined style={{marginRight: '5px'}}/> : null}登录</button>
-                        </form>
+                        <h1 style={{color: '#000', textAlign: 'center', marginTop: '25%', fontWeight: '700'}}>登录</h1>
+                        <Form
+                            {...layout}
+                            name="basic"
+                            className="form"
+                            initialValues={loginForm}
+                            onFinish={this.handleLogin}>
+                                <Form.Item
+                                    label="邮箱"
+                                    name="email"
+                                    className="form_item"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '邮箱不能为空!',
+                                        },
+                                        {
+                                            pattern: EmailRegexp,
+                                            message: '邮箱格式不正确!',
+                                        }
+                                    ]}
+                                    onChange={(event) => this.handleInputChange(event, 'login', 'email')}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item
+                                    label="密码"
+                                    name="password"
+                                    className="form_item"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '密码不能为空!',
+                                        },
+                                        {
+                                            min: 6,
+                                            message: '密码长度不能少于六位!',
+                                        },
+                                    ]}
+                                    onChange={(event) => this.handleInputChange(event, 'login', 'password')}>
+                                    <Input.Password />
+                                </Form.Item>
+                                <Link to="/forget" style={{margin: '5px 0', color: '#333'}}>忘记密码</Link>
+                                <Form.Item {...tailLayout}>
+                                    <Button type="primary" disabled={loading ? true : false} htmlType="submit">
+                                    {loading ? <LoadingOutlined style={{marginRight: '5px'}}/> : null}登录
+                                    </Button>
+                                </Form.Item>
+                        </Form>
                     </div>
                     <div className="register">
-                        <form id="register" onSubmit={this.handleRegister}>
-                            <h1 style={{color: '#000', fontWeight: '700'}}>注册</h1>
-                            <input 
-                                type="text" 
-                                name="email" 
-                                value={registerForm.email} 
-                                onBlur={this.verifyIsRegistered}
-                                onChange={(event) => this.handleInputChange(event, 'register', 'email')}
-                                placeholder="邮箱"
-                            ></input>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                value={registerForm.password} 
-                                onChange={(event) => this.handleInputChange(event, 'register', 'password')}
-                                placeholder="密码"
-                            ></input>
-                            <div className="auth_code">
-                                <input 
-                                    type="text" 
-                                    name="authcode" 
-                                    value={registerForm.authcode} 
+                        <h1 style={{color: '#000', textAlign: 'center', marginTop: '25%', fontWeight: '700'}}>注册</h1>
+                        <Form
+                            {...layout}
+                            name="basic"
+                            className="form"
+                            initialValues={registerForm}
+                            onBlur={this.verifyIsRegistered}
+                            onFinish={this.handleRegister}>
+                                <Form.Item
+                                    label="邮箱"
+                                    name="email"
+                                    className="form_item"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '邮箱不能为空!',
+                                        },
+                                        {
+                                            pattern: EmailRegexp,
+                                            message: '邮箱格式不正确!',
+                                        }
+                                    ]}
+                                    onChange={(event) => this.handleInputChange(event, 'register', 'email')}
+                                    onBlur={this.handleAuthRegistered}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item
+                                    label="密码"
+                                    name="password"
+                                    className="form_item"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '密码不能为空!',
+                                        },
+                                        {
+                                            min: 6,
+                                            message: '密码长度不能小于六位!',
+                                        },
+                                    ]}
+                                    onChange={(event) => this.handleInputChange(event, 'register', 'password')}>
+                                    <Input.Password />
+                                </Form.Item>
+                                <Form.Item
+                                    label="验证"
+                                    name="authcode"
+                                    className="form_item"
+                                    style={{marginBottom: 0}}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '验证码不能为空!',
+                                        }
+                                    ]}
                                     onChange={(event) => this.handleInputChange(event, 'register', 'authcode')}
-                                    placeholder="请输入验证码"
-                                ></input>
-                                <section className="iframe">
-                                    <iframe src={imageAuthCode} title='验证码' style={{ width: '100%', height: '100%', border: 'none', marginLeft: '-16px'}}></iframe>
-                                    <Button type="primary" onClick={this.handleAuthcode} style={{height: '42px', float: 'right', top: '-62px', padding: '0', fontSize: '14px'}}>刷新验证码</Button>
-                                </section>
-                            </div>
-                            <button type="submit" size="small" className="register_btn">注册</button>
-                        </form>
+                                    onBlur={this.handleAuthCode}>
+                                    <Input />
+                                </Form.Item>
+                                <div className="auth_code">
+                                    <section className="iframe">
+                                        <iframe src={imageAuthCode} title='验证码' style={{ width: '90%', height: '100%', border: 'none', marginLeft: '-52px'}}></iframe>
+                                        <Button type="primary" onClick={this.handleOptimizetAuthCode} style={{height: '30px', float: 'right', top: '7px', right: '-10px', padding: '0 3px', fontSize: '12px'}}>
+                                        {<ReloadOutlined />}刷新
+                                        </Button>
+                                    </section>
+                                </div>
+                                <Form.Item {...tailLayout}>
+                                    <Button type="primary" disabled={loading ? true : false} htmlType="submit">
+                                    {loading ? <LoadingOutlined style={{marginRight: '5px'}}/> : null}注册
+                                    </Button>
+                                </Form.Item>
+                        </Form>
                     </div>
                     <div className="overlay" style={{transform: 'translateX('+ overlay.step +'%)', transition: 'ease all 0.5s'}}>
                         {
@@ -295,4 +318,10 @@ class Login extends Component {
         );
     };
 };
-export default Login;
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({
+    setUserInfo: data => {
+        dispatch(setUserInfo(data));
+    }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

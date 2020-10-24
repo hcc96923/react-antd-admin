@@ -101,8 +101,8 @@ const emailConfig = {
 // 图形配置
 const imageConfig = {
     captchaConfig: {
-        width: 200,
-        height: 42,
+        width: 150,
+        height: 30,
         size: 4, // 验证码长度
         ignoreChars: '0o1i', // 验证码字符中排除 0o1i
         noise: 1, // 干扰线条的数量

@@ -58,7 +58,6 @@ class SideMenu extends Component {
         const role = formatRole(userInfo.role);
         const menuList = resolveMenuList(mapMenu, role);
 
-        console.log(menuList);
         const menuTreeNode = menuList.map(item => {
             if (!item.children) {
                 return <Menu.Item key={item.path} icon={item.icon}>{item.name}</Menu.Item>;

@@ -40,30 +40,59 @@ class SideMenu extends Component {
         });
         this.setState({menuTree});
     };
-    handleRecursionRouter = (item, children) => {
+    handleBreadCrumb = (item, breadCrumbData) => {
+        const keys = item.keyPath.reverse();
+        const values = breadCrumbData;
+        console.log(breadCrumbData);
+        const data = [];
+        keys.forEach((key, index) => {
+            const object = {};
+            // object[key] = values[index];
+            object.key = key;
+            object.value = values[index];
+            data.push(object);
+        });
+        this.props.addBreadCrumb(data);
+    };
+    handleRecursionRouter = (item, children, breadCrumbData) => {
         let result = null;
         children.find(child => {
             if (!child.children) {
-                return result = child.path === item.key ? child : null;
+                result = child.path === item.key ? child : null;
+                if (result) {
+                    breadCrumbData.push(child.name);
+                }
+                return result;
+            } else {
+                // console.log(breadCrumbData);
+                console.log(child.children);
+                console.log(item);
+                breadCrumbData.push(child.name);
+                result  = this.handleRecursionRouter(item, child.children, breadCrumbData);
+                return result;
             }
-            result  = this.handleRecursionRouter(item, child.children);
-            return result;
         });
         return result
     };
     handleRouter = (item) => {
-        let breadcrumbData = [];
         let outChild = null;
+        let breadCrumbData = [];
         mapMenu.find(subMenu => {
             if (!subMenu.children) {
-                return outChild = subMenu.path === item.key ? subMenu : null;
-            } 
-            outChild = this.handleRecursionRouter(item, subMenu.children);
-            return outChild;
+                outChild = subMenu.path === item.key ? subMenu : null;
+                breadCrumbData.length = 0;
+                breadCrumbData.push(subMenu.name);
+                return outChild;
+            } else {
+                breadCrumbData.length = 0;
+                breadCrumbData.push(subMenu.name);
+                outChild = this.handleRecursionRouter(item, subMenu.children, breadCrumbData);
+                return outChild;
+            }
         });
         
         // 加入面包屑
-        breadcrumbData.push(outChild.name);
+        this.handleBreadCrumb(item, breadCrumbData);
         // 加入标签列表
         this.props.addTag(outChild);
         this.props.history.push(`/${item.key}`);

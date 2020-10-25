@@ -10,7 +10,7 @@ class BreadCrumb extends Component {
         return (  
             <Breadcrumb style={{marginTop: "14px"}}>
                 {
-                    breadCrumb.map((item, index) => <Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>)
+                    breadCrumb.map(item => <Breadcrumb.Item key={item.key}>{item.value}</Breadcrumb.Item>)
                 }
             </Breadcrumb>
         );

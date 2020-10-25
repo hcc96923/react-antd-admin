@@ -18,8 +18,6 @@ const tailLayout = {
         span: 20,
     },
 };
-// 必须包含大小写字母和数字的组合，不能使用特殊字符，长度在6-16之间
-const Regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/;
 class ModifyPassword extends Component {
     state = {
         spinning: false,
@@ -37,7 +35,6 @@ class ModifyPassword extends Component {
         if (value === '') {
             return message.error('当前密码不能为空');
         }
-        // MD5
         const params = { password: CryptoJS.MD5(value).toString() };
         $http.get('/user/verifyPassword', {params})
             .then((result) => {
@@ -51,11 +48,12 @@ class ModifyPassword extends Component {
             });
     };
     handleSubmit = (values) => {
-        $http.put('/user/updatePassword', {newPassword: values.newPassword})
+        const params = { newPassword: CryptoJS.MD5(values.newPassword).toString() };
+        $http.put('/user/updatePassword', params)
             .then(() => {
                 message.success('修改成功，请重新登录');
                 localStorage.clear();
-                this.props.history.push('/');
+                this.props.history.push('/login');
             })
             .catch(error => {
                 console.log(error);
@@ -78,32 +76,44 @@ class ModifyPassword extends Component {
                                 name="password"
                                 hasFeedback
                                 validateStatus={isFirst ? '' : verifyPassword ? 'success' : 'error'}
-                                rules={[{required: true, message: '请输入你的密码！'}]}>
-                                <Input.Password onBlur={this.handleVerifyPassword}></Input.Password>
+                                rules={[
+                                    {
+                                        required: true, 
+                                        message: '请输入你的密码!'
+                                    }]}>
+                                <Input.Password onBlur={this.handleVerifyPassword} />
                             </Form.Item>
-                            <span style={{marginLeft: '17%', color: '#999'}}>必须包含大小写字母和数字的组合，不能使用特殊字符，长度在6-16之间</span>
+                            <span style={{marginLeft: '17%', color: '#999'}}>密码长度在不少于六位</span>
                             <Form.Item 
                             label="新密码"
                             name="newPassword"
                             hasFeedback
-                            rules={[{required: true, message: '请输入你的新密码！'}, {pattern: Regexp, message: '密码格式不正确'}]}>
-                                <Input.Password></Input.Password>
+                            rules={[
+                                {
+                                    required: true, 
+                                    message: '请输入你的新密码!'
+                                }]}>
+                                <Input.Password />
                             </Form.Item>
                             <Form.Item
                             label="确认新密码"
                             name="repeatNewPassword"
                             dependencies={['newPassword']}
                             hasFeedback
-                            rules={[{required: true, message: '请再次输入密码'},
-                            ({ getFieldValue }) => ({
-                                validator(rule, value) {
-                                    if (!value || getFieldValue('newPassword') === value) {
-                                        return Promise.resolve();
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '请再次输入密码!'
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(rule, value) {
+                                        if (!value || getFieldValue('newPassword') === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject('两次输入密码不一致!');
                                     }
-                                    return Promise.reject('两次输入密码不一致');
-                                }
-                            })]}>
-                                <Input.Password></Input.Password>
+                                })]}>
+                                <Input.Password />
                             </Form.Item>
                             <Form.Item {...tailLayout}>
                                 <Space size={20}>

@@ -17,23 +17,23 @@ class TopHeader extends Component {
     state = {
         visible: false
     };
-    handleSetting = () => {
+    handleOpenSetting = () => {
         this.setState({ visible: true });
     };
-    onClose = () => {
+    handleCloseSetting = () => {
 		this.setState({ visible: false });
     };
-    onChangeTheme = checked => {
+    handleChangeTheme = checked => {
         this.props.setTheme({ type: checked ? 'dark' : 'light' });
-		this.onClose();
+		this.handleCloseSetting();
     };
-    onChangeBreadCrumb = checked => {
+    handleChangeBreadCrumb = checked => {
         this.props.setBreadcrumb({ show: checked });
-        this.onClose();
+        this.handleCloseSetting();
     };
-    onChangeTag = checked => {
+    handleChangeTag = checked => {
         this.props.setTag({ show: checked });
-        this.onClose();
+        this.handleCloseSetting();
     };
     handleMessage = () => {
         this.props.history.push('/message');
@@ -53,7 +53,7 @@ class TopHeader extends Component {
         this.props.setMessage(params);
     };
     render() { 
-        const { theme, message, userInfo } = this.props;
+        const { theme, breadcrumb, tag, message, userInfo } = this.props;
         const userDropdownMenu = (
             <Menu onClick={this.handleMenuClick}>
                 <Menu.Item key="basic-info">基本资料</Menu.Item>
@@ -81,7 +81,7 @@ class TopHeader extends Component {
                         <FullScreen></FullScreen>
                     </div>
                     <div className="setting">
-                        <SettingOutlined onClick={this.handleSetting}></SettingOutlined>
+                        <SettingOutlined onClick={this.handleOpenSetting}></SettingOutlined>
                     </div>
                     <div className="message">
                         <Link to="/message">
@@ -105,12 +105,14 @@ class TopHeader extends Component {
                 <BasicDrawer
                     title="系统设置"
                     closable
-                    onClose={this.onClose} 
                     visible={this.state.visible}
-                    onChangeTheme={this.onChangeTheme}
-                    onChangeBreadCrumb={this.onChangeBreadCrumb}
-                    onChangeTag={this.onChangeTag}
-                    {...this.props}>
+                    theme={theme}
+                    breadcrumb={breadcrumb}
+                    tag={tag}
+                    onClose={this.handleCloseSetting} 
+                    onChangeTheme={this.handleChangeTheme}
+                    onChangeBreadCrumb={this.handleChangeBreadCrumb}
+                    onChangeTag={this.handleChangeTag}>
                 </BasicDrawer>
             </Layout.Header>
         );

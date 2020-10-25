@@ -2,7 +2,7 @@ import { ADD_TAG, REMOVE_TAG } from '../constants/index';
 
 
 /* 
-    创建标签
+    添加标签
     addTag
 */
 export const addTag = (data) => {

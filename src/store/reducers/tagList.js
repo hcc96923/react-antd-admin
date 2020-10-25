@@ -1,6 +1,10 @@
 import { ADD_TAG, REMOVE_TAG } from '../constants/index';
 
 
+/* 
+    标签列表
+    tagList
+*/
 const tagList = (state = [{ path: 'home', name: '首页' }], action) => {
     switch (action.type) {
         case ADD_TAG:

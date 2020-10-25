@@ -124,53 +124,53 @@ class BasicInfo extends Component {
                 <Card title="基本资料">
                     <Spin spinning={spinning}>
                         <Form
-                        {...layout}
-                        name="basicinfo"
-                        ref={this.formRef}
-                        initialValues={form}
-                        onFinish={this.handleSubmit}>
-                            <span style={{marginLeft: '17%', color: '#999'}}>不可修改。用户的唯一标识。</span>
-                            <Form.Item label="ID" name="id">
-                                <Input readOnly></Input>
-                            </Form.Item>
-                            <Form.Item label="用户名" name="username">
-                            <Input></Input>
-                            </Form.Item>
-                            <Form.Item label="性别" name="gender">
-                                <Radio.Group>
-                                    <Radio value={0}>男</Radio>
-                                    <Radio value={1}>女</Radio>
-                                </Radio.Group>
-                            </Form.Item>
-                            <Form.Item 
-                            label="头像"
-                            name="avatar"
-                            valuePropName="avatar">
-                                <Upload
+                            {...layout}
+                            name="basicinfo"
+                            ref={this.formRef}
+                            initialValues={form}
+                            onFinish={this.handleSubmit}>
+                                <span style={{marginLeft: '17%', color: '#999'}}>不可修改。用户的唯一标识。</span>
+                                <Form.Item label="ID" name="id">
+                                    <Input readOnly></Input>
+                                </Form.Item>
+                                <Form.Item label="用户名" name="username">
+                                <Input></Input>
+                                </Form.Item>
+                                <Form.Item label="性别" name="gender">
+                                    <Radio.Group>
+                                        <Radio value={0}>男</Radio>
+                                        <Radio value={1}>女</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                                <Form.Item 
+                                    label="头像"
                                     name="avatar"
-                                    listType="picture-card"
-                                    showUploadList={false}
-                                    action={SERVER_ADDRESS + '/upload/uploadAvatar'}
-                                    beforeUpload={this.beforeUpload}
-                                    onChange={this.handleChange}>
-                                        {avatarUrl ? <img src={SERVER_ADDRESS + '/' + avatarUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                                </Upload>
-                            </Form.Item>
-                            <Form.Item label="手机" name="phone" rules={[{pattern: PhoneRegexp, message: '手机格式不正确'}]}>
-                                <Input></Input>
-                            </Form.Item>
-                            <Form.Item label="邮箱" name="email" rules={[{pattern: EmailRegexp, message: '邮箱格式不正确'}]}>
-                                <Input></Input>
-                            </Form.Item>
-                            <Form.Item label="备注" name="remark">
-                                <Input.TextArea rows={4} placeholder="请输入内容"></Input.TextArea>
-                            </Form.Item>
-                            <Form.Item {...tailLayout}>
-                                <Space size={20}>
-                                    <Button type="primary" htmlType="submit">保存</Button>
-                                    <Button htmlType="button" onClick={this.handleReset}>重新填写</Button>
-                                </Space>
-                            </Form.Item>
+                                    valuePropName="avatar">
+                                        <Upload
+                                            name="avatar"
+                                            listType="picture-card"
+                                            showUploadList={false}
+                                            action={SERVER_ADDRESS + '/upload/uploadAvatar'}
+                                            beforeUpload={this.beforeUpload}
+                                            onChange={this.handleChange}>
+                                                {avatarUrl ? <img src={SERVER_ADDRESS + '/' + avatarUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                                        </Upload>
+                                </Form.Item>
+                                <Form.Item label="手机" name="phone" rules={[{pattern: PhoneRegexp, message: '手机格式不正确'}]}>
+                                    <Input></Input>
+                                </Form.Item>
+                                <Form.Item label="邮箱" name="email" rules={[{pattern: EmailRegexp, message: '邮箱格式不正确'}]}>
+                                    <Input></Input>
+                                </Form.Item>
+                                <Form.Item label="备注" name="remark">
+                                    <Input.TextArea rows={4} placeholder="请输入内容"></Input.TextArea>
+                                </Form.Item>
+                                <Form.Item {...tailLayout}>
+                                    <Space size={20}>
+                                        <Button type="primary" htmlType="submit">保存</Button>
+                                        <Button htmlType="button" onClick={this.handleReset}>重新填写</Button>
+                                    </Space>
+                                </Form.Item>
                         </Form>
                     </Spin>
                 </Card>

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { HashRouter } from "react-router-dom";
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
-import { setUserInfo } from '@store/actions/userInfo';
 import { setCollapse, setTheme, setBreadcrumb, setTag, setMessage } from '@store/actions/setting';
+import { addBreadCrumb } from '@store/actions/breadCrumb';
 import { addTag, removeTag } from '@store/actions/tagList';
 import TopHeader from "./TopHeader";
 import SideMenu from "./SideMenu";
@@ -15,12 +15,11 @@ import './style.less';
 
 
 class LayoutContainer extends Component {
-    // 数据和方法由各个组件独自维护
     state = { visible: false };
     render() { 
         // 父组件向子组件分发数据和方法
-        const { collapse, theme, userInfo, location, breadcrumb, tag, tagList, message } = this.props;
-        const { setCollapse, setTheme, setBreadcrumb, setTag, setMessage, setUserInfo, addTag, removeTag } = this.props;
+        const { collapse, theme, userInfo, breadcrumb, breadCrumb, tag, tagList, message } = this.props;
+        const { setCollapse, setTheme, setBreadcrumb, setTag, setMessage, addBreadCrumb, addTag, removeTag } = this.props;
         return (
             <HashRouter>
                 <div className="layout">
@@ -28,23 +27,23 @@ class LayoutContainer extends Component {
                         {/* 通栏头部 */}
                         <TopHeader
                             theme={theme}
-                            breadcrumb={breadcrumb}
-                            tag={tag}
-                            message={message}
-                            userInfo={userInfo}
-                            setUserInfo={setUserInfo}
                             setTheme={setTheme}
+                            breadcrumb={breadcrumb}
                             setBreadcrumb={setBreadcrumb}
+                            tag={tag}
                             setTag={setTag}
-                            setMessage={setMessage}>
+                            message={message}
+                            setMessage={setMessage}
+                            userInfo={userInfo}>
                         </TopHeader>
                         <Layout>
                             {/* 侧边栏 */}
                             <SideMenu
-                                collapse={collapse}
                                 theme={theme}
+                                collapse={collapse}
+                                userInfo={userInfo}
                                 setCollapse={setCollapse}
-                                setBreadcrumb={setBreadcrumb}
+                                addBreadCrumb={addBreadCrumb}
                                 addTag={addTag}>
                             </SideMenu>
                             <Layout style={{ padding: '0 12px' }}>
@@ -52,8 +51,7 @@ class LayoutContainer extends Component {
                                 { 
                                     breadcrumb.show ? 
                                     <BreadCrumb
-                                        location={location}
-                                        setBreadcrumb={setBreadcrumb}>
+                                        breadCrumb={breadCrumb}>
                                     </BreadCrumb>
                                     : 
                                     <div style={{padding: '0'}}></div>
@@ -83,8 +81,8 @@ class LayoutContainer extends Component {
                 </div>
             </HashRouter>  
         );
-    }
-}
+    };
+};
 
 
 const mapStateToProps = (state) => state;
@@ -92,23 +90,23 @@ const mapDispatchToProps = dispatch => ({
 	setCollapse: data => {
 		dispatch(setCollapse(data));
 	},
-	setUserInfo: data => {
-		dispatch(setUserInfo(data));
-	},
 	setTheme: data => {
 		dispatch(setTheme(data));
 	},
 	setBreadcrumb: data => {
 		dispatch(setBreadcrumb(data));
-	},
+    },
+    addBreadCrumb: data => {
+        dispatch(addBreadCrumb(data));
+    },
 	setTag: data => {
 		dispatch(setTag(data));
     },
+    addTag: data => {
+		dispatch(addTag(data));
+    },
     setMessage: data => {
         dispatch(setMessage(data));
-    },
-	addTag: data => {
-		dispatch(addTag(data));
     },
     removeTag: data => {
         dispatch(removeTag(data));

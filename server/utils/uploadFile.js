@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({dest: '../static'});
+const upload = multer({dest: 'static'});
 const execDB = require('./connectionDB');
 
 
@@ -25,7 +25,7 @@ router.post('/uploadAvatar', upload.single('avatar'), (request, response) => {
     上传多个文件
     uploadFiles
 */
-router.post('/uploadFiles', upload.array('files', 5), (request, response) => {
+router.post('/uploadFiles', upload.array('files', 10), (request, response) => {
     const files = request.files;
     const fileList = [];
 

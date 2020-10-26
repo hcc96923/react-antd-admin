@@ -6,9 +6,6 @@ export default class FullScreen extends React.Component {
 	state = {
 		isFullScreen: false
 	};
-	componentDidMount() {
-		this.watchFullScreen();
-	};
 	handleFullScrren = () => {
 		!this.state.isFullScreen ? this.requestFullScreen() : this.exitFullscreen();
 	};
@@ -55,6 +52,14 @@ export default class FullScreen extends React.Component {
 			false
 		);
 	};
+	componentDidMount() {
+		this.watchFullScreen();
+	};
+	componentWillUnmount() {
+        this.setState = (state, callback) => {
+            return;
+        }
+    };
 	render() {
 		return (
 			<FullscreenOutlined 

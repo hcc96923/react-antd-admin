@@ -145,73 +145,73 @@ class Message extends Component {
                 <Tabs
                     defaultActiveKey="addmessage"
                     onChange={this.onTabChange}>
-                    <Tabs.TabPane
-                        tab="新增消息"
-                        key="addmessage">
-                            <Form
-                                {...layout}
-                                name="basic"
-                                ref={this.formRef}
-                                initialValues={{
-                                    content: ''
-                                }}
-                                onFinish={this.onFinish}>
-                                <Form.Item
-                                    label="消息"
-                                    name="content"
-                                    rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入消息内容',
-                                    },
-                                    ]}>
-                                    <Input.TextArea allowClear rows={5} placeholder="请输入消息内容" />
-                                </Form.Item>
-                                <Form.Item {...tailLayout}>
-                                    <Button type="primary" htmlType="submit">提交</Button>
-                                </Form.Item>
-                            </Form>
-                    </Tabs.TabPane>
-                    <Tabs.TabPane
-                        tab="未读消息"
-                        key="unread">
-                            <List
-                                size="large"
-                                bordered
-                                footer={
-                                    <div>
-                                        <Button type="primary" onClick={this.onMarkAllRead}>全部已读</Button>
-                                    </div>
-                                }
-                                dataSource={this.state.unreadMessage}
-                                renderItem={item => 
-                                    <List.Item key={item.id} className="message">
-                                        <span className="content">{item.content}</span>
-                                        <span className="time">{formatTime(item.time)}</span>
-                                        <Button type="default" onClick={this.onMarkRead.bind(this, item.id)}>标为已读</Button>
-                                    </List.Item>}>
-                            </List>
-                    </Tabs.TabPane>
-                    <Tabs.TabPane
-                        tab="已读消息"
-                        key="read">
-                            <List
-                                size="large"
-                                bordered
-                                footer={
-                                    <div>
-                                        <Button type="danger" onClick={this.onDeleteAllMessage}>删除全部</Button>
-                                    </div>
-                                }
-                                dataSource={this.state.readMessage}
-                                renderItem={item => 
-                                    <List.Item key={item.id} className="message">
-                                        <span className="content">{item.content}</span>
-                                        <span className="time">{formatTime(item.time)}</span>
-                                        <Button type="danger" onClick={this.onDeleteMessage.bind(this, item.id)}>删除</Button>
-                                    </List.Item>}>
-                            </List>
-                    </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab="新增消息"
+                            key="addmessage">
+                                <Form
+                                    {...layout}
+                                    name="basic"
+                                    ref={this.formRef}
+                                    initialValues={{
+                                        content: ''
+                                    }}
+                                    onFinish={this.onFinish}>
+                                    <Form.Item
+                                        label="消息"
+                                        name="content"
+                                        rules={[
+                                        {
+                                            required: true,
+                                            message: '请输入消息内容',
+                                        },
+                                        ]}>
+                                        <Input.TextArea allowClear rows={5} placeholder="请输入消息内容" />
+                                    </Form.Item>
+                                    <Form.Item {...tailLayout}>
+                                        <Button type="primary" htmlType="submit">提交</Button>
+                                    </Form.Item>
+                                </Form>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab="未读消息"
+                            key="unread">
+                                <List
+                                    size="large"
+                                    bordered
+                                    footer={
+                                        <div>
+                                            <Button type="primary" onClick={this.onMarkAllRead}>全部已读</Button>
+                                        </div>
+                                    }
+                                    dataSource={this.state.unreadMessage}
+                                    renderItem={item => 
+                                        <List.Item key={item.id} className="message">
+                                            <span className="content">{item.content}</span>
+                                            <span className="time">{formatTime(item.time)}</span>
+                                            <Button type="default" onClick={this.onMarkRead.bind(this, item.id)}>标为已读</Button>
+                                        </List.Item>}>
+                                </List>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab="已读消息"
+                            key="read">
+                                <List
+                                    size="large"
+                                    bordered
+                                    footer={
+                                        <div>
+                                            <Button type="danger" onClick={this.onDeleteAllMessage}>删除全部</Button>
+                                        </div>
+                                    }
+                                    dataSource={this.state.readMessage}
+                                    renderItem={item => 
+                                        <List.Item key={item.id} className="message">
+                                            <span className="content">{item.content}</span>
+                                            <span className="time">{formatTime(item.time)}</span>
+                                            <Button type="danger" onClick={this.onDeleteMessage.bind(this, item.id)}>删除</Button>
+                                        </List.Item>}>
+                                </List>
+                        </Tabs.TabPane>
                 </Tabs>
             </Card>
         );

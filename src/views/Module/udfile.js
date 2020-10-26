@@ -102,48 +102,48 @@ class UDFile extends Component {
                 <Tabs
                     defaultActiveKey="upload"
                     onChange={this.onTabChange}>
-                    <Tabs.TabPane
-                        tab="上传文件"
-                        key="upload">
-                            <section>
-                                <Upload.Dragger {...uploadProps} name="files" style={{width: '280px'}}>
-                                    <p className="ant-upload-drag-icon">
-                                        <InboxOutlined />
-                                    </p>
-                                    <p className="ant-upload-text">支持拖拽上传和点击上传</p>
-                                </Upload.Dragger>
-                            </section>
-                            <section>
-                                <Button
-                                    type="primary"
-                                    onClick={this.handleUpload}
-                                    disabled={uploadFileList.length === 0}
-                                    loading={uploading}
-                                    style={{ marginTop: 16 }}>
-                                    {uploading ? '上传中...' : '上传'}
-                                </Button>
-                            </section>
-                    </Tabs.TabPane>
-                    <Tabs.TabPane
-                        tab="下载文件"
-                        key="download">
-                            <List
-                                size="large"
-                                bordered
-                                footer={
-                                    <div>
-                                        <Button type="primary" onClick={this.handleDownloadAll}>下载全部</Button>
-                                    </div>
-                                }
-                                dataSource={this.state.downloadFileList}
-                                renderItem={item => 
-                                    <List.Item key={item.id} className="download">
-                                        <span className="originalname" onClick={this.handleDownloadSingle.bind(this, item)}>{item.originalname}</span>
-                                        <span className="time">{formatTime(item.time)}</span>
-                                        <Button type="default" onClick={this.handleDownloadSingle.bind(this, item)}>下载</Button>
-                                    </List.Item>}>
-                            </List>
-                    </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab="上传文件"
+                            key="upload">
+                                <section>
+                                    <Upload.Dragger {...uploadProps} name="files" style={{width: '280px'}}>
+                                        <p className="ant-upload-drag-icon">
+                                            <InboxOutlined />
+                                        </p>
+                                        <p className="ant-upload-text">支持拖拽上传和点击上传</p>
+                                    </Upload.Dragger>
+                                </section>
+                                <section>
+                                    <Button
+                                        type="primary"
+                                        onClick={this.handleUpload}
+                                        disabled={uploadFileList.length === 0}
+                                        loading={uploading}
+                                        style={{ marginTop: 16 }}>
+                                        {uploading ? '上传中...' : '上传'}
+                                    </Button>
+                                </section>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab="下载文件"
+                            key="download">
+                                <List
+                                    size="large"
+                                    bordered
+                                    footer={
+                                        <div>
+                                            <Button type="primary" onClick={this.handleDownloadAll}>下载全部</Button>
+                                        </div>
+                                    }
+                                    dataSource={this.state.downloadFileList}
+                                    renderItem={item => 
+                                        <List.Item key={item.id} className="download">
+                                            <span className="originalname" onClick={this.handleDownloadSingle.bind(this, item)}>{item.originalname}</span>
+                                            <span className="time">{formatTime(item.time)}</span>
+                                            <Button type="default" onClick={this.handleDownloadSingle.bind(this, item)}>下载</Button>
+                                        </List.Item>}>
+                                </List>
+                        </Tabs.TabPane>
                 </Tabs>
             </Card>
         );

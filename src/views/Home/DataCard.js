@@ -13,20 +13,20 @@ class DataCard extends Component {
                 title={title}
                 hoverable="true"
                 extra={<Tag color={color}>{smallName}</Tag>}>
-                <p className="count">{formatAmount(number)}</p>
-                <Row justify="space-between">
-                    <Col span={12} className="left">
-                        <span>{bigName}</span>
-                    </Col>
-                    <Col span={12} className="right">
-                        <Space>
-                            <span>{numName}</span>
-                            <span>
-                                {icon}
-                            </span>
-                        </Space>
-                    </Col>
-                </Row>
+                    <p className="count">{formatAmount(number)}</p>
+                    <Row justify="space-between">
+                        <Col span={12} className="left">
+                            <span>{bigName}</span>
+                        </Col>
+                        <Col span={12} className="right">
+                            <Space>
+                                <span>{numName}</span>
+                                <span>
+                                    {icon}
+                                </span>
+                            </Space>
+                        </Col>
+                    </Row>
             </Card>
         );
     };

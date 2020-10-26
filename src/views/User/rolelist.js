@@ -256,32 +256,32 @@ class RoleList extends Component {
                             footer={null}
                             onOK={this.onSaveEditForm}
                             onCancel={this.onCancelEditForm}>
-                            <Form
-                                {...layout}
-                                name="edit"
-                                ref={this.modalRef}
-                                initialValues={modalForm}
-                                onFinish={this.onSaveEditForm}>
-                                <Form.Item label="ID" name="id">
-                                    <Input readOnly />
-                                </Form.Item>
-                                <Form.Item label="用户名" name="username">
-                                    <Input readOnly />
-                                </Form.Item>
-                                <Form.Item label="角色" name="role">
-                                    <Radio.Group>
-                                        <Radio value={1}>用户</Radio>
-                                        <Radio value={2}>管理员</Radio>
-                                        <Radio value={3}>超级管理员</Radio>
-                                    </Radio.Group>
-                                </Form.Item>
-                                <Form.Item {...tailLayout}>
-                                    <Space>
-                                        <Button type="primary" htmlType="submit">确定</Button>
-                                        <Button type="button" onClick={this.onCancelEditForm}>取消</Button>
-                                    </Space>
-                                </Form.Item>
-                            </Form>
+                                <Form
+                                    {...layout}
+                                    name="edit"
+                                    ref={this.modalRef}
+                                    initialValues={modalForm}
+                                    onFinish={this.onSaveEditForm}>
+                                    <Form.Item label="ID" name="id">
+                                        <Input readOnly />
+                                    </Form.Item>
+                                    <Form.Item label="用户名" name="username">
+                                        <Input readOnly />
+                                    </Form.Item>
+                                    <Form.Item label="角色" name="role">
+                                        <Radio.Group>
+                                            <Radio value={1}>用户</Radio>
+                                            <Radio value={2}>管理员</Radio>
+                                            <Radio value={3}>超级管理员</Radio>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                    <Form.Item {...tailLayout}>
+                                        <Space>
+                                            <Button type="primary" htmlType="submit">确定</Button>
+                                            <Button type="button" onClick={this.onCancelEditForm}>取消</Button>
+                                        </Space>
+                                    </Form.Item>
+                                </Form>
                         </Modal>
             </Card>
         );

@@ -71,55 +71,55 @@ class ModifyPassword extends Component {
                             ref={this.formRef}
                             initialValues={form}
                             onFinish={this.handleSubmit}>
-                            <Form.Item 
-                                label="当前密码"
-                                name="password"
-                                hasFeedback
-                                validateStatus={isFirst ? '' : verifyPassword ? 'success' : 'error'}
-                                rules={[
-                                    {
-                                        required: true, 
-                                        message: '请输入你的密码!'
-                                    }]}>
-                                <Input.Password onBlur={this.handleVerifyPassword} />
-                            </Form.Item>
-                            <span style={{marginLeft: '17%', color: '#999'}}>密码长度在不少于六位</span>
-                            <Form.Item 
-                            label="新密码"
-                            name="newPassword"
-                            hasFeedback
-                            rules={[
-                                {
-                                    required: true, 
-                                    message: '请输入你的新密码!'
-                                }]}>
-                                <Input.Password />
-                            </Form.Item>
-                            <Form.Item
-                            label="确认新密码"
-                            name="repeatNewPassword"
-                            dependencies={['newPassword']}
-                            hasFeedback
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请再次输入密码!'
-                                },
-                                ({ getFieldValue }) => ({
-                                    validator(rule, value) {
-                                        if (!value || getFieldValue('newPassword') === value) {
-                                            return Promise.resolve();
-                                        }
-                                        return Promise.reject('两次输入密码不一致!');
-                                    }
-                                })]}>
-                                <Input.Password />
-                            </Form.Item>
-                            <Form.Item {...tailLayout}>
-                                <Space size={20}>
-                                    <Button type="primary" htmlType="submit">保存</Button>
-                                </Space>
-                            </Form.Item>
+                                <Form.Item 
+                                    label="当前密码"
+                                    name="password"
+                                    hasFeedback
+                                    validateStatus={isFirst ? '' : verifyPassword ? 'success' : 'error'}
+                                    rules={[
+                                        {
+                                            required: true, 
+                                            message: '请输入你的密码!'
+                                        }]}>
+                                    <Input.Password onBlur={this.handleVerifyPassword} />
+                                </Form.Item>
+                                <span style={{marginLeft: '17%', color: '#999'}}>密码长度在不少于六位</span>
+                                <Form.Item 
+                                    label="新密码"
+                                    name="newPassword"
+                                    hasFeedback
+                                    rules={[
+                                        {
+                                            required: true, 
+                                            message: '请输入你的新密码!'
+                                        }]}>
+                                        <Input.Password />
+                                </Form.Item>
+                                <Form.Item
+                                    label="确认新密码"
+                                    name="repeatNewPassword"
+                                    dependencies={['newPassword']}
+                                    hasFeedback
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '请再次输入密码!'
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(rule, value) {
+                                                if (!value || getFieldValue('newPassword') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject('两次输入密码不一致!');
+                                            }
+                                        })]}>
+                                        <Input.Password />
+                                </Form.Item>
+                                <Form.Item {...tailLayout}>
+                                    <Space size={20}>
+                                        <Button type="primary" htmlType="submit">保存</Button>
+                                    </Space>
+                                </Form.Item>
                         </Form>
                     </Spin>
                 </Card>

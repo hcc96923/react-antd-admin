@@ -43,7 +43,6 @@ class SideMenu extends Component {
     handleBreadCrumb = (item, breadCrumbData) => {
         const keys = item.keyPath.reverse();
         const values = breadCrumbData;
-        console.log(breadCrumbData);
         const data = [];
         keys.forEach((key, index) => {
             const object = {};
@@ -64,11 +63,15 @@ class SideMenu extends Component {
                 }
                 return result;
             } else {
-                // console.log(breadCrumbData);
-                console.log(child.children);
-                console.log(item);
-                breadCrumbData.push(child.name);
-                result  = this.handleRecursionRouter(item, child.children, breadCrumbData);
+                result = this.handleRecursionRouter(item, child.children, breadCrumbData);
+                if (result) {
+                    breadCrumbData.push(child.name);
+                    // 位置调换
+                    const length = breadCrumbData.length;
+                    const temporary = breadCrumbData[length - 1];
+                    breadCrumbData[length - 1] = breadCrumbData[length - 2];
+                    breadCrumbData[length - 2] = temporary;
+                }
                 return result;
             }
         });

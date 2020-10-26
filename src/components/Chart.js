@@ -32,7 +32,7 @@ class Chart extends Component {
         const chart = this.state.chart;
         if (chart) {
             debounce(chart.resize.bind(this), 500)();
-        }
+        };
     };
     dispose = () => {
 		if (!this.state.chart) return null;

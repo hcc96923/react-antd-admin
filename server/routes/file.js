@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer({dest: 'static'});
-const execDB = require('../utils/connectionDB');
+const { executeMysql } = require('../utils/database');
 
 
 /* 
@@ -40,7 +40,7 @@ router.post('/uploadFiles', upload.array('files', 10), (request, response) => {
         // 写入数据库
         let count = 0;
         const sqlString = `INSERT INTO file (originalname, name) VALUES('${file.originalname}', '${file.path}')`;
-        execDB(sqlString)
+        executeMysql(sqlString)
             .then(() => {
                 count++;
                 fileList.push(file);
@@ -62,7 +62,7 @@ router.post('/uploadFiles', upload.array('files', 10), (request, response) => {
 */
 router.get('/getDownloadList', (request, response) => {
     const sqlString = `SELECT id, originalname, name, time FROM file`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             response.send({
                 code: 200,

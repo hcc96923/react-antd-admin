@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const redis = require('redis');
-const client = redis.createClient(6379, "localhost", { password: '123456' });
-const execDB = require('../utils/connectionDB');
-const { secretKey } = require('../utils/config');
+const { executeMysql, executeRedis } = require('../utils/database');
 const { emailAuthCode, imageAuthCode } = require('../utils/authCode');
+const { secretKey } = require('../utils/config');
 
 
 /* 
@@ -15,7 +13,7 @@ const { emailAuthCode, imageAuthCode } = require('../utils/authCode');
 router.post('/login', (request, response) => {
     const { email, password } = request.body;
     const sqlString = `SELECT id, username, role, avatar FROM user WHERE email = '${email}' AND password = '${password}'`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.length > 0) {
                 const user = Object.assign({}, result[0]);
@@ -45,7 +43,7 @@ router.post('/login', (request, response) => {
 router.post('/register', (request, response) => {
     const { email, password } = request.body;
     const sqlString = `SELECT id FROM user WHERE email='${email}' AND password='${password}'`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.length > 0) {
                 response.send({
@@ -54,7 +52,7 @@ router.post('/register', (request, response) => {
                 });     
             } else {
                 const sqlString = `INSERT INTO user (email, password, gender) VALUES('${email}', '${password}', ${0})`;
-                execDB(sqlString)
+                executeMysql(sqlString)
                     .then(result => {
                         if (result.affectedRows > 0) {
                             response.send({
@@ -79,7 +77,7 @@ router.post('/register', (request, response) => {
 router.get('/findEmail', (request, response) => {
     const email = request.query.email;
     const sqlString = `SELECT id FROM user WHERE email ='${email}'`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             response.send({
                 code: 200,
@@ -111,7 +109,7 @@ router.get('/sendEmail', (request, response) => {
 router.put('/resetPassword', (request, response) => {
     const { email, password } = request.body;
     const sqlString = `UPDATE user SET password='${password}' WHERE email='${email}'`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({
@@ -139,26 +137,36 @@ router.get('/getImageAuthCode', (request, response) => {
     const inputAuthText = request.query.authText
 
     if (inputAuthText) {
-        client.on("error", (error) => {
-            console.log(error);
-        });
-        client.get(cookieSessionId, (error, value) => {
-            if (error) {
-                console.log(error.message)
-                return false;
-            }
-            if (inputAuthText !==  value) {
-                response.send({message: '验证码错误'})
-            } else {
-                // 验证正确立即删除这个redis数据
-                client.del(cookieSessionId);
-                response.send({code: 200, message: '验证码正确'});
-            }
-        });
+        executeRedis()
+            .then(client => {
+                client.get(cookieSessionId, (error, value) => {
+                    if (error) {
+                        console.log(error.message)
+                        return false;
+                    }
+                    if (inputAuthText !==  value) {
+                        response.send({message: '验证码错误'})
+                    } else {
+                        // 验证正确立即删除这个redis数据
+                        client.del(cookieSessionId);
+                        response.send({code: 200, message: '验证码正确'});
+                    }
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        
     } else {
-        client.set(request.sessionID, DataText.text, 'EX', 3600); // 有效时长3600s
-        response.cookie('sessionId', request.sessionID);
-        response.send(DataText.data);
+        executeRedis()
+            .then(client => {
+                client.set(request.sessionID, DataText.text, 'EX', 3600); // 有效时长3600s
+                response.cookie('sessionId', request.sessionID);
+                response.send(DataText.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 });
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const execDB = require('../utils/connectionDB');
+const { executeMysql } = require('../utils/database');
 
 
 /* 
@@ -10,7 +10,7 @@ const execDB = require('../utils/connectionDB');
 router.get('/getMessage', (request, response) => {
     const { status } = request.query;
     const sqlString = `SELECT id, content, time FROM message WHERE status=${status}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             response.send({
                 code: 200,
@@ -29,7 +29,7 @@ router.get('/getMessage', (request, response) => {
 router.post('/addNewMessage', (request, response) => {
     const { content } = request.body;
     const sqlString = `INSERT INTO message (content, status) VALUES('${content}', ${0})`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(() => {
             response.send({
                 code: 200,
@@ -47,7 +47,7 @@ router.post('/addNewMessage', (request, response) => {
 router.put('/readSingleMessage', (request, response) => {
     const { id } = request.body;
     const sqlString = `UPDATE message SET status=${1} WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(() => {
             response.send({
                 code: 200,
@@ -67,7 +67,7 @@ router.put('/readAllMessage', (request, response) => {
     let count = 0;
     ids.forEach(id => {
         const sqlString = `UPDATE message SET status=${1} WHERE id=${id}`;
-        execDB(sqlString)
+        executeMysql(sqlString)
             .then(() => {
                 count++;
                 if (count === ids.length) {
@@ -89,7 +89,7 @@ router.put('/readAllMessage', (request, response) => {
 router.delete('/deleteSingleReadMessage', (request, response) => {
     const { id } = request.query;
     const sqlString = `DELETE FROM message WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(() => {
             response.send({
                 code: 200,
@@ -109,7 +109,7 @@ router.delete('/deleteAllMessage', (request, response) => {
     let count = 0;
     ids.forEach(id => {
         const sqlString = `DELETE FROM message WHERE id=${id}`;
-        execDB(sqlString)
+        executeMysql(sqlString)
         .then(() => {
             count++;
             if (count === ids.length) {

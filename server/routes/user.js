@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const execDB = require('../utils/connectionDB');
+const { executeMysql } = require('../utils/database');
 
 
 /* 
@@ -9,7 +9,7 @@ const execDB = require('../utils/connectionDB');
 */
 router.get('/getUser', (request, response) => {
     const sqlString = `SELECT id FROM user`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             const total = result.length;
             const query = request.query;
@@ -48,7 +48,7 @@ router.get('/getUser', (request, response) => {
                 const n = (pageNum - 1) * pageSize;
                 sqlString += ` LIMIT ${n}, ${pageSize}`;
             } 
-            execDB(sqlString)
+            executeMysql(sqlString)
                 .then(result => {
                     response.send({
                         code: 200,
@@ -72,11 +72,11 @@ router.get('/getUser', (request, response) => {
 router.post('/addUser', (request, response) => {
     const { username, gender, phone, email } = request.body;
     const sqlString = `SELECT id FROM user WHERE username='${username}' AND gender=${gender} AND phone='${phone}' AND email='${email}'`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.length === 0) {
                 const sqlString = `INSERT INTO user (username, gender, phone, email) VALUES('${username}', ${gender}, '${phone}', '${email}')`;
-                execDB(sqlString)
+                executeMysql(sqlString)
                     .then(result => {
                         if (result.affectedRows > 0) {
                             response.send({
@@ -109,7 +109,7 @@ router.post('/addUser', (request, response) => {
 router.put('/editUser', (request, response) => {
     const { id, username, gender, phone, email } = request.body;
     const sqlString = `UPDATE user SET username='${username}', gender=${gender}, phone='${phone}', email='${email}' WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({
@@ -134,7 +134,7 @@ router.put('/editUser', (request, response) => {
 router.delete('/deleteUser', (request, response) => {
     const { id } = request.query;
     const sqlString = `DELETE FROM user WHERE id = ${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({
@@ -160,7 +160,7 @@ router.delete('/multipleDelete', (request, response) => {
     let count = 0;
     ids.forEach(id => {
         const sqlString = `DELETE FROM user WHERE id = ${id}`;
-        execDB(sqlString)
+        executeMysql(sqlString)
             .then(() => {
                 count++;
                 if (count === ids.length) {
@@ -182,7 +182,7 @@ router.delete('/multipleDelete', (request, response) => {
 router.get('/getUserDetail/:id', (request, response) => {
     const { id } = request.params;
     const sqlString = `SELECT id, username, gender, phone, email, avatar, remark FROM user WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             response.send({
                 code: 200,
@@ -201,7 +201,7 @@ router.get('/getUserDetail/:id', (request, response) => {
 router.put('/uploadAvatar', (request, response) => {
     const { id, avatar } = request.body;
     const sqlString = `UPDATE user SET avatar='${avatar}' WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({
@@ -221,7 +221,7 @@ router.put('/uploadAvatar', (request, response) => {
 router.put('/updateUser', (request, response) => {
     const { id, username, gender, phone, email, avatar, remark } = request.body;
     const sqlString = `UPDATE user SET username='${username}', gender=${gender}, phone='${phone}', email='${email}', avatar='${avatar}', remark='${remark}' WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({
@@ -242,7 +242,7 @@ router.get('/verifyPassword', (request, response) => {
     const { id } = request.user;
     const { password } = request.query;
     const sqlString = `SELECT password FROM user WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result[0].password === password) {
                 response.send({
@@ -267,7 +267,7 @@ router.put('/updatePassword', (request, response) => {
     const { newPassword } = request.body;
     const { id } = request.user;
     const sqlString = `UPDATE user SET password='${newPassword}' WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({
@@ -290,7 +290,7 @@ router.put('/updatePassword', (request, response) => {
 */
 router.get('/getRole', (request, response) => {
     const sqlString = `SELECT id FROM user`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then((result) => {
             const total = result.length;
             const query = request.query;
@@ -323,7 +323,7 @@ router.get('/getRole', (request, response) => {
                 const n = (pageNum - 1) * pageSize;
                 sqlString += ` LIMIT ${n}, ${pageSize}`; 
             }
-            execDB(sqlString)
+            executeMysql(sqlString)
                 .then(result => {
                     // response.header('Cache-Control', 'max-age=31536000');
                     response.send({
@@ -348,7 +348,7 @@ router.get('/getRole', (request, response) => {
 router.put('/editRole', (request, response) => {
     const { id, role } = request.body;
     const sqlString = `UPDATE user SET role = ${role} WHERE id=${id}`;
-    execDB(sqlString)
+    executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
                 response.send({

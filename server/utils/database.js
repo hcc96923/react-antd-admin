@@ -1,5 +1,6 @@
 const mysql = require('mysql');
-const { mysqlConfig } = require('./config');
+const redis = require('redis');
+const { mysqlConfig, redisConfig } = require('./config');
 
 
 const pool = mysql.createPool({
@@ -9,9 +10,11 @@ const pool = mysql.createPool({
     password: mysqlConfig.password,
     database: mysqlConfig.database
 });
-
-
-function execDB(sql) {
+/* 
+    封装mysql
+    executeMysql
+*/
+function executeMysql (sql) {
     return new Promise((resolve, reject) => {
         pool.getConnection((error, connection) => {
             if (error) {
@@ -27,4 +30,21 @@ function execDB(sql) {
         });
     });
 };
-module.exports = execDB;
+/* 
+    封装redis
+    executeRedis
+*/
+function executeRedis () {
+    return new Promise((resolve, reject) => {
+        const client = redis.createClient(redisConfig);
+        client.on('error', error => {
+            reject(error);
+        });
+        console.log(client);
+        resolve(client);
+    });
+};
+module.exports = {
+    executeMysql,
+    executeRedis
+};

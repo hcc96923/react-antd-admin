@@ -26,7 +26,7 @@ class UDFile extends Component {
         });
 
         this.setState({uploading: true});
-        $http.post('/upload/uploadFiles', formData)
+        $http.post('/file/uploadFiles', formData)
             .then(() => {
                 this.setState({
                     uploading: false,
@@ -41,7 +41,7 @@ class UDFile extends Component {
     };
     getDownloadList = () => {
         this.setState({loading: true});
-        $http.get('/download/getDownloadList')
+        $http.get('/file/getDownloadList')
             .then(response => {
                 const { result } = response;
                 this.setState({

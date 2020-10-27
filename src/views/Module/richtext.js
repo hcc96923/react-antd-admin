@@ -28,7 +28,7 @@ class RichText extends Component {
         console.log(file);
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', `${SERVER_ADDRESS}/upload/uploadAvatar`);
+            xhr.open('POST', `${SERVER_ADDRESS}/file/uploadAvatar`);
             
             const formData = new FormData();
             formData.append('image', file);

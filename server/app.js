@@ -17,8 +17,7 @@ const {
     homeRouter,
     userRouter,
     messageRouter,
-    uploadRouter,
-    downloadRouter,
+    fileRouter,
     cronRouter 
 } = require('./routes/router');
 
@@ -44,8 +43,8 @@ app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')))
             '/login/sendEmail', 
             '/login/getImageAuthCode', 
             '/login/resetPassword', 
-            '/upload/uploadAvatar', 
-            '/upload/uploadFiles',
+            '/file/uploadAvatar', 
+            '/file/uploadFiles',
             '/cron/regularMessage',
         ]
     }))
@@ -61,8 +60,7 @@ app.use('/login', loginRouter)
 app.use('/home', homeRouter)
     .use('/user', userRouter)
     .use('/message', messageRouter)
-    .use('/upload', uploadRouter)
-    .use('/download', downloadRouter)
+    .use('/file', fileRouter)
     .use('/cron', cronRouter)
 
 

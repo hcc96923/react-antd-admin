@@ -150,7 +150,7 @@ class BasicInfo extends Component {
                                             name="avatar"
                                             listType="picture-card"
                                             showUploadList={false}
-                                            action={SERVER_ADDRESS + '/upload/uploadAvatar'}
+                                            action={SERVER_ADDRESS + '/file/uploadAvatar'}
                                             beforeUpload={this.beforeUpload}
                                             onChange={this.handleChange}>
                                                 {avatarUrl ? <img src={SERVER_ADDRESS + '/' + avatarUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}

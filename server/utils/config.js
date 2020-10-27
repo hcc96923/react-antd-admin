@@ -59,12 +59,20 @@ const sessionConfig = {
 
 
 // 数据库配置
-const dbConfig = {
+const mysqlConfig = {
     host: 'localhost',
     port: 3306,
     user: 'root',
     password: '123456',
     database: 'user'
+};
+
+
+// redis配置
+const redisConfig = {
+    host: 'localhost',
+    port: 6379,
+    password: '123456'
 };
 
 
@@ -115,7 +123,8 @@ module.exports = {
     serverConfig,
     corsConfig,
     sessionConfig,
-    dbConfig,
+    mysqlConfig,
+    redisConfig,
     secretKey,
     emailConfig,
     imageConfig

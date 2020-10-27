@@ -11,7 +11,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 
-const { serverConfig, corsConfig, sessionConfig, secretKey } = require('./utils/config');
+const { serverConfig, corsConfig, sessionConfig, secretKey, whiteList } = require('./utils/config');
 const { 
     loginRouter, 
     homeRouter,
@@ -36,17 +36,7 @@ app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')))
         secret: secretKey, 
         algorithms: ['HS256']
     }).unless({
-        path: [
-            '/login/login',  
-            '/login/register', 
-            '/login/findEmail', 
-            '/login/sendEmail', 
-            '/login/getImageAuthCode', 
-            '/login/resetPassword', 
-            '/file/uploadAvatar', 
-            '/file/uploadFiles',
-            '/cron/regularMessage',
-        ]
+        path: whiteList
     }))
     .use(cookieParser())
     .use(session(sessionConfig))

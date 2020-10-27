@@ -80,6 +80,20 @@ const redisConfig = {
 const secretKey = 'key';
 
 
+// 白名单
+const whiteList = [
+    '/login/login',  
+    '/login/register', 
+    '/login/findEmail', 
+    '/login/sendEmail', 
+    '/login/getImageAuthCode', 
+    '/login/resetPassword', 
+    '/file/uploadAvatar', 
+    '/file/uploadFiles',
+    '/cron/regularMessage'
+];
+
+
 // 邮箱配置
 const emailConfig = {
     qqConfig: {
@@ -126,6 +140,7 @@ module.exports = {
     mysqlConfig,
     redisConfig,
     secretKey,
+    whiteList,
     emailConfig,
     imageConfig
 };

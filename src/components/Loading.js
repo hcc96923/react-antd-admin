@@ -1,5 +1,8 @@
 import React from 'react';
 import { Spin } from 'antd';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+NProgress.configure({ showSpinner: false });
 
 
 const loadingWrapper = {
@@ -12,7 +15,11 @@ const loadingSpin = {
     top: '45%',
     transform: 'translate(-50%, -45%)'
 };
-function Loading() {
+function Loading(props) {
+    NProgress.start();
+    if (!props.error) {
+        NProgress.done();
+    }
     return (
         <div style={loadingWrapper}>
             <Spin style={loadingSpin} tip="正在加载中..."></Spin>

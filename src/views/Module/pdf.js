@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card } from 'antd';
-import Loading from '@components/Loading';
-import { SERVER_ADDRESS } from '@utils/config';
+import Loading from '@/components/Loading';
+import { SERVER_ADDRESS } from '@/utils/config';
 
 
 class Pdf extends Component {

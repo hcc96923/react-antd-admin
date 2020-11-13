@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Tabs, List, Upload, Button, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { formatTime } from '@utils/formatTool';
-import { SERVER_ADDRESS } from '@utils/config';
+import { formatTime } from '@/utils/formatTool';
+import { SERVER_ADDRESS } from '@/utils/config';
 import "./udfile.less";
 
 

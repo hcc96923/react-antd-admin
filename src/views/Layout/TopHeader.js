@@ -7,10 +7,10 @@ import {
     DownOutlined
 } from "@ant-design/icons";
 import { withRouter } from 'react-router-dom';
-import FullScreen from '@components/FullScreen';
-import BasicDrawer from '@components/BasicDrawer';
-import { SERVER_ADDRESS } from '@utils/config';
-import Logo from '@assets/images/react.svg';
+import FullScreen from '@/components/FullScreen';
+import BasicDrawer from '@/components/BasicDrawer';
+import { SERVER_ADDRESS } from '@/utils/config';
+import Logo from '@/assets/images/react.svg';
 
 
 class TopHeader extends Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Image } from 'antd';
-import permission from '@assets/images/permission.png';
-import permissions from '@assets/images/permissions.png';
+import permission from '@/assets/images/permission.png';
+import permissions from '@/assets/images/permissions.png';
 
 
 class Page extends Component {

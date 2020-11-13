@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Switch } from 'antd';
 import { connect } from 'react-redux';
-import { setCollapse, setTheme, setBreadcrumb, setTag } from '@store/actions/setting';
+import { setCollapse, setTheme, setBreadcrumb, setTag } from '@/store/actions/setting';
 import './style.less';
 
 

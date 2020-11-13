@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import CryptoJS from "crypto-js";
-import { EMAIL_KEY } from '@utils/config';
+import { EMAIL_KEY } from '@/utils/config';
 import './forget.less';
 
 

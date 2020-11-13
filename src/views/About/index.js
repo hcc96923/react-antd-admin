@@ -4,7 +4,7 @@ import {
     GithubOutlined
 } from '@ant-design/icons';
 import './style.less';
-import juejin from '@assets/images/juejin.svg';
+import juejin from '@/assets/images/juejin.svg';
 
 
 function About() {

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from 'antd';
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
-import { setUserInfo } from "@store/actions/userInfo";
+import { setUserInfo } from "@/store/actions/userInfo";
 import { connect } from 'react-redux';
 import CryptoJS from "crypto-js";
-import { debounce } from '@utils/optimize';
+import { debounce } from '@/utils/optimize';
 import './login.less';
 
 

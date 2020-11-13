@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Card, Form, Input, Button, Space, Radio, Upload, Spin, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { SERVER_ADDRESS } from '@utils/config';
-import { setUserInfo } from "@store/actions/userInfo";
-import store from '@store/store';
-import { debounce } from "@utils/optimize";
+import { SERVER_ADDRESS } from '@/utils/config';
+import { setUserInfo } from "@/store/actions/userInfo";
+import store from '@/store/store';
+import { debounce } from "@/utils/optimize";
 import './basicInfo.less';
 
 

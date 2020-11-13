@@ -6,14 +6,7 @@ const resolve = pathUrl => path.join(__dirname, pathUrl);
 module.exports = {
     webpack: {
         alias: {
-            '@': resolve('src'),
-            '@assets': resolve('src/assets'),
-            '@components': resolve('src/components'),
-            '@routes': resolve('src/routes'),
-            '@store': resolve('src/store'),
-            '@style': resolve('src/style'),
-            '@utils': resolve('src/utils'),
-            '@views': resolve('src/views')
+            '@': resolve('src')
         }
     },
     devServer: {

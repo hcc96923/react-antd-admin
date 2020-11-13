@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Tabs, Form, Input, List, Button, message } from 'antd';
-import { setMessage } from '@store/actions/setting';
+import { setMessage } from '@/store/actions/setting';
 import { connect } from 'react-redux';
-import { formatTime } from '@utils/formatTool';
+import { formatTime } from '@/utils/formatTool';
 import "./style.less";
 
 

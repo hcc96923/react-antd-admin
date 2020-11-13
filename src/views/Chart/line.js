@@ -1,6 +1,6 @@
 import React from 'react';
 import Echarts from 'echarts';
-import Chart from '@components/Chart';
+import Chart from '@/components/Chart';
 
 
 const chartOptions = {

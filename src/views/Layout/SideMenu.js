@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu } from "antd";
 import { withRouter } from 'react-router-dom';
 import mapMenu from "@/routes/menu";
-import { formatRole, resolveMenuList } from '@utils/formatTool';
+import { formatRole, resolveMenuList } from '@/utils/formatTool';
 import './style.less';
 
 

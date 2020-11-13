@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { Card, Row, Col, Tag, Space } from "antd";
 import PropTypes from 'prop-types';
-import { formatAmount } from "@utils/formatTool";
+import { formatAmount } from "@/utils/formatTool";
 
 
 class DataCard extends Component {

@@ -19,7 +19,7 @@ function Loading(props) {
     NProgress.start();
     if (!props.error) {
         NProgress.done();
-    }
+    };
     return (
         <div style={loadingWrapper}>
             <Spin style={loadingSpin} tip="正在加载中..."></Spin>

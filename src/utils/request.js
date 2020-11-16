@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { message } from "antd";
-import { SERVER_ADDRESS } from '@utils/config';
+import { SERVER_ADDRESS } from '@/utils/config';
 
 // api地址
 const HTTP_API = SERVER_ADDRESS;

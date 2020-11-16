@@ -1,5 +1,5 @@
 import { SET_COLLAPSE, SET_THEME, SET_BREADCRUMB, SET_TAG, SET_MESSAGE } from '../constants/index';
-import $http from '@utils/request';
+import $http from '@/utils/request';
 
 
 /* 

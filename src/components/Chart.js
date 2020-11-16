@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import Echarts from 'echarts';
-import { debounce } from '@utils/optimize';
+import { debounce } from '@/utils/optimize';
 
 
 class Chart extends Component {

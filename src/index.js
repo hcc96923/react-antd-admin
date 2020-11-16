@@ -26,7 +26,7 @@ import routes from '@/routes/index';
 import 'antd/dist/antd.css';
 
 // 使用store使每个组件都能使用store
-import store from '@store/store';
+import store from '@/store/store';
 
 // 挂载http
 React.$http = http;

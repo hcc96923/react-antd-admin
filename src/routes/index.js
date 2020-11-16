@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import RouteComponent from "./component";
-import { resolveTitle } from '@utils/formatTool';
+import { resolveTitle } from '@/utils/formatTool';
 
 
 const token = localStorage.getItem('token');

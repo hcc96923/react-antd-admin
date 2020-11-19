@@ -9,32 +9,20 @@ const { emailConfig, imageConfig } = require('./config');
     生成邮箱验证码
 */
 const emailAuthCode = (emailString) => {
-    const emailType = emailString.split('@')[1].split('.')[0];
-    if (!emailType) {
-        return false;
-    }
-
-    let config = null;
-    switch (emailType) {
-        case 'qq':
-            config = emailConfig.qqConfig;
-            break;
-        case '163':
-            config = emailConfig.neteaseConfig;
-            break;
-        default:
-            break;
-    }
-
+    // 配置代理邮箱
+    const proxyEmail = emailConfig.neteaseConfig;
     
-    let authCode = Math.floor(Math.random() * 900000) + 100000;
+    // 生成验证码
+    const authCode = Math.floor(Math.random() * 900000) + 100000;
+
     // 如果同时有多个用户来请求验证码，第一个用户来说服务端内存里的验证码已经改变
-    let userAuthCode = CryptoJS.AES.encrypt(authCode.toString(), emailConfig.secretKey).toString();
+    const userAuthCode = CryptoJS.AES.encrypt(authCode.toString(), emailConfig.secretKey).toString();
     
     //创建一个SMTP客户端配置对象
-    const transporter = nodemailer.createTransport(config);
+    const transporter = nodemailer.createTransport(proxyEmail);
+    
     // 创建一个收件人对象
-    let htmlString = 
+    const htmlString = 
     `<html>
         <head>
             <title>LoveDance</title>
@@ -83,7 +71,7 @@ const emailAuthCode = (emailString) => {
         </body>
     </html>`;
     const addressee = {
-        from: `"韩畅畅"<${config.auth.user}>`,
+        from: `"韩畅畅"<${proxyEmail.auth.user}>`,
         to: `<${emailString}>`,
         subject: '验证码',
         text: "😊😊😊",

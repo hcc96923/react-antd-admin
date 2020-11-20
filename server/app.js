@@ -14,7 +14,7 @@ const session = require('express-session');
 const { serverConfig, corsConfig, sessionConfig, secretKey, whiteList } = require('./utils/config');
 const { 
     loginRouter, 
-    homeRouter,
+    dashboardRouter,
     userRouter,
     messageRouter,
     fileRouter,
@@ -47,7 +47,7 @@ app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')))
     });
 // 加载路由
 app.use('/login', loginRouter)
-app.use('/home', homeRouter)
+app.use('/dashboard', dashboardRouter)
     .use('/user', userRouter)
     .use('/message', messageRouter)
     .use('/file', fileRouter)

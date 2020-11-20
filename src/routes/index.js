@@ -47,12 +47,12 @@ const routes = [
                 path: '/',
                 exact: true,
                 meta: { title: "首页", roles: ["user", "admin", "root"]},
-                render: () => <Redirect to="/home" />
+                render: () => <Redirect to="/dashboard" />
             },
             {
-                path: '/home',
+                path: '/dashboard',
                 meta: { title: "首页", roles: ["user", "admin", "root"]},
-                component: RouteComponent.Home
+                component: RouteComponent.Dashboard
             },
             {
                 path: '/user-list',

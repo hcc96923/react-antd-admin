@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from '@/components/Chart';
 
 
-function HomeChart(props) {
+function DashboardChart(props) {
   const chartOptions = {
     color: ['#1f9fff', '#2F4056', '#009688'],
     tooltip: {
@@ -104,7 +104,7 @@ function HomeChart(props) {
     ]
   };
   return (  
-    <Chart chartId={"home"} chartHeight="320px" chartOptions={chartOptions}></Chart>
+    <Chart chartId={"dashboard"} chartHeight="320px" chartOptions={chartOptions}></Chart>
   );
 };
-export default HomeChart;
+export default DashboardChart;

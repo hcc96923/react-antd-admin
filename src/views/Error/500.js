@@ -9,7 +9,7 @@ function NotFound() {
             <div className="error">
                 <Card hoverable={true} style={{fontSize: "100px", fontWeight: "bolder"}}>500</Card>
                 <p className="text">服务器内部错误</p>
-                <Button className="page_btn" href="#/home" shape="round">返回首页</Button>
+                <Button className="page_btn" href="#/dashboard" shape="round">返回首页</Button>
             </div>
         </div>
     );

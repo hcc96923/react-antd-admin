@@ -17,8 +17,8 @@ const Forget = Loadable({
     loading: Loading
 });
 
-const Home = Loadable({
-    loader: () => import('@/views/Home'),
+const Dashboard = Loadable({
+    loader: () => import('@/views/Dashboard/index'),
     loading: Loading
 });
 
@@ -145,7 +145,7 @@ export default {
     Layout,
     Login,
     Forget,
-    Home,
+    Dashboard,
     UserList,
     RoleList,
     BasicInfo,

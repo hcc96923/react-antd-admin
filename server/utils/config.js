@@ -12,7 +12,7 @@ const serverConfig = {
 
 // 跨域配置
 const corsConfig = {
-    origin: 'http://localhost:3000', // 前端设置credentials: true后端origin不能为*
+    origin: ['http://localhost:3000', 'http://localhost:3001'], // 前端设置credentials: true后端origin不能为*
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: [
         'Content-Type', 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    HomeOutlined,
+    DashboardOutlined,
     TeamOutlined,
     UserOutlined, 
     BookOutlined,
@@ -33,9 +33,9 @@ import {
 } from '@ant-design/icons';
 const menuList = [
     {
-        path: 'home', 
+        path: 'dashboard', 
         name: '首页', 
-        icon: <HomeOutlined />,
+        icon: <DashboardOutlined />,
         roles: ["user", "admin", "root"]
     },
     { 

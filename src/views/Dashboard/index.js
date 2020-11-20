@@ -11,7 +11,7 @@ import {
     FieldTimeOutlined
 } from "@ant-design/icons";
 import DataCard from "./DataCard";
-import HomeChart from "./HomeChart";
+import DashboardChart from "./DashboardChart";
 import TableCard from "./TableCard";
 import './style.less';
 
@@ -81,7 +81,7 @@ const TaskColumns = [
       }
     }
 ];
-class Home extends React.Component {
+class Dashboard extends React.Component {
     state = {
       cardData: [],
       chartData: {}, 
@@ -89,7 +89,7 @@ class Home extends React.Component {
       taskTableData: []
     };
     getCardData = () => {
-      $http.get('/home/getCardData')
+      $http.get('/dashboard/getCardData')
           .then(response => {
             const { data } = response;
             this.setState({cardData: data});
@@ -99,7 +99,7 @@ class Home extends React.Component {
           });
     };
     getChartData = () => {
-      $http.get('/home/getChartData')
+      $http.get('/dashboard/getChartData')
           .then(response => {
             const { data } = response;
             this.setState({chartData: data});
@@ -109,7 +109,7 @@ class Home extends React.Component {
           });
     };
     getChartProgress = () => {
-      $http.get('/home/getChartProgress')
+      $http.get('/dashboard/getChartProgress')
           .then(response => {
             const { data } = response;
             this.setState({chartProgress: data});
@@ -119,7 +119,7 @@ class Home extends React.Component {
           });
     };
     getTaskTableData = () => {
-      $http.get('/home/getTaskTableData')
+      $http.get('/dashboard/getTaskTableData')
           .then(response => {
             const { data } = response;
             this.setState({taskTableData: data});
@@ -137,9 +137,9 @@ class Home extends React.Component {
     render() { 
         const { cardData, chartData, chartProgress, taskTableData } = this.state;
         return (  
-            <div className="home">
+            <div className="dashboard">
                 {/* card */}
-                <div className="home_header">
+                <div className="dashboard_header">
                     <Row gutter={16}>
                       {
                         cardData.map((item, index) => {
@@ -170,17 +170,17 @@ class Home extends React.Component {
                     </Row>
                 </div>
                 {/* 图表 */}
-                <div className="home_chart">
+                <div className="dashboard_chart">
                     <Card 
                         title={<LineChartOutlined style={{color: '#1DA57A', fontSize: '20px'}}/>}
                         extra={<Tag color="#009688">增长量</Tag>}>
                         <Row gutter={16}>
                             <Col span={16}>
-                                <HomeChart 
+                                <DashboardChart 
                                   visitData={chartData.visitData}
                                   uploadData={chartData.uploadData}
                                   downloadData={chartData.downloadData}>
-                                </HomeChart>
+                                </DashboardChart>
                             </Col>
                             <Col span={8}>
                                 {
@@ -199,7 +199,7 @@ class Home extends React.Component {
                     </Card>
                 </div>
                 {/* 表格 */}
-                <div className="home_table">
+                <div className="dashboard_table">
                     <Row gutter={24}>
                         <Col span={24}>
                             <TableCard
@@ -214,4 +214,4 @@ class Home extends React.Component {
         );
     };
 };
-export default Home;
+export default Dashboard;

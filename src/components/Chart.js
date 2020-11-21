@@ -12,7 +12,7 @@ class Chart extends Component {
         chartOptions: PropTypes.object.isRequired,
     };
     static defaultProps = {
-		chartId: '100%',
+		chartId: 'chartId',
 		chartHeight: '75vh',
 		chartOptions: {}
 	};

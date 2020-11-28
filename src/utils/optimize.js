@@ -3,11 +3,10 @@
     防抖函数
 */
 export const debounce = (fn, delay) => {
-    return function (args) {
-        clearTimeout(fn.id);
-
+    return function () {
+        fn.id && clearTimeout(fn.id);
         fn.id = setTimeout(() => {
-            fn.call(this, args);
+            fn.call(this, arguments);
         }, delay);
     };
 };
@@ -16,13 +15,14 @@ export const debounce = (fn, delay) => {
     节流函数
 */
 export const throttle = (fn, delay) => {
-    let canRun = true;
+    let open = false;
     return function () {
-        if (!canRun) return;
-        canRun = false;
-        setTimeout(() => {
-            fn.apply(this, arguments);
-            canRun = true;
-        }, delay);
+        if (!open) {
+            open = true;
+            setTimeout(() => {
+                fn.call(this, arguments);
+                open = false;
+            }, delay);
+        };
     };
 };

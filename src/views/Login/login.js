@@ -6,6 +6,7 @@ import { setUserInfo } from "@/store/actions/userInfo";
 import { connect } from 'react-redux';
 import CryptoJS from "crypto-js";
 import { debounce } from '@/utils/optimize';
+import { SERVER_ADDRESS } from '@/utils/config';
 import './login.less';
 
 
@@ -42,7 +43,7 @@ class Login extends Component {
             authcode: ''
         },
         verifyCode: false,
-        imageAuthCode: 'http://localhost:5000/login/getImageAuthCode'
+        imageAuthCode: `${SERVER_ADDRESS}/login/getImageAuthCode`
     };
     toggleOverlay(step) {
         this.setState({
@@ -82,7 +83,7 @@ class Login extends Component {
                     message.destroy('loading');
                 }
                 
-                this.props.history.push('/');
+                this.props.history.push('/dashboard');
                 message.success('登陆成功');
                 this.setState({loading: false});
             }).catch(error => {
@@ -123,7 +124,7 @@ class Login extends Component {
         $http.get('/login/getImageAuthCode')
             .then(() => {
                 this.setState({ imageAuthCode: '' });
-                this.setState({ imageAuthCode: 'http://localhost:5000/login/getImageAuthCode' });
+                this.setState({ imageAuthCode: `${SERVER_ADDRESS}/login/getImageAuthCode` });
             })
             .catch(error => {
                 console.log(error);

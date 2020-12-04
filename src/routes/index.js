@@ -1,11 +1,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import store from '@/store/store';
 import RouteComponent from "./component";
 import { resolveTitle } from '@/utils/formatTool';
 
 
-const token = localStorage.getItem('token');
-const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 const routes = [
     {
         path: "/login",
@@ -34,6 +33,7 @@ const routes = [
     },
     {
         render(props) {
+            const token = store.getState().token;
             if (!token) {
                 return <Redirect to="/login" />;
             }
@@ -57,12 +57,12 @@ const routes = [
             {
                 path: '/user-list',
                 meta: { title: "用户列表", roles: ["admin", "root"]},
-                render: () =>  userInfo.role > 1 ? <RouteComponent.UserList /> : <Redirect to="/401" />
+                render: () =>  store.getState().userInfo.role > 1 ? <RouteComponent.UserList /> : <Redirect to="/401" />
             },
             {
                 path: '/role-list',
                 meta: { title: "角色列表", roles: ["root"]},
-                render: () =>  userInfo.role > 2 ? <RouteComponent.RoleList /> : <Redirect to="/401" />
+                render: () =>  store.getState().userInfo.role > 2 ? <RouteComponent.RoleList /> : <Redirect to="/401" />
             },
             {
                 path: '/basic-info',
@@ -147,7 +147,7 @@ const routes = [
             {
                 path: '/page',
                 meta: { title: "路由拦截", roles: ["user", "admin", "root"]},
-                render: () => userInfo.role > 1 ? <RouteComponent.Page /> : <Redirect to="/401" />
+                render: () => store.getState().userInfo.role > 1 ? <RouteComponent.Page /> : <Redirect to="/401" />
             },
             {
                 path: '/message',

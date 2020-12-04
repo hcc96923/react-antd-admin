@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from 'antd';
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+import { setToken } from "@/store/actions/token";
 import { setUserInfo } from "@/store/actions/userInfo";
 import { connect } from 'react-redux';
 import CryptoJS from "crypto-js";
@@ -34,8 +35,8 @@ class Login extends Component {
             step: 100
         },
         loginForm: {
-            email: '',
-            password: ''
+            email: 'hcc96923@gmail.com',
+            password: '123456'
         },
         registerForm: {
             email: '',
@@ -74,16 +75,16 @@ class Login extends Component {
             .then(response => {
                 const { userInfo, token } = response;
                 // 缓存信息
+                this.props.setToken(token);
                 this.props.setUserInfo(userInfo);
                 // 本地存储
-                localStorage.setItem('userInfo', JSON.stringify(userInfo));
                 localStorage.setItem('token', token);
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
                 
                 if (isRegistered) {
                     message.destroy('loading');
                 }
-                
-                this.props.history.push('/dashboard');
+                this.props.history.push('/');
                 message.success('登陆成功');
                 this.setState({loading: false});
             }).catch(error => {
@@ -321,6 +322,9 @@ class Login extends Component {
 };
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
+    setToken: data => {
+        dispatch(setToken(data));
+    },
     setUserInfo: data => {
         dispatch(setUserInfo(data));
     }

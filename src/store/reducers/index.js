@@ -3,6 +3,7 @@ import { collapse, theme, breadcrumb, tag, message  } from './setting';
 import breadCrumb from './breadCrumb';
 import tagList from './tagList';
 import userInfo from './userInfo';
+import token from './token';
 
 
 const concatReducers = combineReducers({
@@ -13,6 +14,7 @@ const concatReducers = combineReducers({
     tag,
     tagList,
     message,
-    userInfo
+    userInfo,
+    token
 });
 export default concatReducers;

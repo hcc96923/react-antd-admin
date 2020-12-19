@@ -6,9 +6,9 @@ export const formatAmount = (val, n=0) => {
     if (val) {
         const num = parseInt(val, 10);
         return (num.toFixed(n).toString()).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,');
-    }
+    };
     return '0.00';
-}
+};
 /* 
     resolveTitle
     处理document.title
@@ -19,7 +19,7 @@ export const resolveTitle = (location, route) => {
     routes.forEach(item => {
         if (pathname === item.path) {
             document.title = item.meta.title;
-        }
+        };
     });
 };
 /* 
@@ -43,7 +43,7 @@ export const formatRole = (role) => {
             return "root";
         default:
             break;
-    }
+    };
 };
 /* 
     resolveMenuList
@@ -58,10 +58,10 @@ export const resolveMenuList = (menuList, role) => {
                 menu.children.forEach((child, j) => {
                     if (!child.roles.includes(role)) {
                         menu.children.splice(j, 1);
-                    }
+                    };
                 });
-            }
-        }
+            };
+        };
         const roles = menu.roles;
         return roles.includes(role);
     });

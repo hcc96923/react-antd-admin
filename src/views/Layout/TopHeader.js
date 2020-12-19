@@ -45,7 +45,7 @@ class TopHeader extends Component {
             this.props.history.push('/login');
         } else {
             this.props.history.push(`/${item.key}`);
-        }
+        };
     };
     componentDidMount() {
         const params = {};

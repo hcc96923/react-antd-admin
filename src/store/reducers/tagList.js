@@ -16,7 +16,7 @@ const tagList = (state = [{ path: 'home', name: '首页' }], action) => {
             });
             if (isExist) {
                 addState.push(addTag);
-            }
+            };
 
             return addState;
         case REMOVE_TAG:
@@ -26,7 +26,7 @@ const tagList = (state = [{ path: 'home', name: '首页' }], action) => {
             removeState.forEach((item, index, array) => {
                 if (item.path === removeTag.path && item.name === removeTag.name) {
                     array.splice(index, 1);
-                }
+                };
             });
 
             return removeState;

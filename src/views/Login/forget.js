@@ -47,7 +47,7 @@ class Forget extends Component {
         } else {
             resetForm[name] = value;
             this.setState({ resetForm });
-        }
+        };
     };
     handleValidateEmail = (event) => {
         const params = {};
@@ -58,7 +58,7 @@ class Forget extends Component {
                 if (result.length === 0) {
                     this.setState({disabled: true});
                     return message.error('邮箱还未注册，请先注册');
-                }
+                };
             })
             .catch(error => {
                 console.log(error);
@@ -67,7 +67,7 @@ class Forget extends Component {
     handleAuthEmailCode = () => {
         if (!this.state.validateForm.email || !EmailRegexp.test(this.state.validateForm.email)) {
             return message.error('请输入正确的邮箱');
-        }
+        };
         const params = {};
         params.email = this.state.validateForm.email;
         $http.get('/login/sendEmail', {params})

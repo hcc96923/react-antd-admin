@@ -100,7 +100,7 @@ class Login extends Component {
                 const { result } = response;
                 if (result.length !== 0) {
                     return message.error('该邮箱已注册，请登录');
-                }
+                };
             })
             .catch(error => {
                 console.log(error);
@@ -114,7 +114,7 @@ class Login extends Component {
                 const code = response.code;
                 if (!code) {
                     return false;
-                }
+                };
                 this.setState({ verifyCode: true });
             })
             .catch(error => {
@@ -135,17 +135,17 @@ class Login extends Component {
         const { registerForm } = this.state;
         if (!registerForm.email) {
             return message.error('邮箱不能为空');
-        }
+        };
         if (!registerForm.password) {
             return message.error('密码不能为空');
-        }
+        };
         debounce(this.handleRefreshCode.bind(this), 1000)();
     };
     handleRegister = () => {
         const { registerForm } = this.state;
         if (!this.state.verifyCode) {
             return false;
-        }
+        };
         const params = JSON.parse(JSON.stringify(registerForm));
         params.password = CryptoJS.MD5(params.password).toString();
         this.setState({loading: true});
@@ -168,7 +168,7 @@ class Login extends Component {
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return;
-        }
+        };
     };
     render() { 
         const { loading, overlay, loginForm, registerForm, imageAuthCode } = this.state;

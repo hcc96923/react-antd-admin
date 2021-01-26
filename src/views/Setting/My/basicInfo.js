@@ -41,11 +41,11 @@ class BasicInfo extends Component {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
             message.error('只能上传JPG/PNG文件!');
-        }
+        };
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
             message.error('图片大小不能超过2MB!');
-        }
+        };
         return isJpgOrPng && isLt2M;
     };
     handleChange = (info) => {
@@ -53,7 +53,7 @@ class BasicInfo extends Component {
         
         if (file.status === 'uploading') {
             return this.setState({loading: true});
-        }
+        };
         if (file.status === 'done') {
             const { id } = JSON.parse(localStorage.getItem('userInfo'));
             const { path } = file.response.file;
@@ -71,7 +71,7 @@ class BasicInfo extends Component {
         if (file.status === 'error') {
             message.error('上传失败');
             return this.setState({loading: false});
-        }
+        };
     };
     handleSubmit =(values) => {
         debounce(() => {

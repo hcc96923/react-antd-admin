@@ -62,7 +62,7 @@ class Login extends Component {
         } else {
             registerForm[labelName] = event.target.value;
             this.setState({ registerForm });
-        }
+        };
     };
     handleLogin = (values, isRegistered) => {
         this.setState({loginForm: values});

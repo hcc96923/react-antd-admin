@@ -92,7 +92,7 @@ class Excel extends Component {
             item.forEach((im, i) => {
                 const newKey = firstRow[i] || i;
                 newitem[newKey] = im
-            })
+            });
             return newitem;
         });
 
@@ -101,7 +101,7 @@ class Excel extends Component {
             gender: item.gender,
             age: item.age,
             work: item.work,
-        }))
+        }));
         this.setState({ data: formatData, fileList: [file] });
         return formatData;
     };

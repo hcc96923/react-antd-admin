@@ -39,12 +39,12 @@ http.interceptors.response.use(
         if (status === 200) {
             if (!data.code && data.message) {
                 return message.error(data.message || 'Error');
-            }
+            };
             return data;
         } else {
             message.error(data.message || 'Error');
             return Promise.reject(response);
-        }
+        };
     },
     error => {
         return Promise.reject(error);

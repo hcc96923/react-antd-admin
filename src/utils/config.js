@@ -1,4 +1,3 @@
-// 远程服务器地址
 // 测试环境
 export const SERVER_ADDRESS = 'http://localhost:5000';
 // 生产环境

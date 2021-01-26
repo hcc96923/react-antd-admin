@@ -16,7 +16,7 @@ class UDFile extends Component {
     onTabChange = (key) => {
         if (key === 'download') {
             this.getDownloadList();
-        }
+        };
     };
     handleUpload = () => {
         const { uploadFileList } = this.state;

@@ -105,12 +105,12 @@ class RoleList extends Component {
         const params = {};
         for (const key in query) {
             params[key] = query[key];
-        }
+        };
         for (const key in pagination) {
             if (key !== 'total') {
                 params[key] = pagination[key];
-            }
-        }
+            };
+        };
         $http.get('/user/getRole', {params})
             .then(response => {
                 const { result, total } = response;

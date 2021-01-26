@@ -19,7 +19,6 @@ function About() {
                         Excel、Zip、Pdf、富文本、MarkDown、
                         邮箱验证、MD5加密、路由守卫、权限切换、系统设置、头像上传、错误页面。
                         <hr style={{border: '1px solid #eee'}} />
-                        <span className="tip">由于本人工作中主要技术栈不是react，系统开发时不免存在问题，欢迎各位大佬issue。</span>
                     </section>
                     <span className="front">前端</span>
                     <section>

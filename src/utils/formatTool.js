@@ -1,6 +1,6 @@
 /* 
     formatAmount
-    格式化数量
+    格式化价格
 */
 export const formatAmount = (val, n=0) => {
     if (val) {

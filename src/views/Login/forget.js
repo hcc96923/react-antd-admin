@@ -93,7 +93,7 @@ class Forget extends Component {
                                 codeText: '获取验证码',
                                 disabled: false
                             });
-                        }
+                        };
                     }, 1000);
                 });
             })
@@ -105,7 +105,7 @@ class Forget extends Component {
         const { validateForm } = this.state;
         if (validateForm.code !== this.state.authCode.toString()) {
             return message.error('验证码不正确');
-        }
+        };
         localStorage.setItem('validateEmail', validateForm.email);
         this.setState({
             formType: 'reset',

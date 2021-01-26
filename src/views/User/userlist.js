@@ -124,12 +124,12 @@ class UserList extends Component {
         const params = {};
         for (const key in query) {
             params[key] = query[key];
-        }
+        };
         for (const key in pagination) {
             if (key !=='total') {
                 params[key] = pagination[key];
-            }
-        }
+            };
+        };
         $http.get('/user/getUser', {params})
             .then((response) => {
                 const { result, total } = response;
@@ -162,7 +162,7 @@ class UserList extends Component {
             pagination: {pageNum: current, pageSize}
         }, () => {
             this.getUserList();
-        })
+        });
     };
     openAddEditModal = (modalType, record) => {
         if (record) {
@@ -192,7 +192,7 @@ class UserList extends Component {
                     });
                 });
             });
-        }
+        };
     };
     handleAddModalCancel = () => {
         this.modalRef.current.resetFields();
@@ -224,7 +224,7 @@ class UserList extends Component {
                 .catch((error) => {
                     console.log(error);
                 });
-        }
+        };
     };
     onEdit = (record) => {
         this.setState({

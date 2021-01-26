@@ -34,14 +34,14 @@ class ModifyPassword extends Component {
         const value = event.target.value;
         if (value === '') {
             return message.error('当前密码不能为空');
-        }
+        };
         const params = { password: CryptoJS.MD5(value).toString() };
         $http.get('/user/verifyPassword', {params})
             .then((result) => {
                 const { code } = result;
                 if (code === 200) {
                     this.setState({verifyPassword: true});
-                }
+                };
             })
             .catch(error => {
                 console.log(error);

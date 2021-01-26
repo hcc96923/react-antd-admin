@@ -134,7 +134,7 @@ class Dashboard extends React.Component {
       const lastLoginTime = localStorage.getItem('last_login_time');
       if (!lastLoginTime) {
         localStorage.setItem('last_login_time', new Date());
-      } 
+      };
       this.setState({lastLoginTime});
     };
     componentDidMount() {

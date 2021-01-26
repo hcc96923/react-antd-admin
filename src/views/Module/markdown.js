@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Editor from 'for-editor'
-import '@/assets/less/markdown.less';
+import './markdown.less';
 
 
 class MarkDown extends Component {

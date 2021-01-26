@@ -5,7 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import draftToMarkdown from 'draftjs-to-markdown';
-import '@/assets/less/richeditor.less';
+import './richtext.less';
 import { SERVER_ADDRESS } from '@/utils/config';
 
 

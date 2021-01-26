@@ -23,12 +23,38 @@ export const resolveTitle = (location, route) => {
     });
 };
 /* 
-    formatTime
+    formatGeneralTime
     格式化时间
 */
-export const formatTime = (time) => {
+export const formatGeneralTime = (time) => {
     return time.slice(0, 10) + ' ' + time.slice(11, 19);
 };
+/* 
+    formatGMTTime
+    格式化GMT时间
+*/
+export const formatGMTTime = (time) => {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    let result = year + '-';
+    if (month < 10) {
+        result += '0' + month + '-';
+    } else {
+        result += month + '-';
+    };
+    if (day < 10){
+        result += '0' + day;
+    } else {
+        result += day;
+    };
+    result += ' ' + hours + ':' + minutes + ':' + seconds;
+    return result;
+}
 /* 
     formatRole
     格式化权限

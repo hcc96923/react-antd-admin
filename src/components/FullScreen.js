@@ -2,7 +2,7 @@ import React from 'react';
 import { FullscreenOutlined } from '@ant-design/icons';
 
 
-export default class FullScreen extends React.Component {
+class FullScreen extends React.Component {
 	state = {
 		isFullScreen: false
 	};
@@ -17,7 +17,7 @@ export default class FullScreen extends React.Component {
 			de.mozRequestFullScreen();
 		} else if (de.webkitRequestFullScreen) {
 			de.webkitRequestFullScreen();
-		}
+		};
 	};
 	exitFullscreen = () => {
 		let de = document;
@@ -27,7 +27,7 @@ export default class FullScreen extends React.Component {
 			de.mozCancelFullScreen();
 		} else if (de.webkitCancelFullScreen) {
 			de.webkitCancelFullScreen();
-		}
+		};
 	};
 	watchFullScreen = () => {
 		document.addEventListener(
@@ -58,7 +58,7 @@ export default class FullScreen extends React.Component {
 	componentWillUnmount() {
         this.setState = (state, callback) => {
             return;
-        }
+        };
     };
 	render() {
 		return (
@@ -69,3 +69,4 @@ export default class FullScreen extends React.Component {
 		);
 	};
 };
+export default FullScreen;

@@ -133,7 +133,7 @@ const menuList = [
                 name: '混合图表',
                 icon: <HeatMapOutlined />,
                 roles: ["user", "admin", "root"]
-            },
+            }
         ]
     },
     { 
@@ -177,7 +177,7 @@ const menuList = [
                 name: 'MarkDown',
                 icon: <FileMarkdownOutlined />,
                 roles: ["user", "admin", "root"]
-            },
+            }
         ]
     },
     { 
@@ -197,7 +197,7 @@ const menuList = [
                 name: '权限页面',
                 icon: <IssuesCloseOutlined />,
                 roles: ["user", "admin", "root"]
-            },
+            }
         ]
     },
     { 

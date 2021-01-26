@@ -60,7 +60,7 @@ const sessionConfig = {
 
 // 数据库配置
 const mysqlConfig = {
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 3306,
     user: 'root',
     password: '123456',
@@ -70,7 +70,7 @@ const mysqlConfig = {
 
 // redis配置
 const redisConfig = {
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 6379,
     password: '123456'
 };

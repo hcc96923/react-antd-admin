@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Tabs, Form, Input, List, Button, message } from 'antd';
 import { setMessage } from '@/store/actions/setting';
 import { connect } from 'react-redux';
-import { formatTime } from '@/utils/formatTool';
+import { formatGeneralTime } from '@/utils/formatTool';
 import "./style.less";
 
 
@@ -187,7 +187,7 @@ class Message extends Component {
                                     renderItem={item => 
                                         <List.Item key={item.id} className="message">
                                             <span className="content">{item.content}</span>
-                                            <span className="time">{formatTime(item.time)}</span>
+                                            <span className="time">{formatGeneralTime(item.time)}</span>
                                             <Button type="default" onClick={this.onMarkRead.bind(this, item.id)}>标为已读</Button>
                                         </List.Item>}>
                                 </List>
@@ -207,7 +207,7 @@ class Message extends Component {
                                     renderItem={item => 
                                         <List.Item key={item.id} className="message">
                                             <span className="content">{item.content}</span>
-                                            <span className="time">{formatTime(item.time)}</span>
+                                            <span className="time">{formatGeneralTime(item.time)}</span>
                                             <Button type="danger" onClick={this.onDeleteMessage.bind(this, item.id)}>删除</Button>
                                         </List.Item>}>
                                 </List>

@@ -87,7 +87,7 @@ const emailAuthCode = (emailString) => {
     transporter.sendMail(addressee, (error, info) => {
         if (error) {
             console.log(error);
-        }
+        };
         transporter.close();
     });
     return userAuthCode;

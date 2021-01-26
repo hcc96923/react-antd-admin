@@ -13,6 +13,7 @@ import {
 import DataCard from "./DataCard";
 import DashboardChart from "./DashboardChart";
 import TableCard from "./TableCard";
+import { formatGMTTime } from '@/utils/formatTool';
 import './style.less';
 
 
@@ -86,7 +87,8 @@ class Dashboard extends React.Component {
       cardData: [],
       chartData: {}, 
       chartProgress: [],
-      taskTableData: []
+      taskTableData: [],
+      lastLoginTime: null
     };
     getCardData = () => {
       $http.get('/dashboard/getCardData')
@@ -128,14 +130,22 @@ class Dashboard extends React.Component {
             console.log(error);
           });
     };
+    getLastLoginTime = () => {
+      const lastLoginTime = localStorage.getItem('last_login_time');
+      if (!lastLoginTime) {
+        localStorage.setItem('last_login_time', new Date());
+      } 
+      this.setState({lastLoginTime});
+    };
     componentDidMount() {
       this.getCardData();
       this.getChartData();
       this.getChartProgress();
       this.getTaskTableData();
+      this.getLastLoginTime();
     };
     render() { 
-        const { cardData, chartData, chartProgress, taskTableData } = this.state;
+        const { cardData, chartData, chartProgress, taskTableData, lastLoginTime } = this.state;
         return (  
             <div className="dashboard">
                 {/* card */}
@@ -204,6 +214,7 @@ class Dashboard extends React.Component {
                         <Col span={24}>
                             <TableCard
                                 title="学习计划"
+                                lastLoginTime={formatGMTTime(lastLoginTime)}
                                 columns={TaskColumns}
                                 dataSource={taskTableData}>
                             </TableCard>

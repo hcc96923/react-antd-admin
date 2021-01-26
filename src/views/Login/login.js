@@ -83,7 +83,7 @@ class Login extends Component {
                 
                 if (isRegistered) {
                     message.destroy('loading');
-                }
+                };
                 this.props.history.push('/');
                 message.success('登陆成功');
                 this.setState({loading: false});

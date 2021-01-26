@@ -40,7 +40,6 @@ function executeRedis () {
         client.on('error', error => {
             reject(error);
         });
-        console.log(client);
         resolve(client);
     });
 };

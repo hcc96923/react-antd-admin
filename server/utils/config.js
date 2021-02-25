@@ -64,7 +64,7 @@ const mysqlConfig = {
     port: 3306,
     user: 'root',
     password: '123456',
-    database: 'user'
+    database: 'epidemic-management-platform'
 };
 
 
@@ -89,8 +89,7 @@ const whiteList = [
     '/login/getImageAuthCode', 
     '/login/resetPassword', 
     '/file/uploadAvatar', 
-    '/file/uploadFiles',
-    '/cron/regularMessage'
+    '/file/uploadFiles'
 ];
 
 
@@ -103,7 +102,7 @@ const emailConfig = {
         port:465,
         auth: {
             user: 'hcc96923@163.com',
-            pass: 'SWOPRPIKGKMRWRKU'
+            pass: 'COUAWKNLWFTTNCLU'
         }
     },
     secretKey: 'emailSecretKey'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Tabs, List, Upload, Button, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { formatGeneralTime } from '@/utils/formatTool';
+import { formatGMTTime } from '@/utils/formatTool';
 import { SERVER_ADDRESS } from '@/utils/config';
 import "./udfile.less";
 
@@ -139,7 +139,7 @@ class UDFile extends Component {
                                     renderItem={item => 
                                         <List.Item key={item.id} className="download">
                                             <span className="originalname" onClick={this.handleDownloadSingle.bind(this, item)}>{item.originalname}</span>
-                                            <span className="time">{formatGeneralTime(item.time)}</span>
+                                            <span className="time">{formatGMTTime(item.time)}</span>
                                             <Button type="default" onClick={this.handleDownloadSingle.bind(this, item)}>下载</Button>
                                         </List.Item>}>
                                 </List>

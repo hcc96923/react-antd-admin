@@ -6,10 +6,7 @@ class FullScreen extends React.Component {
 	state = {
 		isFullScreen: false
 	};
-	handleFullScrren = () => {
-		!this.state.isFullScreen ? this.requestFullScreen() : this.exitFullscreen();
-	};
-	requestFullScreen = () => {
+	handleRequestFullScreen = () => {
 		let de = document.documentElement;
 		if (de.requestFullscreen) {
 			de.requestFullscreen();
@@ -19,7 +16,7 @@ class FullScreen extends React.Component {
 			de.webkitRequestFullScreen();
 		};
 	};
-	exitFullscreen = () => {
+	handleExitFullscreen = () => {
 		let de = document;
 		if (de.exitFullscreen) {
 			de.exitFullscreen();
@@ -29,11 +26,14 @@ class FullScreen extends React.Component {
 			de.webkitCancelFullScreen();
 		};
 	};
-	watchFullScreen = () => {
+	handleFullScrren = () => {
+		this.state.isFullScreen ? this.handleExitFullscreen() : this.handleRequestFullScreen();
+	};
+	handleWatchFullScreen = () => {
 		document.addEventListener(
 			'fullscreenchange',
 			() => {
-				this.setState({ isFullScreen: document.fullscreen });
+				this.setState({ isFullScreen: document.fullscreenElement });
 			},
 			false
 		);
@@ -53,7 +53,7 @@ class FullScreen extends React.Component {
 		);
 	};
 	componentDidMount() {
-		this.watchFullScreen();
+		this.handleWatchFullScreen();
 	};
 	componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -69,4 +69,6 @@ class FullScreen extends React.Component {
 		);
 	};
 };
+
+
 export default FullScreen;

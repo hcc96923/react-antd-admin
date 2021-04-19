@@ -16,7 +16,7 @@ class Chart extends Component {
 		chartHeight: '75vh',
 		chartOptions: {}
 	};
-    initChart = () => {
+    handleInitChart = () => {
 		this.setState(
 			{
 				chart: Echarts.init(document.getElementById(this.props.chartId))
@@ -28,23 +28,23 @@ class Chart extends Component {
 			}
 		);
     };
-    resize = () => {
+    handleResizeWindow = () => {
         const chart = this.state.chart;
         if (chart) {
             debounce(chart.resize.bind(this), 500)();
         };
     };
-    dispose = () => {
+    handleDisposeWatch = () => {
 		if (!this.state.chart) return null;
-		window.removeEventListener('resize', () => this.resize()); // 移除窗口，变化时重置图表
+		window.removeEventListener('resize', () => this.handleResizeWindow()); // 移除窗口，变化时重置图表
 		this.setState({ chart: null });
     };
     componentDidMount() {
-        debounce(this.initChart.bind(this), 500)(); //初始化图表
-        window.addEventListener('resize', () => this.resize()); // 监听窗口，变化时重置图表
+        debounce(this.handleInitChart.bind(this), 500)(); //初始化图表
+        window.addEventListener('resize', () => this.handleResizeWindow()); // 监听窗口，变化时重置图表
     };
     componentWillUnmount() {
-		this.dispose();
+		this.handleDisposeWatch();
 	};
     render() { 
         return (  

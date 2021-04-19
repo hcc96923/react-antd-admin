@@ -23,17 +23,10 @@ export const resolveTitle = (location, route) => {
     });
 };
 /* 
-    formatGeneralTime
-    格式化时间
-*/
-export const formatGeneralTime = (time) => {
-    return time.slice(0, 10) + ' ' + time.slice(11, 19);
-};
-/* 
     formatGMTTime
     格式化GMT时间
 */
-export const formatGMTTime = (time) => {
+export const formatGMTTime = time => {
     const date = new Date(time);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -52,7 +45,21 @@ export const formatGMTTime = (time) => {
     } else {
         result += day;
     };
-    result += ' ' + hours + ':' + minutes + ':' + seconds;
+    if (hours < 10) {
+        result += ' 0' + hours + ':';
+    } else {
+        result += ' ' + hours + ':';
+    };
+    if (minutes < 10) {
+        result += '0' + minutes + ':';
+    } else {
+        result += minutes + ':';
+    };
+    if (seconds < 10) {
+        result += '0' + seconds;
+    } else {
+        result += seconds;
+    };
     return result;
 }
 /* 

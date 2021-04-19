@@ -38,7 +38,8 @@ http.interceptors.response.use(
         const { status, data } = response;
         if (status === 200) {
             if (!data.code && data.message) {
-                return message.error(data.message || 'Error');
+                message.error(data.message || 'Error');
+                return Promise.reject(response);
             };
             return data;
         } else {

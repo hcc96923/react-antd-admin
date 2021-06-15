@@ -36,6 +36,47 @@ router.post('/login', (request, response) => {
             console.log(error);
         });
 });
+
+/* 
+    登录
+    login
+*/
+router.post('/login', (request, response) => {
+    const { email, password } = request.body;
+    const sqlString = `SELECT id, name, gender, age, avatar, authority, phone, email, last_login_time, last_login_ip FROM admin WHERE email='${email}' AND password='${password}'`;
+    executeMysql(sqlString)
+        .then(result => {
+            if (result.length > 0) {
+                const { id } = result[0]; 
+                const adminInfo = Object.assign({}, result[0]);
+                const token = jwt.sign(adminInfo, secretKey, {
+                    expiresIn: 60 * 60 * 12 * 24 * 7
+                });
+                const sqlString = `UPDATE admin SET last_login_time=CURRENT_TIMESTAMP, last_login_ip='${request.ip}' WHERE id=${id}`;
+                executeMysql(sqlString)
+                    .then(() => {
+                        response.send({
+                            code: 200,
+                            message: '登陆成功',
+                            adminInfo,
+                            token
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            } else {
+                response.send({
+                    message: '邮箱或密码错误'
+                });
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+});
+
+
 /* 
     注册
     register

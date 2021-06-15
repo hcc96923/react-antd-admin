@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
-import { Card, Tabs, List, Upload, Button, message } from 'antd';
+import { Card, Tabs, List, Upload, Space, Button, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { formatGMTTime } from '@/utils/formatTool';
 import { SERVER_ADDRESS } from '@/utils/config';
-import "./udfile.less";
-
-
 const { $http } = React;
-class UDFile extends Component {
+
+
+class File extends Component {
     state = {
         uploading: false,
         uploadFileList: [],
-        downloadFileList: []
+        fileList: [],
+        myUploadList: []
     };
-    onTabChange = (key) => {
-        if (key === 'download') {
-            this.getDownloadList();
+    handleTabChange = key => {
+        switch (key) {
+            case 'filelist':
+                this.handleGetFileList();
+                break;
+            case 'myupload':
+                this.handleGetMyUploadList();
+                break;
+            default:
+                break;
         };
     };
-    handleUpload = () => {
+    handleUploadFileList = () => {
         const { uploadFileList } = this.state;
         const formData = new FormData();
         uploadFileList.forEach(file => {
@@ -26,7 +33,7 @@ class UDFile extends Component {
         });
 
         this.setState({uploading: true});
-        $http.post('/file/uploadFiles', formData)
+        $http.post('/file/uploadFileList', formData)
             .then(() => {
                 this.setState({
                     uploading: false,
@@ -39,36 +46,87 @@ class UDFile extends Component {
                 message.success('上传失败');
             });
     };
-    getDownloadList = () => {
+    handleGetFileList = () => {
         this.setState({loading: true});
-        $http.get('/file/getDownloadList')
+        $http.get('/file/getFileList')
             .then(response => {
                 const { result } = response;
                 this.setState({
                     loading: false, 
-                    downloadFileList: result
+                    fileList: result
                 });
             })
             .catch(error => {
                 console.log(error);
             });
     };
-    handleDownloadSingle = (file) => {
+    handleGetMyUploadList = () => {
         this.setState({loading: true});
-        window.open(`${SERVER_ADDRESS}/${file.name}`);
-        this.setState({loading: false});
+        $http.get('/file/getMyUploadList')
+            .then(response => {
+                const { result } = response;
+                this.setState({
+                    loading: false, 
+                    myUploadList: result
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
-    handleDownloadAll = () => {
-        const fileList = this.state.downloadFileList;
-        this.setState({loading: true});
-        fileList.forEach(file => {
-            const name = file.name;
-            window.open(`${SERVER_ADDRESS}/${name}`);
-        });
-        this.setState({loading: false});
+    handleDownload = type => {
+        switch (type) {
+            case 'filelist':
+                this.setState({loading: true});
+                this.state.fileList.forEach(file => {
+                    const name = file.name;
+                    window.open(`${SERVER_ADDRESS}/${name}`);
+                });
+                this.setState({loading: false});
+                break;
+            case 'myupload':
+                this.setState({loading: true});
+                this.state.myUploadList.forEach(file => {
+                    const name = file.name;
+                    window.open(`${SERVER_ADDRESS}/${name}`);
+                });
+                this.setState({loading: false});
+                break;
+            default:
+                this.setState({loading: true});
+                window.open(`${SERVER_ADDRESS}/${type.name}`);
+                this.setState({loading: false});
+                break;
+        };
+    };
+    handleDelete = type => {
+        if (type === 'uploadlist') {
+            const ids = this.state.myUploadList.map(file => file.id);
+            const params = { ids };
+            
+            console.log(params);
+            $http.delete('/file/deleteAllFile', {params})
+                .then(() => {
+                    message.success('删除成功');
+                    this.handleGetMyUploadList();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        } else {
+            const params = {name: type.name};
+            $http.delete('/file/deleteSingleFile', {params})
+                .then(() => {
+                    message.success('删除成功');
+                    this.handleGetMyUploadList();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
     };
     render() { 
-        const { uploading, uploadFileList } = this.state;
+        const { uploading, uploadFileList, fileList, myUploadList } = this.state;
         const uploadProps = {
             onRemove: file => {
                 this.setState(state => {
@@ -98,25 +156,23 @@ class UDFile extends Component {
             uploadFileList
         };
         return (  
-            <Card title="支持多种类型文件的上传与下载">
+            <Card title="防疫文件资源共享中心">
                 <Tabs
                     defaultActiveKey="upload"
-                    onChange={this.onTabChange}>
+                    onChange={this.handleTabChange}>
                         <Tabs.TabPane
                             tab="上传文件"
                             key="upload">
                                 <section>
                                     <Upload.Dragger {...uploadProps} name="files" style={{width: '280px'}}>
-                                        <p className="ant-upload-drag-icon">
-                                            <InboxOutlined />
-                                        </p>
+                                        <p className="ant-upload-drag-icon"><InboxOutlined /></p>
                                         <p className="ant-upload-text">支持拖拽上传和点击上传</p>
                                     </Upload.Dragger>
                                 </section>
                                 <section>
                                     <Button
                                         type="primary"
-                                        onClick={this.handleUpload}
+                                        onClick={this.handleUploadFileList}
                                         disabled={uploadFileList.length === 0}
                                         loading={uploading}
                                         style={{ marginTop: 16 }}>
@@ -125,22 +181,60 @@ class UDFile extends Component {
                                 </section>
                         </Tabs.TabPane>
                         <Tabs.TabPane
-                            tab="下载文件"
-                            key="download">
+                            tab="文件列表"
+                            key="filelist">
                                 <List
                                     size="large"
                                     bordered
                                     footer={
-                                        <div>
-                                            <Button type="primary" onClick={this.handleDownloadAll}>下载全部</Button>
-                                        </div>
+                                        fileList.length === 0 ?
+                                        ""
+                                        :
+                                        <Button type="primary" onClick={() => this.handleDownload('filelist')}>下载全部</Button>
                                     }
-                                    dataSource={this.state.downloadFileList}
+                                    dataSource={fileList}
                                     renderItem={item => 
-                                        <List.Item key={item.id} className="download">
-                                            <span className="originalname" onClick={this.handleDownloadSingle.bind(this, item)}>{item.originalname}</span>
-                                            <span className="time">{formatGMTTime(item.time)}</span>
-                                            <Button type="default" onClick={this.handleDownloadSingle.bind(this, item)}>下载</Button>
+                                        <List.Item key={item.id} style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <span style={{flex: 1, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', cursor: 'pointer', color: '#1DA57A'}} onClick={() => this.handleDownload(item)}>
+                                                {item.originalname}
+                                            </span>
+                                            <span style={{width: '20%', textAlign: 'center'}}>
+                                                {formatGMTTime(item.time)}
+                                            </span>
+                                            <Space>
+                                                <Button type="default" onClick={() => this.handleDownload(item)}>下载</Button>
+                                            </Space>
+                                        </List.Item>}>
+                                </List>
+                        </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab="我的上传"
+                            key="myupload">
+                                <List
+                                    size="large"
+                                    bordered
+                                    footer={
+                                        myUploadList.length === 0 ?
+                                        ""
+                                        :
+                                        <div>
+                                            <Button type="primary" onClick={() => this.handleDownload('myupload')} style={{marginRight: '8px'}}>下载全部</Button>
+                                            <Button type="danger" onClick={() => this.handleDelete('uploadlist')}>删除全部</Button>
+                                        </div>  
+                                    }
+                                    dataSource={myUploadList}
+                                    renderItem={item => 
+                                        <List.Item key={item.id} style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <span style={{flex: 1, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', cursor: 'pointer', color: '#1DA57A'}} onClick={() => this.handleDownload(item)}>
+                                                {item.originalname}
+                                            </span>
+                                            <span style={{width: '20%', textAlign: 'center'}}>
+                                                {formatGMTTime(item.time)}
+                                            </span>
+                                            <Space>
+                                                <Button type="default" onClick={() => this.handleDownload(item)}>下载</Button>
+                                                <Button type="danger" onClick={() => this.handleDelete(item)}>删除</Button>
+                                            </Space>
                                         </List.Item>}>
                                 </List>
                         </Tabs.TabPane>
@@ -149,4 +243,6 @@ class UDFile extends Component {
         );
     };
 };
-export default UDFile;
+
+
+export default File;

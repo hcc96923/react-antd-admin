@@ -10,7 +10,7 @@ const { emailConfig, imageConfig } = require('./config');
 */
 const emailAuthCode = (emailString) => {
     // 配置代理邮箱
-    const proxyEmail = emailConfig.neteaseConfig;
+    const proxyEmail = emailConfig.qqConfig;
     
     // 生成验证码
     const authCode = Math.floor(Math.random() * 900000) + 100000;

@@ -133,6 +133,12 @@ const menuList = [
                 name: '混合图表',
                 icon: <HeatMapOutlined />,
                 roles: ["user", "admin", "root"]
+            },
+            { 
+                path: 'epidemic-map',
+                name: '疫情地图',
+                icon: <HeatMapOutlined />,
+                roles: ["user", "admin", "root"]
             }
         ]
     },

@@ -18,7 +18,8 @@ const {
     userRouter,
     messageRouter,
     fileRouter,
-    cronRouter 
+    cronRouter,
+    mapRouter 
 } = require('./routes/router');
 
 
@@ -52,9 +53,12 @@ app.use('/dashboard', dashboardRouter)
     .use('/message', messageRouter)
     .use('/file', fileRouter)
     .use('/cron', cronRouter)
+    .use('/map', mapRouter)
 
 
 
-app.listen(serverConfig.port, () => {
+
+// 监听服务
+app.listen(serverConfig.port, '0.0.0.0', () => {
     console.log('Server is running in http://localhost:' + serverConfig.port);
 });

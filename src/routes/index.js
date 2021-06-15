@@ -110,6 +110,11 @@ const routes = [
                 component: RouteComponent.Mix
             },
             {
+                path: '/epidemic-map',
+                meta: { title: "疫情地图", roles: ["user", "admin", "root"]},
+                component: RouteComponent.EpidemicMap
+            },
+            {
                 path: '/excel',
                 meta: { title: "Excel", roles: ["user", "admin", "root"]},
                 component: RouteComponent.Excel

@@ -6,7 +6,7 @@ const RedisStore = require('connect-redis')(session);
 
 // 服务配置
 const serverConfig = {
-    port: 5000 
+    port: 3001 
 };
 
 
@@ -64,7 +64,7 @@ const mysqlConfig = {
     port: 3306,
     user: 'root',
     password: '123456',
-    database: 'epidemic-management-platform'
+    database: 'user'
 };
 
 
@@ -102,7 +102,17 @@ const emailConfig = {
         port:465,
         auth: {
             user: 'hcc96923@163.com',
-            pass: 'COUAWKNLWFTTNCLU'
+            pass: 'DYSUSQVPAHWUAYBX'
+        }
+    },
+    qqConfig: {
+        service: 'smtp.qq.com',
+        host: 'smtp.qq.com',
+        secure: true,
+        port:465,
+        auth: {
+            user: '734499162@qq.com',
+            pass: 'tlhfreucwmcobbac'
         }
     },
     secretKey: 'emailSecretKey'

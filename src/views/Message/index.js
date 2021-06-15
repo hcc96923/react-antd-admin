@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Tabs, Form, Input, List, Button, message } from 'antd';
-import { setMessage } from '@/store/actions/setting';
+import { Card, Tabs, Form, Input, List, Button, Space, Modal, Badge, message } from 'antd';
+import { NotificationOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
+import { setMessage } from '@/store/actions/setting';
 import { formatGMTTime } from '@/utils/formatTool';
 import "./style.less";
 
@@ -21,130 +22,111 @@ const tailLayout = {
         span: 16,
     },
 };
+
+
 class Message extends Component {
     state = {
-        unreadMessage: [],
-        readMessage: []
+        adminId: this.props.adminInfo.id,
+        messageList: [],
+        modalVisible: false,
+        modalContent: ''
     };
     formRef = React.createRef();
-    onTabChange = (key) => {
-        switch (key) {
-            case 'unread':
-                this.getUnreadMessage();
-                break;
-            case 'read':
-                this.getReadMessage();
+    handleTabChange = tab => {
+        switch (tab) {
+            case 'messagelist':
+                this.handleGetMessageList(this.state.adminId);
                 break;
             default:
                 break;
         }
     };
-    onFinish = (values) => {
-        $http.post('/message/addNewMessage', values)
+    handleSetMessage = () => {
+        const params = { adminId: this.props.adminInfo.id };
+        this.props.setMessage(params);
+    }
+    handleAddMessage = values => {
+        values.adminId = this.props.adminInfo.id;
+        $http.post('/message/addMessage', values)
             .then(() => {
                 message.success('新增成功');
-                this.formRef.current.setFieldsValue({
-                    content: ''
-                });
-
-                const params = {};
-                params.status = 0;
-                this.props.setMessage(params);
+                this.handleSetMessage();
+                this.formRef.current.setFieldsValue({ content: '' });
             })
             .catch(error => {
                 console.log(error);
             });
     };
-    getUnreadMessage = () => {
-        const params = {};
-        params.status = 0;
+    handleGetMessageList = id => {
+        const params = { adminId: id };
         $http.get('/message/getMessage', {params})
             .then(response => {
                 const { result } = response;
-                this.setState({
-                    unreadMessage: result
-                });
+                this.setState({ messageList: result })
             })
             .catch(error => {
                 console.log(error);
             });
     };
-    onMarkRead = (id) => {
-        $http.put('/message/readSingleMessage', {id})
+    hnadleReadAll = () => {
+        const ids = this.state.messageList.map(item => item.id);
+        const allStatus = this.state.messageList.some(item => item.messageStatus !== 1);
+        if(allStatus) {
+            $http.put('/message/readAllMessage', {adminId: this.state.adminId, ids})
+                .then(() => {
+                    this.handleSetMessage();
+                    this.handleGetMessageList(this.state.adminId);
+                })
+                .catch(error => {
+                    console.log(error);
+            });
+        }
+    };
+    hnadleReadSingle = (adminId, id) => {
+        $http.put('/message/readSingleMessage', {adminId, id})
             .then(() => {
-                message.success('标记成功');
-                this.getUnreadMessage();
-
-                const params = {};
-                params.status = 0;
-                this.props.setMessage(params);
+                this.handleSetMessage();
+                this.handleGetMessageList(this.state.adminId);
             })
             .catch(error => {
                 console.log(error);
             });
     };
-    onMarkAllRead = () => {
-        const ids = this.state.unreadMessage.map(item => {
-            return item.id;
+    hnadleViewMessage = item => {
+        this.setState({ 
+            modalVisible: true,
+            modalContent: item.content
         });
-        $http.put('/message/readAllMessage', {ids})
-            .then(() => {
-                message.success('标记成功');
-                this.getUnreadMessage();
-
-                const params = {};
-                params.status = 0;
-                this.props.setMessage(params);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        this.hnadleReadSingle(this.state.adminId, item.id);
     };
-    getReadMessage = () => {
-        const params = {};
-        params.status = 1;
-        $http.get('/message/getMessage', {params})
-            .then(response => {
-                const { result } = response;
-                this.setState({
-                    readMessage: result
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
-    onDeleteMessage = (id) => {
-        const params = {id};
-        $http.delete('/message/deleteSingleReadMessage', {params})
-            .then(() => {
-                message.success('删除成功');
-                this.getReadMessage();
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
-    onDeleteAllMessage = () => {
-        const ids = this.state.readMessage.map(item => {
-            return item.id;
+    hnadleDeleteMessage = item => {
+        Modal.confirm({
+            title: '删除消息',
+            icon: <ExclamationCircleOutlined />,
+            content: '确认删除这条消息吗？',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: () => {
+                const params = {messageId: item.messageId};
+                $http.delete('/message/deleteMessage', {params})
+                    .then(() => {
+                        message.success('删除成功');
+                        this.handleGetMessageList(this.state.adminId);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
         });
-        const params = {ids};
-        $http.delete('/message/deleteAllMessage', {params})
-            .then(() => {
-                message.success('删除成功');
-                this.getReadMessage();
-            })
-            .catch(error => {
-                console.log(error);
-            });
     };
     render() { 
+        const { messageList, modalVisible, modalContent } = this.state;
         return (  
             <Card title="消息中心">
                 <Tabs
                     defaultActiveKey="addmessage"
-                    onChange={this.onTabChange}>
+                    onChange={this.handleTabChange}>
                         <Tabs.TabPane
                             tab="新增消息"
                             key="addmessage">
@@ -155,7 +137,7 @@ class Message extends Component {
                                     initialValues={{
                                         content: ''
                                     }}
-                                    onFinish={this.onFinish}>
+                                    onFinish={this.handleAddMessage}>
                                     <Form.Item
                                         label="消息"
                                         name="content"
@@ -165,7 +147,7 @@ class Message extends Component {
                                             message: '请输入消息内容',
                                         },
                                         ]}>
-                                        <Input.TextArea allowClear rows={5} placeholder="请输入消息内容" />
+                                        <Input.TextArea allowClear rows={10} placeholder="请输入消息内容" />
                                     </Form.Item>
                                     <Form.Item {...tailLayout}>
                                         <Button type="primary" htmlType="submit">提交</Button>
@@ -173,42 +155,53 @@ class Message extends Component {
                                 </Form>
                         </Tabs.TabPane>
                         <Tabs.TabPane
-                            tab="未读消息"
-                            key="unread">
+                            tab="消息列表"
+                            key="messagelist">
+                                <Modal
+                                    visible={modalVisible}
+                                    footer={null}
+                                    onCancel={() => this.setState({ modalVisible: false })}>
+                                        <p style={{ fontSize: 24, padding: 3 }}>{modalContent}</p>
+                                </Modal>
                                 <List
                                     size="large"
                                     bordered
                                     footer={
+                                        messageList.length > 0 ?
                                         <div>
-                                            <Button type="primary" onClick={this.onMarkAllRead}>全部已读</Button>
+                                            <Button type="primary" onClick={this.hnadleReadAll}>全部已读</Button>
                                         </div>
+                                        :
+                                        null
                                     }
-                                    dataSource={this.state.unreadMessage}
+                                    dataSource={messageList}
                                     renderItem={item => 
                                         <List.Item key={item.id} className="message">
+                                            {
+                                                item.messageStatus ?
+                                                <span style={{ marginRight: '10px' }}>
+                                                    <NotificationOutlined />
+                                                </span>
+                                                :
+                                                <span style={{ marginRight: '10px' }}>
+                                                    <Badge dot>
+                                                        <NotificationOutlined />
+                                                    </Badge>
+                                                </span>
+                                            }
                                             <span className="content">{item.content}</span>
                                             <span className="time">{formatGMTTime(item.time)}</span>
-                                            <Button type="default" onClick={this.onMarkRead.bind(this, item.id)}>标为已读</Button>
-                                        </List.Item>}>
-                                </List>
-                        </Tabs.TabPane>
-                        <Tabs.TabPane
-                            tab="已读消息"
-                            key="read">
-                                <List
-                                    size="large"
-                                    bordered
-                                    footer={
-                                        <div>
-                                            <Button type="danger" onClick={this.onDeleteAllMessage}>删除全部</Button>
-                                        </div>
-                                    }
-                                    dataSource={this.state.readMessage}
-                                    renderItem={item => 
-                                        <List.Item key={item.id} className="message">
-                                            <span className="content">{item.content}</span>
-                                            <span className="time">{formatGMTTime(item.time)}</span>
-                                            <Button type="danger" onClick={this.onDeleteMessage.bind(this, item.id)}>删除</Button>
+                                            <Space size={20}>
+                                                {
+                                                    this.props.adminInfo.authority > 1 ?
+                                                    <>
+                                                        <Button type="default" onClick={() => this.hnadleViewMessage(item)}>查看</Button>
+                                                        <Button type="danger" onClick={() => this.hnadleDeleteMessage(item)}>删除</Button>
+                                                    </>
+                                                    :
+                                                    <Button type="default" onClick={() => this.hnadleViewMessage(item)}>查看</Button>
+                                                }
+                                            </Space>
                                         </List.Item>}>
                                 </List>
                         </Tabs.TabPane>
@@ -217,10 +210,14 @@ class Message extends Component {
         );
     };
 };
+
+
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
     setMessage: data => {
         dispatch(setMessage(data));
     }
 });
+
+
 export default connect(mapStateToProps, mapDispatchToProps)(Message);

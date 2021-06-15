@@ -13,7 +13,7 @@ router.get('/getUser', (request, response) => {
         .then(result => {
             const total = result.length;
             const query = request.query;
-            let sqlString = `SELECT id, username, gender, phone, email, time FROM user WHERE 1 = 1`;
+            let sqlString = `SELECT id, username, gender, phone, email, avatar,  time FROM user WHERE 1 = 1`;
             Object.keys(query).forEach(key => {
                 switch (key) {
                     case 'username':
@@ -107,8 +107,8 @@ router.post('/addUser', (request, response) => {
     editUser
 */
 router.put('/editUser', (request, response) => {
-    const { id, username, gender, phone, email } = request.body;
-    const sqlString = `UPDATE user SET username='${username}', gender=${gender}, phone='${phone}', email='${email}' WHERE id=${id}`;
+    const { id, username, gender, phone, email, avatar } = request.body;
+    const sqlString = `UPDATE user SET username='${username}', gender=${gender}, avatar='${avatar}',phone='${phone}', email='${email}' WHERE id=${id}`;
     executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {
@@ -220,7 +220,7 @@ router.put('/uploadAvatar', (request, response) => {
 */
 router.put('/updateUser', (request, response) => {
     const { id, username, gender, phone, email, avatar, remark } = request.body;
-    const sqlString = `UPDATE user SET username='${username}', gender=${gender}, phone='${phone}', email='${email}', avatar='${avatar}', remark='${remark}' WHERE id=${id}`;
+    const sqlString = `UPDATE user SET username='${username}', gender=${gender}, avatar='${avatar}', phone='${phone}', email='${email}', avatar='${avatar}', remark='${remark}' WHERE id=${id}`;
     executeMysql(sqlString)
         .then(result => {
             if (result.affectedRows > 0) {

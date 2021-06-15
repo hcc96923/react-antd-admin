@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Form, Input, Row, Col, Space, Button, Table, Select, Modal, Radio, message } from "antd";
+import { Card, Form, Input, Row, Col, Space, Button, Table, Select, Modal, Radio, Upload, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { SERVER_ADDRESS } from '@/utils/config';
+import Uploading from '@/components/Uploading';
 import "./userlist.less";
 
 
@@ -30,6 +32,8 @@ class UserList extends Component {
     state = {
         selectedRowKeys: [],
         Loading: false,
+        uploading: false,
+        avatarUrl: '',
         userTableData: [],
         query: {
             username: '',
@@ -95,6 +99,21 @@ class UserList extends Component {
                 }
             },
             {
+                title: '头像',
+                dataIndex: 'avatar',
+                key: 'avatar',
+                align: 'center',
+                width: '100px',
+                height: '100px',
+                render: (text, record, index) => {
+                    return (
+                        <React.Fragment>
+                            <img src={SERVER_ADDRESS + '/' + record.avatar} alt="获取头像失败" style={{ width: '80px', height: '80px'}} />
+                        </React.Fragment>
+                    )
+                }
+            },
+            {
                 title: '操作',
                 key: 'action',
                 align: 'center',
@@ -113,7 +132,8 @@ class UserList extends Component {
             username: '',
             gender: 0,
             phone: '',
-            email: ''
+            email: '',
+            avatar: ''
         },
         modalType: 'add'
     };
@@ -178,7 +198,8 @@ class UserList extends Component {
                     username: '',
                     gender: 0,
                     phone: '',
-                    email: ''
+                    email: '',
+                    avatar: '',
                 },
                 modalType
             }, () => {
@@ -188,7 +209,8 @@ class UserList extends Component {
                         username: '',
                         gender: 0,
                         phone: '',
-                        email: ''
+                        email: '',
+                        avatar: '',
                     });
                 });
             });
@@ -239,7 +261,8 @@ class UserList extends Component {
                     username: record.username,
                     gender: record.gender,
                     phone: record.phone,
-                    email: record.email
+                    email: record.email,
+                    avatar: record.avatar
                 });
             });
         });
@@ -287,13 +310,42 @@ class UserList extends Component {
             }
         });
     };
+    handleBeforeUpload = file => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('只能上传JPG/PNG文件!');
+        };
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('图片大小不能超过2MB!');
+        };
+        return isJpgOrPng && isLt2M;
+    };
+    handleAvatarChange = info => {
+        this.setState({uploading: true});
+        const file = info.file;
+
+        if (file.status === 'uploading') {
+            return this.setState({uploading: true});
+        };
+        if (file.status === 'done') {
+            const path = file.response.file.path;
+            this.setState({avatarUrl: path});
+            return this.setState({uploading: false});
+        };
+        if (file.status === 'error') {
+            message.error('上传失败');
+            return this.setState({uploading: false});
+        };
+    };
     componentDidMount() {
         this.setState({Loading: true});
         this.getUserList();
     };
     render() { 
-        const { Loading, selectedRowKeys, userTableData, columns, pagination, modalVisible, modalType, modalForm  } = this.state;
+        const { Loading, selectedRowKeys, userTableData, columns, pagination, modalVisible, modalType, modalForm, avatarUrl, uploading  } = this.state;
         const rowSelection = { selectedRowKeys, onChange: this.onSelectChange };
+        console.log(avatarUrl);
         return (  
             <Card title="用户列表">
                 <Form
@@ -374,6 +426,20 @@ class UserList extends Component {
                                                     <Radio value={0}>男</Radio>
                                                     <Radio value={1}>女</Radio>
                                                 </Radio.Group>
+                                            </Form.Item>
+                                            <Form.Item 
+                                                label="头像"
+                                                name="avatar"
+                                                valuePropName="avatar">
+                                                    <Upload
+                                                        name="avatar"
+                                                        listType="picture-card"
+                                                        showUploadList={false}
+                                                        action={SERVER_ADDRESS + '/file/uploadAvatar'}
+                                                        beforeUpload={this.handleBeforeUpload}
+                                                        onChange={this.handleAvatarChange}>
+                                                            {avatarUrl ? <img src={SERVER_ADDRESS + '/' + avatarUrl} alt="获取头像失败" style={{ width: '100%' }} /> : <Uploading uploading={uploading}/>}
+                                                    </Upload>
                                             </Form.Item>
                                             <Form.Item label="手机号码" name="phone" rules={[{pattern: PhoneRegexp, message: '手机号码格式不正确'}]}>
                                                 <Input placeholder="请输入手机号码" />

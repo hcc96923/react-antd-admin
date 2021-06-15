@@ -77,6 +77,11 @@ const Mix = Loadable({
     loading: Loading
 });
 
+const EpidemicMap = Loadable({
+    loader: () => import('@/views/Chart/EpidemicMap/index'),
+    loading: Loading
+});
+
 const Excel = Loadable({
     loader: () => import('@/views/Module/excel'),
     loading: Loading
@@ -157,6 +162,7 @@ export default {
     Pie,
     KeyBoard,
     Mix,
+    EpidemicMap,
     Excel,
     Zip,
     Pdf,

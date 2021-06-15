@@ -4,6 +4,7 @@ const userRouter = require('./user');
 const messageRouter = require('./message');
 const fileRouter = require('./file');
 const cronRouter = require('./cron');
+const mapRouter = require('./map');
 
 
 module.exports = {
@@ -12,5 +13,6 @@ module.exports = {
     userRouter,
     messageRouter,
     fileRouter,
-    cronRouter
+    cronRouter,
+    mapRouter
 };

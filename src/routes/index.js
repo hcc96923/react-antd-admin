@@ -110,11 +110,6 @@ const routes = [
                 component: RouteComponent.Mix
             },
             {
-                path: '/epidemic-map',
-                meta: { title: "疫情地图", roles: ["user", "admin", "root"]},
-                component: RouteComponent.EpidemicMap
-            },
-            {
                 path: '/excel',
                 meta: { title: "Excel", roles: ["user", "admin", "root"]},
                 component: RouteComponent.Excel
@@ -155,11 +150,6 @@ const routes = [
                 render: () => store.getState().userInfo.role > 1 ? <RouteComponent.Page /> : <Redirect to="/401" />
             },
             {
-                path: '/message',
-                meta: { title: "消息", roles: ["user", "admin", "root"]},
-                component: RouteComponent.Message
-            },
-            {
                 path: "/login",
                 meta: { title: "登录", roles: ["user", "admin", "root"]},
                 component: RouteComponent.Login 
@@ -178,6 +168,11 @@ const routes = [
                 path: '/500',
                 meta: { title: "服务器错误", roles: ["user", "admin", "root"]},
                 component: RouteComponent.ServerError
+            },
+            {
+                path: '/epidemic-map',
+                meta: { title: "疫情地图", roles: ["user", "admin", "root"]},
+                component: RouteComponent.EpidemicMap
             },
             {
                 path: '/about',

@@ -16,7 +16,6 @@ const {
     loginRouter, 
     dashboardRouter,
     userRouter,
-    messageRouter,
     fileRouter,
     cronRouter,
     mapRouter 
@@ -50,7 +49,6 @@ app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')))
 app.use('/login', loginRouter)
 app.use('/dashboard', dashboardRouter)
     .use('/user', userRouter)
-    .use('/message', messageRouter)
     .use('/file', fileRouter)
     .use('/cron', cronRouter)
     .use('/map', mapRouter)

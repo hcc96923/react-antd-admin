@@ -224,6 +224,7 @@ class UserList extends Component {
         });
     };
     onSaveAddEditForm = (values) => {
+        values.avatar = values.avatar.file.response.file.path;
         const { modalForm, modalType } = this.state;
         if (modalType === 'add') {
             $http.post('/user/addUser', values)
@@ -345,7 +346,6 @@ class UserList extends Component {
     render() { 
         const { Loading, selectedRowKeys, userTableData, columns, pagination, modalVisible, modalType, modalForm, avatarUrl, uploading  } = this.state;
         const rowSelection = { selectedRowKeys, onChange: this.onSelectChange };
-        console.log(avatarUrl);
         return (  
             <Card title="用户列表">
                 <Form

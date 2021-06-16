@@ -77,11 +77,6 @@ const Mix = Loadable({
     loading: Loading
 });
 
-const EpidemicMap = Loadable({
-    loader: () => import('@/views/Chart/EpidemicMap/index'),
-    loading: Loading
-});
-
 const Excel = Loadable({
     loader: () => import('@/views/Module/excel'),
     loading: Loading
@@ -122,11 +117,6 @@ const Page = Loadable({
     loading: Loading
 });
 
-const Message = Loadable({
-    loader: () => import('@/views/Message/index'),
-    loading: Loading
-});
-
 const NoAuth = Loadable({
     loader: () => import('@/views/Error/401'),
     loading: Loading
@@ -139,6 +129,11 @@ const NotFound = Loadable({
 
 const ServerError = Loadable({
     loader: () => import('@/views/Error/500'),
+    loading: Loading
+});
+
+const EpidemicMap = Loadable({
+    loader: () => import('@/views/Chart/EpidemicMap/index'),
     loading: Loading
 });
 
@@ -171,7 +166,6 @@ export default {
     MarkDown,
     Authority,
     Page,
-    Message,
     NoAuth,
     NotFound,
     ServerError,

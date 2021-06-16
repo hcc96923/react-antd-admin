@@ -25,7 +25,7 @@ import {
     FileDoneOutlined,
     FileTextOutlined,
     FileMarkdownOutlined,
-    MessageOutlined,
+    StockOutlined,
     CopyrightOutlined,
     EyeInvisibleOutlined,
     WarningOutlined,
@@ -133,12 +133,6 @@ const menuList = [
                 name: '混合图表',
                 icon: <HeatMapOutlined />,
                 roles: ["user", "admin", "root"]
-            },
-            { 
-                path: 'epidemic-map',
-                name: '疫情地图',
-                icon: <HeatMapOutlined />,
-                roles: ["user", "admin", "root"]
             }
         ]
     },
@@ -207,12 +201,6 @@ const menuList = [
         ]
     },
     { 
-        path: 'message', 
-        name: '消息' ,
-        icon: <MessageOutlined />,
-        roles: ["user", "admin", "root"]
-    },
-    { 
         path: 'error-page',
         name: '错误页面', 
         icon: <StopOutlined />,
@@ -237,6 +225,12 @@ const menuList = [
                 roles: ["user", "admin", "root"]
             }
         ]
+    },
+    { 
+        path: 'epidemic-map',
+        name: '疫情地图',
+        icon: <StockOutlined />,
+        roles: ["user", "admin", "root"]
     },
     { 
         path: 'about', 

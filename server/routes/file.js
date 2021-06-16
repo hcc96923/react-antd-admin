@@ -15,6 +15,7 @@ router.post('/uploadAvatar', upload.single('avatar'), (request, response) => {
     const fileTypeName = file.originalname.split('.')[1];
     fs.renameSync(file.path, 'static/' + (file.filename + '.' + fileTypeName));
     file.path = (file.filename + '.' + fileTypeName);
+    console.log(file);
     response.send({
         code: 200,
         file

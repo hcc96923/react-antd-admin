@@ -7,6 +7,7 @@ import { setUserInfo } from "@/store/actions/userInfo";
 import { connect } from 'react-redux';
 import CryptoJS from "crypto-js";
 import { debounce } from '@/utils/optimize';
+import { formatGMTTime } from '@/utils/formatTool';
 import { SERVER_ADDRESS } from '@/utils/config';
 import './login.less';
 
@@ -74,6 +75,9 @@ class Login extends Component {
         $http.post('/login/login', params)
             .then(response => {
                 const { userInfo, token } = response;
+                const { last_login_time, last_login_ip } = userInfo;
+                message.info(`上次登陆时间：${formatGMTTime(last_login_time)} 上次登陆IP：${last_login_ip}`, 13);
+
                 // 缓存信息
                 this.props.setToken(token);
                 this.props.setUserInfo(userInfo);
